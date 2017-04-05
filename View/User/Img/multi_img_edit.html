@@ -1,0 +1,249 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+.wechat-news{
+border: 1px solid #ccc;
+padding: 10px;
+width:360px;
+border-radius: 5px;
+position: relative;
+}
+.news-block{display:none;}
+.news-block.active{display:block;}
+.wechat-news-header{
+	position:relative;
+	height: 200px;
+	cursor:pointer;
+}
+.wechat-news-header img{
+	height: 200px;
+	width:100%;
+}
+.wechat-news-header .title{
+	position:absolute;
+	padding: 5px 4px;
+	bottom:0;
+	background-color:#333;
+	opacity:0.6;
+	width:100%;
+	color:white;
+}
+.wechat-news-small{
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+	position: relative;
+	padding:10px 0;
+	cursor:pointer;
+	padding-right: 10px;
+}
+.wechat-news-small.active{background-color: rgb(211, 211, 211);}
+.wechat-news-small span{}
+.wechat-news-small img{
+	float:right;
+	width:40px;
+	height:40px;
+}
+.wechat-news-small .remove{
+	float: right;
+	height: 40px;
+	padding-top: 5px;
+	margin-right: 10px;
+	color: #aaa;
+	display:none;
+}
+.wechat-news-small .remove:hover{
+	color:#a94442
+}
+.wechat-news-small:hover .remove{display:block;}
+.wechat-news-toolbar{padding:10px 0;}
+#newsBlockTpl{display:none;}
+#smallNewsTpl{display:none;}
+</style>
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/ueditor.config.small.js"></script>
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/lang/zh-cn/zh-cn.js"> </script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<script>
+function sprintf(){
+    var arg = arguments,
+        str = arg[0] || '',
+        i, n;
+    for (i = 1, n = arg.length; i < n; i++) {
+        str = str.replace(/%s/, arg[i]);
+    }
+    return str;
+}
+var TPL_DIV = '<div id="%s" class="news-block"><div class="form-group"><label class="control-label">标题</label><input type="text" class="form-control" value="title" name="titles[]" data-toggle="wechat-news-title" data-target="#%s" /></div><div class="form-group"><input type="hidden" class="form-control" value="" data-toggle="wechat-news-img" data-target="#%s"  id="%s" name="covers[]" /><div class="btn-group" style="vertical-align:bottom;"><span onclick="selectAsset(\'%s\')" class="btn btn-sm btn-primary btn-upload"><span class="glyphicon glyphicon-cloud-upload"></span>上传封面</span></div></div><div class="form-group"><label class="control-label">外链地址</label><div class="input-group"><input type="text" id="%s" class="form-control" value="" name="urls[]" /><span class="input-group-btn"><button onclick="selectLink(\'%s\')" class="btn btn-primary" type="button">选择</button></span></div></div><div class="form-group"><label for="content" class="control-label">正文</label><textarea id="%s" name="details[]" style="height:200px;"></textarea></div></div>';
+var TPL_LI = '<div class="wechat-news-small" data-toggle="wechat-change-view" data-target="#%s"><span id="%s">title</span><img id="cover%sHolder" src="/Public/Wap/images/common/noneimg.jpg"/><div class="remove"><i class="fa-2x fa fa-trash-o"></i>&nbsp;</div></div>';
+
+function createNewsBlock(){
+	var index = $('.wechat-news-small').length+1;
+	//编译表单模板
+	var tpl = $(sprintf(TPL_DIV,'newsBlock'+index,'newsTitle'+index,'newsImg'+index,'cover'+index,'cover'+index,'url'+index,'url'+index,'ueContent'+index));
+	tpl.insertBefore('#formFooter');
+	UE.getEditor('ueContent'+index);
+	tpl.find('input[data-toggle="wechat-news-title"]').on('keyup',function(){
+		var target = $(this).attr('data-target');
+		$(target).text($(this).val());
+	});
+	
+	//编译视图模板
+	var tplLi = $(sprintf(TPL_LI,'newsBlock'+index,'newsTitle'+index,index));
+	tplLi.appendTo('.wechat-news-list');
+	//绑定事件
+	tplLi.on('click',function(){
+		var target = $(this).attr('data-target');
+		var $target = $(target);
+		if(!$target.hasClass("current")){
+			$('.news-block.active').removeClass('active');
+			$target.addClass('active');
+			$('.wechat-news-small.active').removeClass('active');
+			$(this).addClass('active');
+		}
+	});
+	tplLi.find('.remove').click(function(){
+		var li = $(this).parents('.wechat-news-small');
+		var target = li.attr('data-target');
+		li.remove();
+		$(target).remove();
+		$('.wechat-news-header').click();
+	});
+}
+
+function init(){
+	$('input[data-toggle="wechat-news-title"]').on('keyup',function(){
+		var target = $(this).attr('data-target');
+		$(target).text($(this).val());
+	});
+	$('.wechat-news-small .remove').click(function(){
+		var li = $(this).parents('.wechat-news-small');
+		var target = li.attr('data-target');
+		li.remove();
+		$(target).remove();
+		$('.wechat-news-header').click();
+	});
+	
+	$('[data-toggle="wechat-change-view"]').on('click',function(){
+		var target = $(this).attr('data-target');
+		var $target = $(target);
+		if(!$target.hasClass("current")){
+			$('.news-block.active').removeClass('active');
+			$target.addClass('active');
+			$('.wechat-news-small.active').removeClass('active');
+			$(this).addClass('active');
+		}
+	});
+	UE.getEditor('headerContent');
+	<?php foreach($smallNews as $index=>$value){ ?>
+	UE.getEditor('ueContent<?=$index+1?>');
+	<?php }?>
+}
+$(function(){
+	init();
+})
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>{$title}</h3>
+		<a class="btn btn-sm btn-default" href="{:U('Img/multi_img')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="wechat-news">
+				<div class="wechat-news-header" data-toggle="wechat-change-view" data-target="#headerBlock">
+					<img id="picHolder" src="{$info.pic}" />
+					<div class="title" id="headerTitle">{$info.title}</div>
+				</div>
+				<div class="wechat-news-list">
+					<volist name="smallNews" id="vo">
+					<div class="wechat-news-small" data-toggle="wechat-change-view" data-target="#newsBlock{$i}">
+						<span id="newsTitle{$i}">{$vo.title}</span>
+						<img id="cover{$i}Holder" src="{$vo.cover}"/>
+						<if condition="$i gt 1"><div class="remove"><i class="fa-2x fa fa-trash-o"></i>&nbsp;</div></if>
+					</div>
+					</volist>
+				</div>
+				<div class="wechat-news-toolbar">
+					<a href="javascript:createNewsBlock()"><i class="fa fa-plus"></i>&nbsp;增加</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-7">
+			<form role="form" class="wechat-news-form" action="" method="post">
+				<input type="hidden" name="id" value="{$info.id}" />
+				<div id="headerBlock" class="news-block active">
+					<div class="form-group">
+						<label for="keyword" class="control-label">关键词</label>
+						<input type="text" class="form-control" id="keyword" value="{$info.keyword}"  name="keyword" />
+					</div>
+					<div class="form-group">
+						<label class="control-label">标题</label>
+						<input type="text" data-toggle="wechat-news-title" data-target="#headerTitle" class="form-control" value="{$info.title}" name="title" />
+					</div>
+					<div class="form-group">
+						<input type="hidden"  data-toggle="wechat-news-img" data-target="#headerImg"  class="form-control" value="{$info.pic}" id="pic" name="pic" />
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-sm btn-primary" onclick="selectAsset('pic')">
+								<span class="glyphicon glyphicon-cloud-upload"></span>上传封面
+							</span>
+						</div>
+					</div>
+					<div id="classify-addr" class="form-group">
+						<label for="url" class="control-label">外链地址</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="url" value="{$info.url}" name="url" />
+							<span class="input-group-btn">
+								<button class="btn btn-primary" onclick="selectLink('url')" type="button">选择</button>
+							</span>
+						</div><!-- /input-group -->
+					</div>
+					<div class="form-group">
+						<label for="content" class="control-label">正文</label>
+						<textarea name="info" id="headerContent" style="height:200px;">{$info.info}</textarea>
+					</div>
+				</div>
+				<volist name="smallNews" id="vo">
+				<div id="newsBlock{$i}" class="news-block">
+					<div class="form-group">
+						<label class="control-label">标题</label>
+						<input type="text" class="form-control" data-toggle="wechat-news-title" data-target="#newsTitle{$i}" value="{$vo.title}" name="titles[]" />
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" value="{$vo.cover}" data-toggle="wechat-news-img" data-target="#newsImg{$i}" id="cover{$i}" name="covers[]" />
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-sm btn-primary" onclick="selectAsset('cover{$i}')">
+								<span class="glyphicon glyphicon-cloud-upload"></span>上传封面
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label">外链地址</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="url{$i}" value="{$vo.url}" name="urls[]" />
+							<span class="input-group-btn">
+								<button class="btn btn-primary" onclick="selectLink('url{$i}')" type="button">选择</button>
+							</span>
+						</div><!-- /input-group -->
+					</div>
+					<div class="form-group">
+						<label for="content" class="control-label">正文</label>
+						<textarea name="details[]" id="ueContent{$i}" style="height:200px;">{$vo.detail}</textarea>
+					</div>
+				</div>
+				</volist>
+				<div id="formFooter" class="form-group">
+					<button type="submit" class="btn btn-primary">保存</button>
+				</div>
+			</form>
+		</div>
+		<div></div>
+	</div>
+</div>
+</block>

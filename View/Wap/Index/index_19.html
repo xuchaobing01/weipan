@@ -1,0 +1,60 @@
+<extend name="index_tpl" />
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:RES}/css/index/tpl_19_{$tpl.color_id}.css"  />
+</block>
+<block name="cate_menu">
+	<section>
+        <div>
+            <ul class="list_ul">
+                <li class="box">
+                <volist name="info" id="vo">
+                    <if condition="$i lt 3">
+                    <dl>
+                        <a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">
+                    <dd>
+                        <span>
+                            <img src="{$vo.img}" class="icon-smile" style="width:60px;height:40px;margin-top:5px;">
+                        </span>
+                    </dd>
+                    <dt style="font-size:11px;">{$vo.name}</dt>
+                        </a>
+                    </dl>
+                    </if>
+                </volist> 
+                 </li>   
+                <li class="box">
+                <volist name="info" id="vo">
+                    <if condition="($i gt 2) and ($i lt 5)">
+                    <dl>
+                        <a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">
+                    <dd>
+                        <span>
+                            <img src="{$vo.img}" class="icon-smile" style="width:60px;height:40px;margin-top:5px;">
+                        </span>
+                    </dd>
+                    <dt style="font-size:11px;">{$vo.name}</dt>
+                        </a>
+                    </dl>
+                    </if>
+                </volist> 
+                 </li>
+                 <li class="box">
+                <volist name="info" id="vo">
+                    <if condition="($i gt 4) and ($i lt 7)">
+                    <dl>
+                        <a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">
+                    <dd>
+                        <span>
+                            <img src="{$vo.img}" class="icon-smile" style="width:60px;height:40px;margin-top:5px;">
+                        </span>
+                    </dd>
+                    <dt style="font-size:11px;">{$vo.name}</dt>
+                        </a>
+                    </dl>
+                    </if>
+                </volist> 
+                </li>
+            </ul>
+        </div>
+    </section>
+</block>

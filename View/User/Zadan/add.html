@@ -1,0 +1,571 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style class="text/css">
+.tab-content{
+	padding: 20px 10px 0;
+}
+.award-img{
+	width:80px;height:80px;
+}
+.btn-upload input[type="file"]{
+	position: absolute;
+	opacity: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	margin:0;
+	padding:0;
+	cursor: pointer;
+}
+.award-img-wrapper{position:relative;display: inline-block;margin-right:10px;}
+.award-img-warpper img{}
+.img-remove{position:absolute;right:0;top:0;width:30px;height:30px;color:rgb(155, 155, 155);cursor:pointer;background:url(/Public/Common/images/triangle-close.png) center no-repeat}
+.img-remove:hover{color:red;}
+</style>
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/jquery.ajaxfileupload.js"></script>
+<script type="text/javascript">
+	function sprintf(){
+		var arg = arguments,
+			str = arg[0] || '',
+			i, n;
+		for (i = 1, n = arg.length; i < n; i++) {
+			str = str.replace(/%s/, arg[i]);
+		}
+		return str;
+	}
+	window.target = null;
+	$(function(){
+		toggleShare();
+	});
+	$('.share_type').click(function(){
+		toggleShare();
+	});
+	
+	function toggleShare(){
+		if($('#defaultShare').is(':checked')){
+			$('.custom-share').hide();
+		}
+		else{
+			$('.custom-share').show();
+		}
+	}
+	var TPL = '<div class="award-img-wrapper"><img src="%s" class="award-img" /><input type="hidden" name="reward%simgs[]" value="%s" /><span class="img-remove">&nbsp;</span></div>';
+</script>
+<script type="text/javascript">
+	$("[data-toggle='upload-reward-img']>.upload-file").AjaxFileUpload({
+		action: "{:U('Qiniu/upload')}",
+		onComplete: function(filename, resp) {
+			if(resp.error !=0){
+				alert(resp.message);
+			}
+			else{
+				var wrapper = $(sprintf(TPL,resp.url,target,resp.url));
+				wrapper.appendTo('#rewardImg'+target);
+				wrapper.find('.img-remove').click(function(){
+					$(this).parent().remove();
+				});
+			}
+		}
+	});
+	
+	$(function(){
+		$('[data-toggle="upload-reward-img"]').click(function(){
+			window.target = $(this).attr('data-index');
+		});
+		$('.img-remove').click(function(){
+			$(this).parent().remove();
+		});
+	})
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>编辑砸金蛋活动</h4>
+		<notempty name="vo.id"><code><php>echo C('WAP_DOMAIN').U('Wap/Zadan/index?id='.$vo['id'].'&token='.session('token'))</php></code><br/></notempty>
+		<a href="{:U('Zadan/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<input type="button" onclick="$('#form').submit()" class="btn btn-primary" value="保存" />
+	<hr/>
+	<!-- Nav tabs -->
+	<div class="tabbable-custom">
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="#start" data-toggle="tab">开始设置</a></li>
+		<li><a href="#end" data-toggle="tab">结束设置</a></li>
+		<li><a href="#prize" data-toggle="tab">奖项设置</a></li>
+		<li><a href="#pro" data-toggle="tab">活动设置</a></li>
+	</ul>
+	<!-- Tab panes -->
+	<form class="form-horizontal" method="post" id="form">
+		<input type="hidden" value="4" name="type" />
+		<div class="tab-content">
+			<div class="tab-pane active" id="start">
+				<div class="form-group">
+					<label class="col-sm-2">关键词</label>
+					<div class="col-md-5">
+						<input type="input" class="form-control" id="keyword" value="<if condition="$vo['keyword'] eq ''">砸金蛋<else/>{$vo.keyword}</if>" name="keyword" />
+					</div>
+					<span class="col-md-5 text-info">用户输入此关键词将会触发此活动</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">活动名称</label>
+					<div class="col-md-5">
+						<input type="input" class="form-control" id="title" value="<if condition="$vo['title'] eq ''">砸金蛋活动开始了<else/>{$vo.title}</if>" name="title" />
+					</div>
+					<span class="col-md-5 text-info">请不要超过50个字!</span>
+				</div>
+				<div class="form-group">
+					<label for="img" class="col-sm-2">活动开始图片</label>
+					<div class="col-sm-6" >
+						<?php if($vo['startpicurl'] == 0){ $vo['startpicurl']=rtrim(C('site_url'),'/').'/Public/Wap/images/activity-zadan-start.jpg';}?>
+						<input type="hidden" name="startpicurl" value="{$vo.startpicurl}"  id="pic1" />
+						<img id="pic1Holder" style="width:216px;height:120px;" class="img" src="{$vo.startpicurl}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('pic1',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('pic1')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">兑奖信息</label>
+					<div class="col-md-5">
+						<input type="input" class="form-control" id="txt" value="<if condition="$vo['txt'] eq ''">兑奖请联系我们，电话18900009999<else/>{$vo.txt}</if>" name="txt" />
+					</div>
+					<span class="col-md-5 text-info">请不要多于100字! 这个设定但用户输入兑奖时候的显示信息!</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">活动时间</label>
+					<div class="col-md-2">
+						<input type="input" class="form-control" id="startdate" value="{$vo.startdate|default=time()|date="Y-m-d H:i",###}" data-minview="0" data-format="yyyy-mm-dd HH:ii" data-toggle="datetime-picker" name="startdate" />  
+					</div>
+					<span class="col-sm-1" style="text-align:center;">至</span>
+					<div class="col-md-2">
+						<input type="input" class="form-control" id="enddate" data-minview="0" data-format="yyyy-mm-dd HH:ii"  value="{$vo.enddate|default=(time()+10*86400)|date="Y-m-d H:i",###}" name="enddate"  data-toggle="datetime-picker"  /> 
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">活动说明</label>
+					<div class="col-md-5">
+						<textarea  class="form-control" id="info" name="info"  style="height:125px" ><if condition="$vo['info'] eq ''">亲，请点击进入砸金蛋抽奖活动页面，祝您好运哦！<else/>{$vo.info}</if></textarea>
+					</div>
+					<span class="col-md-5 text-info"></span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">中奖时提示</label>
+					<div class="col-md-5">
+						<input type="text" class="form-control" id="sttxt" value="<if condition="$vo['sttxt'] eq ''">恭喜您，中奖啦！<else/>{$vo.sttxt}</if>" name="sttxt" /> 
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">重复抽奖回复</label>
+					<div class="col-md-5">
+						<input type="text" class="form-control" id="aginfo" value="<if condition="$vo['aginfo'] eq ''">亲，继续努力哦！<else/>{$vo.aginfo}</if>" name="aginfo" /> 
+					</div>
+					<span class="col-md-5 text-info">备注:如果设置只允许抽一次奖的，请写：你已经玩过了，下次再来。如果设置可多次抽奖，请写：亲，继续努力哦！</span>
+				</div>
+			</div>
+			<!--活动结束设置 -->
+			<div class="tab-pane" id="end">
+				<div class="form-group">
+					<label class="col-sm-2">活动结束公告</label>
+					<div class="col-md-5">
+						<input type="input" class="form-control" id="endtite" value="<if condition="$vo['endtite'] eq ''">砸金蛋活动已经结束了<else/>{$vo.endtite}</if>" name="endtite" />
+					</div>
+					<span class="col-md-5 text-info">请不要多于100字! 这个设定但用户输入兑奖时候的显示信息!</span>
+				</div>
+				<div class="form-group">
+					<label for="img" class="col-sm-2">活动结束图片</label>
+					<div class="col-sm-6" >
+						<?php if($vo['endpicurl'] == 0){ $vo['endpicurl']=rtrim(C('site_url'),'/').'/Public/Wap/images/activity-zadan-end.jpg';}?>
+						<input type="hidden" name="endpicurl" value="{$vo.endpicurl}"  id="pic2" />
+						<img id="pic2Holder" style="width:216px;height:120px;" class="img" src="{$vo.endpicurl}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('pic2',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('pic2')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">活动结束说明</label>
+					<div class="col-md-5">
+						<textarea  class="form-control" id="endinfo" name="endinfo"  style="height:125px" ><if condition="$vo['endinfo'] eq ''">亲，活动已经结束，请继续关注我们的后续活动哦。<else/>{$vo.endinfo}</if></textarea>
+					</div>
+					<span class="col-md-5 text-info">换行请输入&lt;br&gt;</span>
+				</div>
+			</div>
+			<!-- 奖项设置-->
+			<div class="tab-pane" id="prize">
+				<div class="form-group">
+					<label class="col-sm-2">一等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="fist"  name="fist" value="{$vo.fist}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="fistnums" name="fistnums" value="{$vo.fistnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖项名称</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" name="rename1" value="{$vo.rename1}" />
+						<span>为空显示为了一等奖</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖品图片</label>
+					<div class="col-md-8">
+						<div id="rewardImg1">
+							<volist name="vo.reward1imgs" id="item">
+							<div class="award-img-wrapper">
+								<img src="{$item}" class="award-img" />
+								<input type="hidden" name="reward1imgs[]" value="{$item}" />
+								<span class="img-remove">&nbsp;</span>
+							</div>
+							</volist>
+						</div>
+						<span class="btn btn-primary btn-sm btn-upload" style="margin-top:10px;" data-toggle="upload-reward-img" data-index="1">上传图片
+							<input type="file" name="file" class="upload-file" />
+						</span>
+						<span class="help-block">奖品图片宽度不要超过640，高度不超过380，多个图片时中奖后会随机出现一个</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">二等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="second"  name="second" value="{$vo.second}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="secondnums" name="secondnums" value="{$vo.secondnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖项名称</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" name="rename2" value="{$vo.rename2}" />
+						<span>为空显示为了二等奖</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖品图片</label>
+					<div class="col-md-8">
+						<div id="rewardImg2">
+							<volist name="vo.reward2imgs" id="item">
+							<div class="award-img-wrapper">
+								<img src="{$item}" class="award-img" />
+								<input type="hidden" name="reward2imgs[]" value="{$item}" />
+								<span class="img-remove">&nbsp;</span>
+							</div>
+							</volist>
+						</div>
+						<span class="btn btn-primary btn-sm btn-upload" style="margin-top:10px;" data-toggle="upload-reward-img" data-index="2">上传图片
+							<input type="file" name="file" class="upload-file" />
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">三等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="third"  name="third" value="{$vo.third}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="thirdnums" name="thirdnums" value="{$vo.thirdnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖项名称</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" name="rename3" value="{$vo.rename3}" />
+						<span>为空显示为了三等奖</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖品图片</label>
+					<div class="col-md-8">
+						<div id="rewardImg3">
+							<volist name="vo.reward3imgs" id="item">
+							<div class="award-img-wrapper">
+								<img src="{$item}" class="award-img" />
+								<input type="hidden" name="reward3imgs[]" value="{$item}" />
+								<span class="img-remove">&nbsp;</span>
+							</div>
+							</volist>
+						</div>
+						<span class="btn btn-primary btn-sm btn-upload" style="margin-top:10px;" data-toggle="upload-reward-img" data-index="3">上传图片
+							<input type="file" name="file" class="upload-file" />
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">四等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="four"  name="four" value="{$vo.four}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="fournums" name="fournums" value="{$vo.fournums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖项名称</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" name="rename4" value="{$vo.rename4}" />
+						<span>为空显示为了四等奖</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖品图片</label>
+					<div class="col-md-8">
+						<div id="rewardImg4">
+							<volist name="vo.reward4imgs" id="item">
+							<div class="award-img-wrapper">
+								<img src="{$item}" class="award-img" />
+								<input type="hidden" name="reward4imgs[]" value="{$item}" />
+								<span class="img-remove">&nbsp;</span>
+							</div>
+							</volist>
+						</div>
+						<span class="btn btn-primary btn-sm btn-upload" style="margin-top:10px;" data-toggle="upload-reward-img" data-index="4">上传图片
+							<input type="file" name="file" class="upload-file" />
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">五等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="five"  name="five" value="{$vo.five}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="fivenums" name="fivenums" value="{$vo.fivenums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖项名称</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" name="rename5" value="{$vo.rename5}" />
+						<span>为空显示为了五等奖</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖品图片</label>
+					<div class="col-md-8">
+						<div id="rewardImg5">
+							<volist name="vo.reward5imgs" id="item">
+							<div class="award-img-wrapper">
+								<img src="{$item}" class="award-img" />
+								<input type="hidden" name="reward5imgs[]" value="{$item}" />
+								<span class="img-remove">&nbsp;</span>
+							</div>
+							</volist>
+						</div>
+						<span class="btn btn-primary btn-sm btn-upload" style="margin-top:10px;" data-toggle="upload-reward-img" data-index="5">上传图片
+							<input type="file" name="file" class="upload-file" />
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">六等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="six"  name="six" value="{$vo.six}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="fistnums" name="sixnums" value="{$vo.sixnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖项名称</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" name="rename6" value="{$vo.rename6}" />
+						<span>为空显示为了六等奖</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">奖品图片</label>
+					<div class="col-md-8">
+						<div id="rewardImg6">
+							<volist name="vo.reward6imgs" id="item">
+							<div class="award-img-wrapper">
+								<img src="{$item}" class="award-img" />
+								<input type="hidden" name="reward6imgs[]" value="{$item}" />
+								<span class="img-remove">&nbsp;</span>
+							</div>
+							</volist>
+						</div>
+						<span class="btn btn-primary btn-sm btn-upload" style="margin-top:10px;" data-toggle="upload-reward-img" data-index="6">上传图片
+							<input type="file" name="file" class="upload-file" />
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">预计活动的人数</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" id="allpeople" name="allpeople"  value="{$vo.allpeople}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">每人允许抽奖次数</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" id="canrqnums" name="canrqnums"   value="{$vo.canrqnums}" />
+					</div>
+					<span class="col-md-5 text-info">预估活动人数直接影响抽奖概率：中奖概率 = 奖品总数/(预估活动人数*每人抽奖次数) <br/><span class='text-warning'>如果要确保任何时候都100%中奖建议设置为1人参加!并且奖项只设置一等奖.</span></span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">是否显示奖品数量</label>
+					<div class="col-md-5">
+						<label class="radio-inline"><input type="radio" name="displayjpnums" value="1"  <if condition="$vo['displayjpnums'] eq 1" >checked</if> >显示 </label>
+						<label class="radio-inline"><input type="radio" name="displayjpnums" value="0"  <if condition="$vo['displayjpnums'] eq 0" >checked</if>>不显</label>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="pro">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">舞台背景</label>
+					<div class="col-md-5">
+						<input type="hidden" name="ext_field_1" value="{$vo.ext_field_1|default=site_url('/Public/Wap/goldenEgg/wap/style/images/stage.jpg')}"  id="ext_field_1" />
+						<img id="ext_field_1Holder" style="width:128px;height:140px;" class="img" src="{$vo.ext_field_1|default=site_url('/Public/Wap/goldenEgg/wap/style/images/stage.jpg')}"  id="ext_field_1}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('ext_field_1')">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('ext_field_1')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+						<span class="help-block">建议尺寸640*700</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">页面背景</label>
+					<div class="col-md-5">
+						<input type="hidden" name="ext_field_2" value="{$vo.ext_field_2}"  id="ext_field_2" />
+						<img id="ext_field_2Holder" style="max-width:128px;max-height:140px;" class="img" src="{$vo.ext_field_2}"  id="ext_field_2"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('ext_field_2')">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('ext_field_2')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+						<span class="help-block">图片会铺满页面背景</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">领奖页面背景</label>
+					<div class="col-md-5">
+						<input type="hidden" name="ext_field_3" value="{$vo.ext_field_3}"  id="ext_field_3" />
+						<img id="ext_field_3Holder" style="max-width:128px;max-height:140px;" class="img" src="{$vo.ext_field_3}"  id="ext_field_3"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('ext_field_3')">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('ext_field_3')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+						<span class="help-block">领奖页面顶部图片</span>
+					</div>
+				</div>
+				<!--<div class="form-group">
+					<div class="col-md-5 col-sm-offset-2">
+						<label>
+							<input type="checkbox" name="need_share" <if condition="$vo['need_share'] eq 1" >checked</if> value="1">&nbsp;需要分享才可参加
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">分享内容</label>
+					<div class="col-md-5">
+						<label class="radio-inline"><input id="defaultShare" type="radio" name="share_type" class="share_type" value="0"  <if condition="$vo['share_type'] eq 0" >checked</if> >本活动页面</label>
+						<label class="radio-inline share_type"><input type="radio" class="share_type" name="share_type" value="1"  <if condition="$vo['share_type'] eq 1" >checked</if>>自定义内容</label>
+					</div>
+				</div>
+				<div class="form-group custom-share">
+					<label class="col-sm-2 control-label">分享标题</label>
+					<div class="col-md-5">
+						<input type="text" class="form-control" name="share_title" value="{$vo.share_title}" />
+					</div>
+				</div>
+				<div class="form-group custom-share">
+					<label for="img" class="col-sm-2 control-label">分享图片</label>
+					<div class="col-sm-6">
+						<input type="hidden" name="share_img" value="{$vo.share_img}"  id="share_img" />
+						<img id="share_imgHolder" style="width:216px;height:120px;" class="img" src="{$vo.share_img}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('share_img')">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('share_img')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group custom-share">
+					<label class="col-sm-2 control-label">分享描述</label>
+					<div class="col-md-5">
+						<textarea type="text" class="form-control" name="share_desc">{$vo.share_desc}</textarea>
+					</div>
+				</div>
+				<div class="form-group custom-share">
+					<label class="col-sm-2 control-label">分享链接</label>
+					<div class="col-md-5">
+						<input type="text" class="form-control" name="share_link" value="{$vo.share_link}" />
+					</div>
+				</div>-->
+			</div>
+		</div>
+	</form>
+	</div>
+</div>
+</block>

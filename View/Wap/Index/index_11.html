@@ -1,0 +1,48 @@
+<extend name="index_tpl" />
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:RES}/css/index/tpl_11_{$tpl.color_id}.css"  />
+</block>
+<block name="cate_menu">
+<ul  class="mainmenu">
+	<volist name="info" id="vo">
+	<li class="li<php>echo ($i-1)%4;</php>">
+		<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">
+		<div class="menubtn">
+			<div class="menumesg">
+			<div class="menutitle">{$vo.name}</div>
+			<div class="menuico"></div>
+			</div>
+			<div class="menuimg"><img src="{$vo.img}" /><div class="menutext"></div></div>
+		</div>
+		</a>
+	</li>
+    </volist>
+	<div class="clr"></div>
+</ul>
+</block>
+<block name="js">
+<script type="text/javascript">
+var count2 = document.getElementsByClassName("menuimg").length;
+for(i=0;i<count2;i++){
+	if(i==0||i==4||i==8||i==12){
+		document.getElementsByClassName("menuimg").item(i).style.cssText = " HEIGHT:"+(document.body.clientWidth/320)*111+"px";
+		document.getElementsByClassName("menumesg").item(i).style.cssText = " HEIGHT:"+(document.body.clientWidth/320)*111+"px";
+	}else{
+		document.getElementsByClassName("menuimg").item(i).style.cssText = " HEIGHT:48px";
+		document.getElementsByClassName("menumesg").item(i).style.cssText = " HEIGHT:48px";
+	}
+}
+
+window.onresize = function(){
+	for(i=0;i<count2;i++){
+		if(i==0||i==4||i==8||i==12){
+			document.getElementsByClassName("menuimg").item(i).style.cssText = " HEIGHT:"+(document.body.clientWidth/320)*111+"px";
+			document.getElementsByClassName("menumesg").item(i).style.cssText = " HEIGHT:"+(document.body.clientWidth/320)*111+"px";
+		}else{
+			document.getElementsByClassName("menuimg").item(i).style.cssText = " HEIGHT:48px";
+			document.getElementsByClassName("menumesg").item(i).style.cssText = " HEIGHT:48px";
+		}
+	}
+}
+</script>
+</block>

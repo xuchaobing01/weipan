@@ -1,0 +1,103 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<form class="form" method="post" action="">
+		<input type="hidden" id="id" name="id" value="{$menu.id}" />
+		<input type="hidden" id="pid" name="pid" value="{$_GET['pid']}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >菜单名称</label>
+			<div class="col-md-8">
+				<input type="text" id="name" value="{$menu.name}" name="name" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >图标地址</label>
+			<div class="col-md-8">
+				<input type="text" id="img" value="{$menu.picurl}" name="picurl" class="form-control" />
+				<div style="background:#aaa;margin:10px 0;text-align:center">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu1.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu2.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu3.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu4.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu5.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu6.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu7.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu8.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu9.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu10.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu11.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu12.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu13.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu14.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:RES}/images/photo/plugmenu15.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu16.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu17.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu18.png">
+					<img onclick="document.getElementById('img').value=this.src" style="width:30px;cursor:pointer;" src="{:C('wap_domain')}{:RES}/images/photo/plugmenu19.png">
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >外链地址</label>
+			<div class="col-md-8">
+				<div class="input-group">
+					<input type="text" id="url" value="{$menu.url}" name="url" class="form-control" />
+					<div class="input-group-btn">
+						<span class="btn btn-default" onclick="selectLink('url',500,280)">选择</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >显示顺序</label>
+			<div class="col-md-8">
+				<input type="text" id="ordernum" value="{$menu.ordernum|default=1}" name="ordernum" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >首页显示</label>
+			<div class="col-md-8">
+				<label style="cursor:pointer;">
+					<input type="radio" name="status" id="status1" value="1" <if condition="!$menu OR $menu['status'] eq 1">checked</if>>是
+				</label>
+				&nbsp;&nbsp;
+				<label style="cursor:pointer;">
+					<input type="radio" name="status" id="status0" value="0" <if condition="$menu AND ($menu['status'] eq 0)">checked</if>>否
+				</label>
+			</div>
+		</div>
+		<div class="form-group hidden">
+			<div class="col-md-4 col-sm-offset-2">
+				<input type="submit" name="button" class="btn btn-success" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript">
+	function submit(callback){
+		var data={};
+		data['pid']=$('#pid').val();
+		data['id']=$('#id').val();
+		data['name']=$('#name').val();
+		data['picurl']=$('#img').val();
+		data['url']=$('#url').val();
+		data['ordernum']=$('#ordernum').val();
+		data['status']=$('input:radio:checked').val();
+		data['__hash__']=$('input[name="__hash__"]').val();
+		$.ajax({
+			url:"{:U('Homemenu/edit')}",
+			type:'POST',
+			data:data,
+			dataType:'json',
+			success:function(resp){
+				if(resp['status']==0){
+					parent[callback](resp.record_id);
+				}
+			}
+		})
+	}
+</script>
+</block>

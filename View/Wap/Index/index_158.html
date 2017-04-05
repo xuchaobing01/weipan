@@ -1,0 +1,167 @@
+<extend name="index_tpl" />
+<block name="css">
+<style type="text/css">
+body{
+	background-color:black;
+}
+
+ .wz08menu {
+	display: block;
+	margin: 0;
+	padding: 2px;
+}
+
+ .wz08menu li {
+	width: 25%;
+	float: left;
+	overflow: hidden;
+	border-radius: 0px;
+}
+
+ .wz08menu li .wz08btn {
+	text-decoration: none;
+	color: #000;
+	overflow: hidden;
+	border-radius: 5px;
+	margin: 2px;
+	background-color: rgba(255, 255, 255, 0.31);
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+	position: relative;
+}
+
+ .wz08menu li a {
+	padding: 0px;
+	font-size: 14px;
+	color: #000000;
+	text-decoration: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+ .wz08menu li .wz08btn .wz08img {
+	overflow: hidden;
+	position: relative;
+}
+
+ .wz08menu li div img {
+	border: 0;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border-radius: 0px;
+}
+
+ .wz08menu li .menutitle {
+	text-align: center;
+	text-decoration: none;
+	color: white;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	position: absolute;
+	bottom: 5px;
+	width: 100%;
+	display: block;
+}
+
+ .wz08menu li:nth-child(1) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(6) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(7) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(8) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(13) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(14) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(15) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(20) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(21) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(22) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(27) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(28) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(29) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(34) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(35) {
+    width: 49.9%;
+}
+ .wz08menu li:nth-child(36) {
+    width: 49.9%;
+}
+html,body {
+	color: #ffffff;
+	font-family: Microsoft YaHei, Helvitica, Verdana, Tohoma, Arial,
+		san-serif;
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style-type: none;
+}
+
+a{
+	text-decoration:none;
+}
+</style>
+</block>
+<block name="cate_menu">
+<div class="content">
+<ul class="wz08menu">
+	<volist name="info" id="vo">
+		<li>
+			<div class="wz08btn">
+				<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url}</if>">
+					<div class="wz08img">
+						<img src="{$vo.img}" />
+					</div>
+					<span class="menutitle">{$vo.name}</span>
+				</a>
+			</div>
+		</li>
+	</volist>
+</ul>
+</div>
+</block>
+<block name="">
+<script type="text/javascript">
+window.onload = function(){
+	$(".wz08menu img").each(function(){
+		$(this).height($(this).width());
+	});
+};
+</script>
+</block>

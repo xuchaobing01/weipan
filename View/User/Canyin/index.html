@@ -1,0 +1,63 @@
+<extend name="Public:innerbase" />
+<block name="js"></block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>菜品管理 </h4>
+	</div>
+	<div class="page-header wm-page-header">
+		<form method="get" action="__SELF__" class="form-inline">
+	
+		<label>菜单名称</label>
+		<input name="name" type="text" value="{$_GET['name']}" class="form-control" />
+		<button class="btn btn-primary" type="submit">
+			<span class="glyphicon glyphicon-search"></span>
+			查询
+		</button>
+		</form>
+	</div>
+	
+	<a style="margin:10px 0;" href="{:U('Canyin/add')}" title="添加" class="btn btn-primary">添加菜品</a>
+	<table class="table wm-table-bordered table-hover table-striped">
+		<thead>
+		<tr>
+		<th width="50">选择</th>
+		<th width="160">菜品名称</th>
+		<th width="120">菜品分类</th>
+		<th width="60">价格</th>
+		<th width="60">销量</th>
+        <th width="60">排序</th>
+		<th width="130">修改时间</th>
+		<th width="200" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="hostlist"> 
+		<tr>
+		<td><input type="checkbox" name="del_id[{$i}]" value="285" class="checkitem"></td>
+		<td>{$hostlist.name}</td>
+		<td>{$cats[$hostlist[catid]]}</td>
+		<td>{$hostlist.price}元</td>
+		<td>{$hostlist.salecount}</td>
+        <td>{$hostlist.sort}</td>
+		<td>{$hostlist.time|date="Y-m-d H:i",###}</td> 
+		<td>
+		<a class="btn btn-xs btn-default" href="{:U('Canyin/set',array('id'=>$hostlist['id']))}">修改</a>
+            <a class="btn btn-xs btn-default" href="{:U('Canyin/stockSet',array('id'=>$hostlist['id']))}">分店库存</a>
+		<a class="btn btn-xs btn-danger a_btn_delete" href="javascript:void(0)" url="{:U('Canyin/del',array('id'=>$hostlist['id']))}">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+
+    <script>
+        $("a.a_btn_delete").click(function(e){
+            if(window.confirm("您确定删除吗？")){
+                location.href = $(this).attr("url");
+            }
+        })
+    </script>
+</block>

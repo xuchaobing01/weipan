@@ -1,0 +1,48 @@
+<extend name="Public:innerbase" />
+<block name="css">
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4 class="page-title">喜帖管理</h4>
+	</div>
+    <div class="alert alert-warning">
+		<span class="bold">使用方法：</span>功能勾选，设置好信息后，输入关键词即可看到效果。</p>
+	</div>
+	<a href="{:U('User/Wedding/edit')}" class="btn btn-primary">添加喜帖</a>
+	<hr/>
+	<table class="table wm-table-bordered">
+	  <thead>
+		<tr>
+			<th class="select">编号</th>
+			<th>喜帖标题</th>
+			<th>关键词</th>
+			<th>新郎/新娘名字</th>
+			<th>密码</th>
+			<th>相册</th>
+			<th class="norightborder">操作</th>
+		</tr>
+	  </thead>
+	  <tbody>
+	  <volist name="wedding" id="wedding">
+		<tr>
+		  <td>{$i}</td>
+		  <td>{$wedding.title}</td>
+		  <td>{$wedding.keyword}</td>
+		  <td>{$wedding.man}/{$wedding.woman}</td>
+		  <td>{$wedding.password}</td>
+		  <td><a class="green" href="{:U('Photo/list_add',array('id'=>$wedding['pid']))}">喜帖图片</a> </td>
+		  <td class="norightborder">
+				<a href="{:U('Wedding/info',array('id'=>$wedding['id'],'type'=>1))}">查看名单</a>　
+				<a href="{:U('User/Wedding/edit',array('id'=>$wedding['id']))}">编辑喜帖</a>　
+				<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('User/Wedding/del',array('id'=>$wedding['id']))}');">删除</a>
+		   </td>
+		</tr>
+		</volist>
+		<tr>
+
+		</tr>
+	  </tbody>
+	</table>
+    <div class="pages">{$page}</div>
+</block>

@@ -1,0 +1,113 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" type="text/css" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<script type="text/javascript">
+function setlatlng(){
+	//设置经纬度和地址
+	art.dialog.data('longitude', $('#longitude').val());
+	art.dialog.data('latitude', $('#latitude').val());
+	art.dialog.data('address', $('#address').val());
+	
+	art.dialog.open("{:U('Map/setLatLng',array('token'=>$token,'id'=>$id))}",{lock:false,title:'设置经纬度',width:600,height:400,yesText:'关闭',background: '#000',opacity: 0.87});
+}
+$("#setLatLng").click(function(){
+	setlatlng();
+});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>校区信息</h4>
+		<a class="btn btn-default btn-sm" href="{:U('school')}" >
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form class="form-horizontal" role="form" method="post">
+		<div class="form-group">
+			<input type="hidden" value="{$set.id}" name="id" />
+			<label class="control-label col-sm-2">名称</label>
+			<div class="col-md-4">
+				<input type="text" id="name" name="name" value="{$set.name}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="logourl" class="col-sm-2 control-label">校区图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.logourl}" id="logourl" name="logourl" />
+				<img id="logourlHolder" style="width:196px;height:120px;" class="img-rounded" <if condition="$set['logourl'] eq ''">data-src="$holder.js/196x120/gray/text:720*400"</if> src="{$set.logourl}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('logourl',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('logourl')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">电话</label>
+			<div class="col-md-4">
+				<input type="text" id="tel" name="tel" value="{$set.tel}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">手机</label>
+			<div class="col-md-4">
+				<input type="text" id="mp" name="mp" value="{$set.mp}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">地址</label>
+			<div class="col-md-4">
+				<input type="text" id="address" name="address" value="{$set.address}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">经纬度</label>
+			<div class="col-md-2">
+				<div class="input-group">
+					<span class="input-group-addon">经度</span>
+					<input id="longitude" name="longitude" type="text" class="form-control" placeholder="" value="{$set.longitude}" >
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group">
+					<span class="input-group-addon">纬度</span>
+					<input id="latitude" name="latitude" type="text" class="form-control" placeholder="" value="{$set.latitude}">
+				</div>
+			</div>
+			<div class="col-md-2" style="padding-top:6px;">
+				<span id="setLatLng" class="btn btn-xs btn-primary">在地图上标注</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="content" class="col-sm-2 control-label">校区介绍</label>
+			<div class="col-sm-6">
+				<textarea class="form-control" name="intro" id="content" rows="10">{$set.intro}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="taxis" class="col-sm-2 control-label">排序</label>
+			<div class="col-sm-1">
+				<input class="form-control" name="taxis" id="taxis" value="{$set.taxis|default=0}" />
+			</div>
+			<div class="col-sm-4">
+				<span class="help-block">值越大越靠前</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

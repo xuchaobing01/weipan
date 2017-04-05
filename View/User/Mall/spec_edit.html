@@ -1,0 +1,39 @@
+<extend name="Public:innerbase" />
+<block name="content">
+	<form method="post" action="" data-postion="bottomLeft" data-toggle="validate" class="ajax-form">
+		<div class="form-group">
+			<label>规格名称</label>
+			<input type="text" value="{$spec.name}" class="form-control validate[required,minSize[2]]" name="name" />
+		</div>
+		<div class="form-group">
+			<label>所属分类</label>
+			<select class="form-control validate[required]" name="cate_id">
+				<option value="">请选择分类</option>
+				<volist name="cates" id="vo">
+				<option <if condition="$vo['id'] eq $spec['cate_id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+				</volist>
+			</select>
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-success">保存</button>
+		</div>
+	</form>
+</block>
+<block name="js">
+<script>
+$('.ajax-form').ajaxForm({
+	beforeSubmit:function(){
+		return $('.ajax-form').validationEngine('validate');
+	},
+	success:function(data){
+		if(data.errcode==0){
+			notify(data.errmsg);
+			spark.redirect(location.href,1000);
+		}
+		else{
+			notify(data.info,'error');
+		}
+	}
+});
+</script>
+</block>

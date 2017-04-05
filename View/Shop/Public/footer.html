@@ -1,0 +1,29 @@
+﻿<div id="footer">
+    <p class="foot_nav">
+        <a href="/shop/index/index?token={$token}">商城首页</a> | <a href="/shop/user/index?token={$token}">会员中心</a>
+    </p>
+</div>
+<nav class="ui-bottom-bar">
+	<a data-id="MENU_INDEX" class="ui-bottom-bar-button" href="/shop/index/index?token={$token}">
+		<span class="ui-icon fa fa-home"></span>
+		<span class="ui-label">主页</span>
+	</a>
+	<a data-id="MENU_CATE" class="ui-bottom-bar-button" href="/shop/cate/index?token={$token}">
+		<span class="ui-icon fa fa-list"></span>
+		<span class="ui-label">分类</span>
+	</a>
+	<a data-id="MENU_CART" class="ui-bottom-bar-button" href="/shop/cart/index?token={$token}">
+		<span class="ui-icon fa fa-shopping-cart"></span>
+		<span class="ui-label">购物车</span>
+	</a>
+	<a data-id="MENU_USER" class="ui-bottom-bar-button" href="/shop/user/index?token={$token}">
+		<span class="ui-icon fa fa-user"></span>
+		<span class="ui-label">我的账户</span>
+	</a>
+</nav>
+<script type="text/javascript" src="/Public/Common/spark/h5.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('.ui-bottom-bar >a[data-id="'+$('body').attr('menu-active')+'"]').addClass('js-active');
+	})
+</script>

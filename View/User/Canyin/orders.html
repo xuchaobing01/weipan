@@ -1,0 +1,149 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+<script type="text/javascript" src="{:RES}/js/date/WdatePicker.js"></script>
+<include file="Public:upload" />
+<script type="text/javascript">
+$(function(){
+	$("#check_box").click(function(){
+		var checkItems=$('.cbitem');
+		if ($(this).is(':checked')==false) {
+			$('.cbitem').each(function(i,e){
+				$(e).attr('checked', false);
+			});
+		}else{
+			$('.cbitem').each(function(i,e){
+				$(e).attr('checked', true);
+			});
+		}
+	});
+});
+</script>
+<script type="text/javascript">
+function showIntroDetail(url){
+	art.dialog.open(url,{lock:false,title:'退回订单',width:700,height:420,yesText:'关闭',background: '#000',opacity: 0.87});
+}
+</script>
+</block>
+<block name="content">
+    <style>
+        .alert {
+            padding: 5px;
+            margin: 0px;
+        }
+        hr{
+            margin: 5px 0;
+        }
+        .page-header{
+            margin: 0;
+        }
+
+    </style>
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<div style="font-size: 15px;margin-bottom: 10px;">订单管理</div>
+		<div class="alert alert-info">
+			<a href="{:U('Canyin/orders',array('handled'=>0))}">未处理订单<span style="color:#f00">{$unhandledCount}</span>个</a>
+		</div>
+	</div>
+	<form class="form-inline" role="form" id="orderForm">
+        <div class="form-group">
+            <select id="operateOrder" name="state" class="form-control" >
+                <option value="">操作</option>
+                <option value="1" >未配送</option>
+                <option value="2" >正在配送</option>
+                <option value="3" >已完成</option>
+            </select>
+        </div>
+		<div class="form-group">
+			<select name="handled" class="form-control">
+				<option value="2" <if condition="$_GET['handled'] eq 2">selected</if>>全部订单</option>
+				<option value="0" <if condition="isset($_GET['handled']) and $_GET['handled'] eq 0">selected</if>>未处理订单</option>
+				<option value="1" <if condition="$_GET['handled'] eq 1">selected</if>>已经处理订单</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<input type="input" class="form-control" name="keyword" value="{:$_GET['keyword']}" placeholder="姓名、电话">
+		</div>
+		<!--<div class="form-group">
+			<input type="input" class="form-control" name="date" value="{:$_GET['date']}" onclick="WdatePicker();" placeholder="下单时间">
+		</div>-->
+		<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+
+	</form>
+	<hr/>
+	<table class="table wm-table-bordered">
+		<form id="info" method="post">
+		<thead>
+		<tr>
+		<th width="60"><input type="checkbox" id="check_box" /></th>
+		<th width="70">姓名</th>
+		<th width="80">电话</th>
+		<th class="60">数量</th>
+		<th width="100">总价（元）</th>
+		<th>门店</th>
+		<th class="160">订单状态</th>
+        <th >其他要求</th>
+		<th width="160">下单时间</th>
+		<th width="150" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="orders" id="o"> 
+		<tr>
+		<td><input type="checkbox" value="{$o.id}" class="cbitem checkbox" name="id[]" /></td>
+		<td>
+		{$o.linkman}
+		</td>
+		<td>{$o.cellphone}</td>
+		<td>{$o.total}</td>
+		<td>{$o.price}</td>
+		<td>
+		{$shops[$o[shopId]]}
+        </td>
+		<td s_order_id="{$o.id}">
+		<?php  if($o[state] == 0){echo '<span style="color:#dd0000;">发回审核</span>';}
+            if($o[state] == 1){echo '<span style="color:rgb(255,150,150);font-weight: bold;">未配送</span>';}
+            else if($o[state]==2){echo '正在配送';}
+            else if($o[state]==3){echo "已完成";} ?>
+		</td>
+        <td>{$o.remarks}</td>
+		<td>{$o.create_time|date="m/d H:i",###}</td>
+		<td>
+			<a href="###" onclick="showIntroDetail('{:U('Canyin/orderInfo',array('id'=>$o['id']))}')">详细</a>
+			<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Canyin/deleteOrder',array('id'=>$o['id']))}');">删除</a>
+            <!--<if condition="$o[state]==0"><br>
+                <a href="javascript:void(0)"
+                   onclick="showIntroDetail('{:U('Canyin/backOrder',array('id'=>$o['id']))}')">重新分配订单</a>
+            </if>-->
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+		</form>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+
+    <script>
+        $("#operateOrder").change(function(e){
+            if($(this).val()==""){
+                return;
+            }
+           if( $("input.cbitem:checked").length==0){
+               alert("请勾选订单");
+               return false;
+           }
+            $("#info").append('<input type="hidden" name="state" value="'+$(this).val()+'">');
+            $("#info").submit();
+        });
+
+
+        function export2excel(){
+            var url = "/User/Canyin/export";
+            //url = url+'?start_date='+start_date+'&end_date='+end_date;
+            $('<iframe style="display:none;" src="'+url+'"></iframe>').appendTo('body');
+        }
+    </script>
+</block>
+

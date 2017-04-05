@@ -1,0 +1,40 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4 class="left">房型管理</h4>
+	</div>
+	<a style="margin:10px 0;" class="btn btn-success" href="{:U('houseadd')}" title="添加">
+		<span class="glyphicon glyphicon-plus"></span>添加房型
+	</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+			<th width="160">房型名称</th>
+			<th width="70">原价</th>
+			<th width="80">优惠价</th>
+			<th>简要说明</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="li" id="list"> 
+		<tr>
+			<td>{$list.name}</td>
+			<td>{$list.price}</td>
+			<td>{$list.sale_price}</td>
+			<td>{$list.desc}</td>
+			<td colspan="10">
+			<a  class="btn btn-xs btn-default" href="{:U('Hotel/housedit',array('id'=>$list['id']))}">编辑</a>
+			<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Hotel/house_del',array('id'=>$list['id']))}');">删除</a>
+			</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

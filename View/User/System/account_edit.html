@@ -1,0 +1,81 @@
+<extend name="Public::innerbase"/>
+<block name="content">
+<div class="container">
+    <div class="page-header">
+        <h3>{:isset($account['id'])?'编辑':'新增'}用户</h3>
+    </div>
+    <form id="editForm" action="" method="post" class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-xs-2">用户名</label>
+            <div class="col-md-4">
+				<empty name="account.username">
+				<input type="text" class="form-control  validate[required,minSize[2],ajax[verifyUser]]" name="username" value="{$account.username}">
+				<else/>
+				<input type="text" readonly class="form-control  validate[required,minSize[2]]" name="username" value="{$account.username}">
+				</empty>
+				<span class="help-block">用户登录名后缀为 <span class="text-danger">@{$_SESSION['uname']}</span></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-2">密码</label>
+            <div class="col-md-4">
+                <input type="password" class="form-control" name="passwd" value="" />
+				<span class="help-block"><empty name="account">留空时初始密码为123456<else/>留空时不修改密码</empty></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-2">角色</label>
+            <div class="col-md-4">
+                <select name="role_id" class="form-control">
+                    <volist name="roles" id="role">
+                        <option value="{$role.id}" <?php if($account['role_id']==$role['id'])echo 'selected';?>>{$role.name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-2">说明</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="remark" value="{$account.remark}" />
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="control-label col-xs-2">是否启用</label>
+			<?php if(empty($account)) $account['status'] = 1;?>
+            <div class="col-md-4">
+                <label class="radio-inline"><input type="radio" name="status" <?php echo $account['status']?"checked":"";?> value="1">是</label>
+                <label class="radio-inline"><input type="radio" name="status" <?php echo $account['status']?"":"checked";?> value="0">否</label>
+            </div>
+        </div>
+        <div class="form-group">
+			<div class="col-xs-offset-2 col-md-6">
+				<button class="btn btn-success ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+				<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+			</div>
+        </div>
+    </form>
+</div>
+</block>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css" />
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script>
+	$.validationEngineLanguage.allRules.verifyUser={
+		"url": "{:U('System/verifyuser')}",
+		"alertTextOk": "<strong style='color:#090;'>用户名可用√<strong>",
+		"alertText": "<strong>用户名已存在×</strong>",
+		"alertTextLoad": "<strong>正在验证...</strong>"
+	};
+	$(function(){
+		$("#editForm").validationEngine("attach",{ 
+			promptPosition:"centerRight",
+			scroll:true,
+			showOneMessage:true
+		});
+	});
+	
+</script>
+</block>

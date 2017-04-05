@@ -1,0 +1,143 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>360°全景设置</h4>
+		<small><?php if($set['id']){echo rtrim(C('wap_domain'),'/').U('Wap/Panorama/item',['token'=>session('token'),'id'=>$set['id']]);}?></small><br/>
+		<a href="{:U('Panorama/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a> 
+	</div>
+	<form class="form-horizontal" role="form" method="post">
+		<input type="hidden" name="token" value="{$token}" />
+		<input type="hidden" name="id"  value="{$set.id}" />
+		<div class="form-group">
+			<label class="control-label col-sm-2">名称</label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="name" name="name" value="{$set.name}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">关键词</label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="keyword" value="{$set.keyword}" name="keyword" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">显示顺序</label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="taxis" value="{$set.taxis|default=1}" name="taxis" />  
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">前图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.frontpic}" id="frontpic" name="frontpic" />
+				<img id="frontpicHolder" style="width:200px;height:200px;" class="img-rounded" src="{$set.frontpic}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('frontpic')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('frontpic')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">右图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.rightpic}" id="rightpic" name="rightpic" />
+				<img id="rightpicHolder" style="width:200px;height:200px;" class="img-rounded" src="{$set.rightpic}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('rightpic')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('rightpic')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">后图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.backpic}" id="backpic" name="backpic" />
+				<img id="backpicHolder" style="width:200px;height:200px;" class="img-rounded" src="{$set.backpic}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('backpic')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('backpic')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">左图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.leftpic}" id="leftpic" name="leftpic" />
+				<img id="leftpicHolder" style="width:200px;height:200px;" class="img-rounded" src="{$set.leftpic}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('leftpic')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('leftpic')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">顶部图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.toppic}" id="toppic" name="toppic" />
+				<img id="toppicHolder" style="width:200px;height:200px;" class="img-rounded" src="{$set.toppic}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('toppic')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('toppic')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">底部图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.bottompic}" id="bottompic" name="bottompic" />
+				<img id="bottompicHolder" style="width:200px;height:200px;" class="img-rounded" src="{$set.bottompic}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('bottompic')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('bottompic')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">描述信息</label>
+			<div class="col-md-6">
+				<textarea id="content" name="intro" class="form-control" rows="10">{$set.intro}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-6 col-sm-offset-2">
+				<input type="submit" value="保存" class="btn btn-primary" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

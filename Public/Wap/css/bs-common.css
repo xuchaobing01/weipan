@@ -1,0 +1,10 @@
+/*common css for wap page*/
+body{
+	font-family: "微软雅黑","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+
+/* override class for bootstrap*/
+.btn-responsive{
+	width: 100%;
+}

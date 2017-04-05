@@ -1,0 +1,89 @@
+<extend name="Public:innerbase"/> 
+<block name="css">
+<style type="text/css">
+	.wm-row{
+		margin: 20px 0;
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+    <script>
+        function drop_confirm(msg, url){
+            if(confirm(msg)){
+                window.location = url;
+            }
+        }
+    </script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>留言管理</h3>
+	</div>
+	<!-- Nav tabs -->
+	<a href="{:U('Power/set',array('id'=>$cid))}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+			返回
+		</a>
+        <div style="margin:10px 0;">
+			<a href="{:U('Power/addmessage',array('id'=>$cid))}" title="添加留言" class="btn btn-success">添加留言</a>
+		</div>
+	<div class="wm-row">
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th class="select"><input type="checkbox" value="反选" name="button" id="selected"  style="color:#94D38A;"></th>
+		<th>名称</th>
+		<th>留言内容</th>
+		<th>留言回复</th>
+		<th>留言时间</th>
+		<th>状态</th>
+		<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="res" id="item"> 	
+		<tr >
+		<td id="playlist"><input type="checkbox" name="items" value="{$item.id}"  class="checkitem" /></td>
+		<td>{$item.name}</td>
+		<td>
+			<a href="###" onclick='spark.alert({"content":"<?php echo $item['message'];?>",title:"留言内容"});'>查看留言 <if condition="$item['checked'] neq 1"> <small class="text-warning">(未审核)</small></if>
+			</a>
+		</td>
+		<td>
+			<a href="{:U('User/Power/reply',array('msgid'=>$item['id'],'token'=>$token,'cid'=>$item['cid']))}">查看回复<font color="#04AA00">(共<font color="red">{$item.count}</font>条回复/<font style="color:red">{$item.chkcount}</font>条新回复)</font>
+			</a>
+		</td>
+		<td>{$item.time|date="Y-m-d H:i:s",###}</td> 
+		<td><if condition="$item['istop'] neq 1">
+			<a class="btn btn-xs btn-info" href="{:U('User/Power/changetop',array('chk_value'=>$item['id'],'token'=>$token,'cid'=>$item['cid'],'istop'=>1))}">
+				不置顶
+			</a>
+			<else />
+			<a class="btn btn-xs btn-info" href="{:U('User/Power/changetop',array('chk_value'=>$item['id'],'token'=>$token,'cid'=>$item['cid'],'istop'=>2))}">
+				置顶
+			</a>
+				
+			</if>
+		</td>
+
+		<td>
+			<if condition="$item['checked'] neq 1">
+			<a class="btn btn-xs btn-info" href="{:U('User/Power/checkOne',array('chk_value'=>$item['id'],'token'=>$token,'cid'=>$item['cid']))}">
+				审核
+			</a>
+			</if>
+			
+			<a class="btn btn-xs btn-danger" href="javascript:drop_confirm('您确定要删除吗?', '{:U('User/Power/deled',array('chk_value'=>$item['id'],'token'=>$token,'cid'=>$item['cid']))}');">删除</a>
+		<a class="btn btn-xs btn-info" href="{:U('User/Power/replyedit',array('chk_value'=>$item['id'],'token'=>$token))}">编辑</a>
+		</td>
+		</tr>
+
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

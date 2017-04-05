@@ -1,0 +1,58 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h3>{$title}</h3>
+		<a class="btn btn-sm btn-default" href="{:U('ski_field')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form class="form-horizontal" role="form" method="post">
+		<input type="hidden" name="id" value="{$info.id}" />
+		<div class="form-group">
+			<label class="control-label col-sm-2">名称</label>
+			<div class="col-md-6">
+				<input type="text" class="form-control" value="{$info.name}" name="name" />
+				<span class="help-block">尽量简短，可以留空</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">描述</label>
+			<div class="col-md-6">
+				<input type="text" class="form-control" value="{$info.desc}" name="desc" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$info.img}" id="img" name="img" />
+				<img id="imgHolder" style="width:216px;height:120px;" class="img-rounded" <if condition="$info['img'] eq ''">data-src="$holder.js/216x120/gray/text:720*400"</if> src="{$info.img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sort" class="col-sm-2 control-label">排序</label>
+			<div class="col-sm-2">
+				<input type="text" class="form-control text-center" id="sort" value="{$info.sort|default=1}" name="sort" />
+				<span class="help-block">值越大越靠前</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

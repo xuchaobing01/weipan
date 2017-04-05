@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>上传到港云外汇</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.3/weui.min.css"/>
+    <script src="{:RES}/jinrong/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+</head>
+<body ontouchstart="">
+<div class="weui_cells weui_cells_form">
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <textarea class="weui_textarea" placeholder="这一刻的想法..." rows="3"></textarea>
+            <div class="weui_textarea_counter">
+                <span id="zishu">0</span>/200
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weui_cells weui_cells_form">
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <div class="weui_uploader">
+                <div class="weui_uploader_hd weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">图片上传</div>
+                    <div class="weui_cell_ft">已选择：
+                        <span id="number">0/9</span>
+                    </div>
+                </div>
+                <div class="weui_uploader_bd">
+                    <ul class="weui_uploader_files">
+                    </ul>
+                    <div class="weui_uploader_input_wrp">
+                        <span class="weui_uploader_input" id="btn"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weui_btn_area">
+    <a class="weui_btn weui_btn_primary" href="javascript:" id="showTooltips">确定发表</a>
+</div>
+<!--BEGIN toast-->
+<div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">已完成</p>
+    </div>
+</div>
+<!--end toast-->
+<!-- loading toast -->
+<div id="loadingToast" class="weui_loading_toast" style="display:none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <div class="weui_loading">
+            <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+        </div>
+        <p class="weui_toast_content">数据上传中</p>
+    </div>
+</div>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    var uid = "{$user['id']}";
+    wx.config({
+        appId: '{$config["appid"]}',
+        timestamp: parseInt('{$config["timestamp"]}'),
+        nonceStr: '{$config["noncestr"]}',
+        signature: '{$config["signature"]}',
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'hideMenuItems',
+            'showMenuItems',
+            'hideAllNonBaseMenuItem',
+            'showAllNonBaseMenuItem',
+            'translateVoice',
+            'startRecord',
+            'stopRecord',
+            'onRecordEnd',
+            'playVoice',
+            'pauseVoice',
+            'stopVoice',
+            'uploadVoice',
+            'downloadVoice',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'getNetworkType',
+            'openLocation',
+            'getLocation',
+            'hideOptionMenu',
+            'showOptionMenu',
+            'closeWindow',
+            'scanQRCode',
+            'chooseWXPay',
+            'openProductSpecificView',
+            'addCard',
+            'chooseCard',
+            'openCard'
+        ]
+    });
+</script>
+<script src="{:RES}/jinrong/Mobile/Public/js/demo.js"> </script>
+</html>

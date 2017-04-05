@@ -1,0 +1,269 @@
+<extend name="Public:simple"/>
+<block name="css">
+<style>
+	#select{
+		margin-left: 50px;
+		display: none;
+	}
+	.btn-primary.btn-shadow {
+	-webkit-box-shadow: inset 0 -4px 0 #2a6496;
+	box-shadow: inset 0 -4px 0 #2a6496;
+	border: 0;
+	color: #fff;
+	}
+	.btn-upload input[type="file"]{
+	position: absolute;
+	opacity: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	margin:0;
+	padding:0;
+	cursor: pointer;
+}
+</style>
+<style>
+	html,body{
+		height: 100%;
+		width: 100%;
+		margin: 0;
+		overflow: hidden;
+	}
+	.nav{
+		height: 10%;
+	}
+	div.tab-content{
+		height: 100%;
+	}
+	#history{
+		margin: 0px;;
+		height: 85%;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+	
+</style>
+<style type="text/css">
+	ul{
+		list-style:none;
+		padding:0;
+	}
+	#history li,#membercard li{
+		display:inline-block;
+		margin-right: 8px;
+		margin-bottom: 10px;
+		background-color: #ace;
+	}
+	#history li img,#membercard li img{
+		cursor:pointer;
+		opacity:0.8;
+        max-height: 100px;
+	}
+	#history img.selected,#membercard img.selected{
+		border:solid 3px green;
+		opacity:1;
+	}
+    #history li{
+        position: relative;
+    }
+    .cBtn {
+        width: 25px;
+        height: 25px;
+        background: url({:RES}/images/sprBg.png) no-repeat;
+        background-size: 400px auto;
+        -webkit-background-size: 400px auto;
+        position: absolute;
+        right: -10px;
+        top: -10px;
+    }
+    .cBtn:hover{
+        display: inline-block;
+    }
+</style>
+</block>
+<block name="content">
+<div id="selectAssetDialog" class="tabbable-custom" style="padding-top: 10px;">
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="#upload" data-toggle="tab">本地上传</a></li>
+		<if condition="$_GET['type'] eq 'membercard'">
+		<li><a href="#membercard" data-toggle="tab">系统会员卡</a></li>
+		</if>
+		<li><a href="#network" data-toggle="tab">网络图片</a></li>
+		<li><a href="#history" data-toggle="tab">历史图片</a></li>
+        <li><button type="button" id="select" class="btn btn-success" >选择图片</button>&nbsp;</li>
+	</ul>
+	<!-- Tab panes -->
+	<div class="tab-content" style="height: 300px;">
+		<div class="tab-pane active fade in" id="upload">
+			<span class="btn-upload btn btn-primary btn-lg btn-shadow">
+			<input class="upload" type="file" name="file" id="fileUpload_BTN" />
+			<i class="fa fa-image"></i>&nbsp;选择图片
+			</span>
+		</div>
+		<if condition="$_GET['type'] eq 'membercard'">
+		<div class="tab-pane fade in" id="membercard">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="page-header" style="margin-top:20px;">
+						<button type="button" id="selectCard" class="btn btn-success">选择</button>&nbsp;
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<ul>
+						<li><img src="{:RES}/images/card/card_bg01.png" width="150px" height='89px'/></li>
+						<li><img src="{:RES}/images/card/card_bg02.png" width="150px" height='89px'/></li>
+						<li><img src="{:RES}/images/card/card_bg03.png" width="150px" height='89px'/></li>
+						<li><img src="{:RES}/images/card/card_bg04.png" width="150px" height='89px'/></li>
+						<li><img src="{:RES}/images/card/card_bg05.png" width="150px" height='89px'/></li>
+						<li><img src="{:RES}/images/card/card_bg06.png" width="150px" height='89px'/></li>
+						<li><img src="{:RES}/images/card/card_bg07.png" width="150px" height='89px'/></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		</if>
+		<div class="tab-pane fade in" id="network">
+			<div class="input-group">
+				<input type="text" id="imgUrl" class="form-control" />
+				<span class="input-group-btn">
+					<button class="btn btn-primary" id="imgUrlCommit" type="button">确定</button>
+				</span>
+			</div><!-- /input-group -->
+		</div>
+		<div class="tab-pane fade" id="history">
+			<div class="row">
+				<div class="col-md-12">
+					<ul id="imgList" load-state="0">
+						
+					</ul>
+					<a href="javascript::void(0)" style="margin-left: 30px;" onclick="getMoreImg(-1)">上一页</a>
+					<a href="javascript::void(0)" style="margin-left: 30px;" onclick="getMoreImg(1)">下一页</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript">
+var type = 1;
+var page=-1;
+function getMoreImg(f){
+	if(f<0){
+		if(page<=0){
+			return;
+		}
+		page--;
+	}
+	else{page++;}
+	$.ajax({
+		url: "/user/index/imgs.html",
+		data:{page:page},
+		type:'get',
+		dataType:'json',
+		success:function(resp){
+			$('#imgList').empty();
+			$.each(resp,function(i,img){
+				var $li = $('<li><img src="'+img.url+'" width="120px" /><a href="javascript:;" class="cBtn spr db " id="'+img.id+'"> </a></li>');
+				$li.find('img').click(function(){
+					$(this).toggleClass("selected");
+					$("#imgList img.selected").not(this).removeClass("selected");
+				});
+				$li.find('img').dblclick(function(e){
+					e.stopPropagation();
+					$(this).click();
+					$("#select").click();
+				});
+				$li.find('a').click(function(){
+					var img_rm=$(this).parent();
+					var img_id=$(this).attr("id");
+					$.ajax({
+						url:"/user/index/imgs_delete.html?id="+img_id,
+						dataTpe:"json",
+						success:function(e){
+							$(img_rm).remove();
+						}
+					});
+
+				});
+
+				$('#imgList').append($li);
+			});
+			$('#imgList').attr('load-state',1);
+		}
+	});
+}
+
+function activeImg(){
+	$(this).toggleClass("selected");
+	$("#imgList img.selected").not(this).removeClass("selected");
+}
+
+
+function set(url){
+	var callback = parent.BootstrapDialog.uploadCallback;
+	if(typeof parent.window[callback] == 'function'){
+		parent.window[callback](url);
+		BootstrapDialog.uploadCallback = '';
+	}
+	else{
+		var $target = $("#"+parent.BootstrapDialog.uploadTarget,parent.window.document);
+		$target.val(url);
+		$target.change();
+		var $targetHolder=$('#'+parent.BootstrapDialog.uploadTarget+'Holder',parent.window.document);
+		if($targetHolder.length!=0){
+			$targetHolder.attr('src', url);
+		}
+	}
+	setTimeout("parent.window.UPLOAD_DIALOG.close()", 1000);
+}
+//初始化
+$("#fileUpload_BTN").AjaxFileUpload({
+	action: "/User/Qiniu/upload.html",
+	onSubmit: function(filename) {
+		return true;
+	},
+	onComplete: function(filename, resp) {
+		if(resp.error !=0){
+			alert(resp.message);
+		}
+		else{
+			set(resp.url);
+		}
+	}
+});
+//当"历史图片"tab 被激活时加载图片
+$('#selectAssetDialog a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	if($(e.target).attr('href') == '#history' && $('#imgList').attr('load-state')=='0'){
+		getMoreImg(1);
+	}
+	if($(e.target).attr('href') == '#history'){
+		$("#select").show();
+	}else{
+		$("#select").hide();
+	}
+});
+$("#select").click(function(){
+	set($("#imgList img.selected").attr("src"));
+});
+$('#imgUrlCommit').click(function(){
+	var url = $('#imgUrl').val();
+	if(url){
+		set(url);
+	}
+});
+
+$('#membercard img').click(function(){
+	$(this).toggleClass("selected");
+	$("#membercard img.selected").not(this).removeClass("selected");
+});
+
+$("#selectCard").click(function(){
+	set($("#membercard img.selected").attr("src"));
+});
+</script>
+</block>

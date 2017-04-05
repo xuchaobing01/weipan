@@ -1,0 +1,216 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+<style type="text/css">
+
+</style>
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript">
+KindEditor.ready(function(K) {
+var editor1 = K.create('#estate_desc', {
+	resizeType : 1,
+	allowPreviewEmoticons : false,
+	allowImageUpload : true,
+	uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+	items : [
+	'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+});
+var editor2 = K.create('#project_brief', {
+	resizeType : 1,
+	allowPreviewEmoticons : false,
+	allowImageUpload : true,
+	uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+	items : [
+	'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+});
+
+var editor3 = K.create('#traffic_desc', {
+	resizeType : 1,
+	allowPreviewEmoticons : false,
+	allowImageUpload : true,
+	uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+	items : [
+	'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+});
+});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>楼盘简介</h3>
+		<span>手机页面地址：<?php echo rtrim(C('wap_domain'),'/').U('/Wap/Estate/index',['token'=>$_SESSION['token'],'wechat_id'=>"{wechat_id}"]);?></span>
+	</div>
+	<form action="" method="post" class="form-horizontal">
+		<if condition="$es_data['id'] neq ''">
+		<input type="hidden" name="id" value="{$es_data['id']}" />
+		</if>
+		<div class="form-group">
+			<label for="title" class="control-label col-sm-2">图文消息标题：</label>
+			<div class="col-md-4">
+				<input type="text" name="title" id="title" maxlength="10" class="form-control" value="{$es_data['title']}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="keyword" class="control-label col-sm-2">触发关键词：</label>
+			<div class="col-md-4">
+				<input type="text" name="keyword" id="keyword" class="form-control" value="{$es_data['keyword']}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="coverurl" class="control-label col-sm-2">图文消息封面：</label>
+			<div class="col-md-6">
+				<img id="coverHolder" src="{$es_data['cover']|default='/Public/images/estate_01.png'}" style="width:216px;height:120px" />
+				<input type="hidden" class="form-control" id="cover" value="{$es_data['cover']|default='/Public/images/estate_01.png'}" name="cover" />
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('cover',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('cover')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+			
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">楼盘头部图片：</label>
+			<div class="col-md-6">
+				<img id="bannerHolder" src="{$es_data['banner']|default='/Public/images/estate_02.png'}" style="width:216px;height:105px" />
+				<input type="hidden" class="form-control" id="banner" value="{$es_data['banner']|default='/Public/images/estate_02.png'}" name="banner" />
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('banner',720,350)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('banner')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">户型头部图片：</label>
+			<div class="col-md-6">
+				<img id="house_bannerHolder" src="{$es_data['house_banner']|default='/Public/images/estate_03.png'}" style="width:216px;height:105px">
+				<input type="hidden" name="house_banner" id="house_banner" class="form-control" value="{$es_data['house_banner']|default='/Public/images/estate_03.png'}">
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('house_banner',720,350)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('house_banner')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="album_title" class="control-label col-sm-2">全景相册名称：</label>
+			<div class="col-md-2">
+				<select id="panorama_id" name="panorama_id" class="form-control" data-rule-required="true"> 
+					<option value="0">请选择360全景相册</option> 
+					<volist name="panorama" id="vo">
+					   <option value="{$vo['pid']}" <if condition="$vo['pid'] eq $es_data['panorama_id']">selected="selected"</if>>{$vo['name']}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">楼盘新闻：</label>
+			<div class="col-md-2">
+				<select id="classify_id" name="classify_id" class="form-control" data-rule-required="true"> 
+					<option value="0">请选择3G楼盘新闻</option> 
+					<volist name="classify" id="vo">
+					   <option value="{$vo['cid']}" <if condition="$vo['cid'] eq $es_data['classify_id']">selected="selected"</if>>{$vo['name']}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">预约版面：</label>
+			<div class="col-md-2">
+				<select id="res_id" name="res_id" class="form-control" data-rule-required="true"> 
+					<option value="0">请选择预约版面</option> 
+					<volist name="reslist" id="vo">
+					   <option value="{$vo['rid']}" <if condition="$vo['rid'] eq $es_data['res_id']">selected="selected"</if>>{$vo['title']}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="video" class="control-label col-sm-2">楼盘视频：</label>
+			<div class="col-md-6"> 
+			   <input type="text" name="video" id="video" class="form-control" value="{$es_data['video']}" />
+			   <p>
+			   支持优酷视频地址如：http://v.youku.com/v_show/id_XNDA1ODEyNjE2.html <br> 
+			   腾讯fash视频地址：如http://static.video.qq.com/TPout.swf?vid=v0119s27wd5&amp;auto=0 <br> 
+			   也支持mp4和ogg 格式地址 http://www.w3school.com.cn/example/html5/mov_bbb.mp4 
+			   </p>
+			</div>
+		</div>
+		<script type="text/javascript">
+		function setlatlng(longitude,latitude){
+		  art.dialog.data('longitude', longitude);
+		  art.dialog.data('latitude', latitude);
+		  // 此时 iframeA.html 页面可以使用 art.dialog.data('test') 获取到数据，如：
+		  // document.getElementById('aInput').value = art.dialog.data('test');
+		  art.dialog.open('{:U('Map/setLatLng',array('token'=>$token,'id'=>$id))}',{lock:false,title:'设置经纬度',width:600,height:400,yesText:'关闭',background: '#000',opacity: 0.87});
+		}
+		</script>
+		<div class="form-group">
+			<label for="place" class="control-label col-sm-2">楼盘地址地址：</label>
+			<div class="col-md-6"> 
+				<input type="text" id="suggestId" class="span4 form-control"  name="place" value="{$es_data['place']}" class="input-xlarge" data-rule-required="true" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="suggestId" class="control-label col-sm-2">地图标识：</label>
+			<div class="col-md-2">
+				<div class="input-group">
+					<span class="input-group-addon">经度</span>
+					<input type="text" id="longitude" name="lng" class="form-control" placeholder="" value="{$es_data['lng']}" >
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group">
+					<span class="input-group-addon">纬度</span>
+					<input type="text" id="latitude" name="lat" class="form-control" placeholder="" value="{$es_data['lat']}" >
+				</div>
+			</div>
+			<div class="col-md-2" style="padding-top:6px;">
+				<span class="btn btn-xs btn-primary" onclick="setlatlng($('#longitude').val(),$('#latitude').val())">在地图上标注</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="estate_desc" class="control-label col-sm-2">楼盘简介：</label>
+			<div class="col-md-6">
+				<textarea class="form-control" id="estate_desc" name="estate_desc">{$es_data['estate_desc']}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="project_brief" class="control-label col-sm-2">项目简介：</label>
+			<div class="col-md-6">
+				<textarea class="form-control" id="project_brief" name="project_brief">{$es_data['project_brief']}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="traffic_desc" class="control-label col-sm-2">交通配套：</label>
+			<div class="col-md-6">
+				<textarea class="form-control" id="traffic_desc" name="traffic_desc">{$es_data['traffic_desc']}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<button id="bsubmit" type="submit"  class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<include file="Estate:menu"/>

@@ -1,0 +1,37 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>子楼盘管理</h3>   
+	</div>
+	<div class="alert alert-info">
+		如果您的整体楼盘项目由多个子楼盘项目组成，请在此添加，如果没有可以不添加
+	</div>
+	<a style="margin:10px 0;" href="{:U('Estate/son_add',array('pid'=>$pid))}" class="btn btn-success">
+		添加子楼盘
+	</a>
+	<table class="table wm-table-bordered">
+        <thead>
+			<tr>
+				<th>子楼盘名称</th>
+				<th>子楼盘描述</th>
+				<th>显示顺序</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<volist name="son_data" id="list">
+		<tr>
+			<td>{$list['title']}</td>
+			<td>{$list['description']}</td>
+			<td>{$list['sort']}</td>
+			<td>
+			<a class="btn btn-xs btn-default" href="{:U('Estate/son_add',array('id'=>$list['id'],'pid'=>$pid))}" class="btn">编辑</a>
+			<a class="btn btn-xs btn-danger" href="{:U('Estate/son_del',array('id'=>$list['id']))}" onclick="return(confirm('确定要删除吗？'))" class="btn">删除</a>
+			</td>
+		</tr>
+		</volist>
+		</tbody>
+    </table>
+	<div class="pages">{$page}</div>
+</block>

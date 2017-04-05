@@ -1,0 +1,305 @@
+<notempty name="plates[0]">
+<php>$items = $plates[0]['items'];</php>
+<div class="plate">
+<div class="plate_header">
+<h2 class="plate_title">{$plates[0]['title']}<div style="float: right;color: rgb(47, 47, 47);font-family: microsoft yahei;   font-size: 16px;">还剩&nbsp;<span id="timeClock" style="color: rgb(203, 36, 74);font-weight: bold;font-size: 16px;">00:00:00</span></div></h2>
+</div>
+<div class="wrap" style="height: auto;">
+	<div class="slide-pannel swipe" id="itemSlider">
+		<?php $count = count($items); ?>
+		<ul class="hot-item-wrapper swipe-wrap">
+			<volist name='items' id='vo' >
+				<if condition="$i%3 eq 1"><li></if>
+				<div class="swipe-item">
+					<a href="{:U('Shop/Item/index?id='.$vo['item_id'].'&token='.$token)}">
+						<img class="swipe-img" src="{$vo.img}"/>
+						<div class="swipe-title">
+							<strong>¥{$vo.oprice}</strong>&nbsp;<small>¥{$vo.price}</small>
+							<div><span class="discount-rate"><?php echo sprintf('%.1f',($vo['oprice']/$vo['price']*10));?>折</span></div>
+						</div>
+					</a>
+				</div>
+				<if condition="($i%3 eq 0) OR ($i eq $count)"></li></if>
+			</volist>
+		</ul>
+	</div>
+</div>
+</div>
+</notempty>
+<notempty name="plates[1]">
+<php>$items = $plates[1]['items'];</php>
+<div class="plate">
+<div class="plate_header">
+<h2 class="plate_title">{$plates[1]['title']}</span></h2>
+</div>
+<div class="wrap">
+	<div class="column-left">
+		<a href="{$items[0]['item_link']}">
+		<div class="item act-item" style="background-image:url({$items[0]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[0]['item_title']}</p>
+				<p class="subtitle">{$items[0]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="column-right">
+		<a href="{$items[1]['item_link']}">
+		<div class="item" style="background-image:url({$items[1]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[1]['item_title']}</p>
+				<p class="subtitle">{$items[1]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+		<a href="{$items[2]['item_link']}">
+		<div class="item" style="background-image:url({$items[2]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[2]['item_title']}</p>
+				<p class="subtitle">{$items[2]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+</div>
+</div>
+</notempty>
+<notempty name="plates[2]">
+<php>$items = $plates[2]['items'];</php>
+<div class="plate">
+<div class="plate_header">
+<h2 class="plate_title">{$plates[2]['title']}</span></h2>
+</div>
+<div class="wrap">
+	<div class="column-left">
+		<a href="{$items[0]['item_link']}">
+		<div class="item" style="background-image:url({$items[0]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[0]['item_title']}</p>
+				<p class="subtitle">{$items[0]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="column-right">
+		<a href="{$items[1]['item_link']}">
+		<div class="item" style="background-image:url({$items[1]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[1]['item_title']}</p>
+				<p class="subtitle">{$items[1]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+		<a href="{$items[2]['item_link']}">
+		<div class="item" style="background-image:url({$items[2]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[2]['item_title']}</p>
+				<p class="subtitle">{$items[2]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+</div>
+</div>
+</notempty>
+<notempty name="plates[3]">
+<php>$items = $plates[3]['items'];</php>
+<div class="plate">
+<div class="plate_header">
+<h2 class="plate_title">{$plates[3]['title']}</span></h2>
+</div>
+<div class="wrap">
+	<div class="column-left">
+		<a href="{$items[0]['item_link']}">
+		<div class="item" style="background-image:url({$items[0]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[0]['item_title']}</p>
+				<p class="subtitle">{$items[0]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="column-right">
+		<a href="{$items[1]['item_link']}">
+		<div class="item" style="background-image:url({$items[1]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[1]['item_title']}</p>
+				<p class="subtitle">{$items[1]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+		<a href="{$items[2]['item_link']}">
+		<div class="item" style="background-image:url({$items[2]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[2]['item_title']}</p>
+				<p class="subtitle">{$items[2]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+</div>
+</div>
+</notempty>
+<notempty name="plates[4]">
+<php>$items = $plates[4]['items'];</php>
+<div class="plate">
+<div class="plate_header">
+<h2 class="plate_title">{$plates[4]['title']}</span></h2>
+</div>
+<div class="wrap">
+	<div class="column-left">
+		<a href="{$items[0]['item_link']}">
+		<div class="item" style="background-image:url({$items[0]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[0]['item_title']}</p>
+				<p class="subtitle">{$items[0]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="column-right">
+		<a href="{$items[1]['item_link']}">
+		<div class="item" style="background-image:url({$items[1]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[1]['item_title']}</p>
+				<p class="subtitle">{$items[1]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+		<a href="{$items[2]['item_link']}">
+		<div class="item" style="background-image:url({$items[2]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[2]['item_title']}</p>
+				<p class="subtitle">{$items[2]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+</div>
+</div>
+</notempty>
+<notempty name="plates[5]">
+<php>$items = $plates[5]['items'];</php>
+<div class="plate">
+<div class="plate_header">
+<h2 class="plate_title">{$plates[5]['title']}</span></h2>
+</div>
+<div class="wrap">
+	<div class="column-left">
+		<a href="{$items[0]['item_link']}">
+		<div class="item" style="background-image:url({$items[0]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[0]['item_title']}</p>
+				<p class="subtitle">{$items[0]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="column-right">
+		<a href="{$items[1]['item_link']}">
+		<div class="item" style="background-image:url({$items[1]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[1]['item_title']}</p>
+				<p class="subtitle">{$items[1]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+		<a href="{$items[2]['item_link']}">
+		<div class="item" style="background-image:url({$items[2]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[2]['item_title']}</p>
+				<p class="subtitle">{$items[2]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+</div>
+</div>
+</notempty>
+<notempty name="plates[6]">
+<php>$items = $plates[6]['items'];</php>
+<div class="plate">
+<div class="plate_header">
+<h2 class="plate_title">{$plates[6]['title']}</span></h2>
+</div>
+<div class="wrap">
+	<div class="column-left">
+		<a href="{$items[0]['item_link']}">
+		<div class="item" style="background-image:url({$items[0]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[0]['item_title']}</p>
+				<p class="subtitle">{$items[0]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="column-right">
+		<a href="{$items[1]['item_link']}">
+		<div class="item" style="background-image:url({$items[1]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[1]['item_title']}</p>
+				<p class="subtitle">{$items[1]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+		<a href="{$items[2]['item_link']}">
+		<div class="item" style="background-image:url({$items[2]['item_img']})">
+			<div class="text">
+				<p class="title">{$items[2]['item_title']}</p>
+				<p class="subtitle">{$items[2]['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</div>
+</div>
+</div>
+</notempty>
+<notempty name="plates[7]">
+<php>$items = $plates[7]['items'];</php>
+<div class="plate">
+<div class="plate_header">
+<h2 class="plate_title">{$plates[7]['title']}</span></h2>
+</div>
+<ul class="hot-item-list">
+	<volist name="items" id="vo">
+	<notempty name="vo">
+	<li class="<?php if($i%2==1)echo 'even';?>">
+		<a href="{$vo['item_link']}">
+		<div class="hot-item" style="background-image:url({$vo['item_img']})">
+			<div class="text">
+				<p class="title">{$vo['item_title']}</p>
+				<p class="subtitle">{$vo['item_subtitle']}</p>
+			</div>
+		</div>
+		</a>
+	</li>
+	</notempty>
+	</volist>
+</ul>
+</div>
+</notempty>
+<script>
+	function formatInt(num){
+		if(num>9)return num;
+		else return '0'+num;
+	}
+	$(function(){
+		new Swipe(document.getElementById('itemSlider'), {
+			auto: 4000
+		});
+		setInterval(function(){
+			$('#timeClock').text(calcu());
+		},1000);
+	})
+	function calcu(){
+		var now = new Date();
+		var tick = now.getTime() - new Date(now.getFullYear()+"/"+(now.getMonth()+1)+"/"+now.getDate()+" 00:00:00").getTime();
+		tick = Math.floor(tick/1000);
+		tick = 86400 - tick;
+		var hours = Math.floor(tick/3600);
+		tick = tick%3600;
+		var minutes = Math.floor(tick/60);
+		tick = tick%60;
+		return formatInt(hours)+":"+formatInt(minutes)+":"+formatInt(tick);
+	}
+</script>

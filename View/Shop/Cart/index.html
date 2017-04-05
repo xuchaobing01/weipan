@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>我的购物车</title>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="/Public/Shop/css/default.css">
+<link type="text/css" rel="stylesheet" href="/Public/Common/bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/flat-ui/css/flat-ui.css" />
+<style>
+	body{
+		background-color: rgb(238, 238, 238);
+	}
+	.order-item .media-object{
+		max-width: 100px;
+	}
+	.media{
+		padding: 5px 0;
+	}
+	.order-item .media-heading{
+		font-size: 18px;
+	}
+	.order{
+		background-color:white;
+		color: rgb(105, 105, 105);
+		padding:5px 15px;
+		border-top: 1px solid rgb(221, 221, 221);
+		/*border-bottom: 1px solid rgb(221, 221, 221);*/
+	}
+	.order-top{
+		padding-bottom: 5px;
+		border-bottom: 1px solid rgb(221, 221, 221);
+	}
+	.order-bottom{
+		padding-top: 5px;
+		text-align:right;
+		border-top: 1px solid rgb(221, 221, 221);
+	}
+	.order-action{
+		padding-top: 5px;
+		text-align:right;
+		border-top: 1px solid rgb(221, 221, 221);
+	}
+	.order .media-list{
+		margin: 10px 0;
+	}
+	.time-ticker{
+		font-size: 10px;
+	}
+	.media-list .media:not(:last-child){
+		border-bottom: 1px solid rgb(221, 221, 221);
+	}
+	.item_num_set{
+		padding: 5px 0;
+	}
+	.item_num{
+		border: 0;
+		outline: 0;
+		text-align: center;
+		width: 40px;
+		border-bottom: 1px solid rgb(109, 109, 109);
+	}
+	.item_trash{
+		font-size: 18px;
+		padding: 5px;
+	}
+</style>
+</head>
+<body class="ui-app" menu-active="MENU_CART">
+<div style="padding-top: 20px;">
+	<?php if(count($item)==0){ ?>
+	<div class="null_shopping">
+        <div class="cart_pic"></div>
+        <h4>您还没有宝贝，赶快去逛逛吧！</h4>
+        <p>
+            <a class="enter" href="{:U('Index/index?token='.$token)}">马上去逛逛</a>
+        </p>
+    </div>  
+   <?php }else{  ?>
+	<ul class="order-list">
+		<li class="order" id="cart_item_{$vo.id}">
+			<div class="order-top text-success">商品清单</div>
+			<ul class="media-list">
+				<volist name="item" id="vo">
+				<li class="media order-item">
+					<a class="pull-left" href="{:U('Item/index',array('id'=>$vo['itemId'],'token'=>$token))}">
+					  <img class="media-object" src="{$vo.img}" alt="">
+					</a>
+					<div class="media-body">
+						<h5 class="media-heading">{$vo.title}</h5>
+						<p>
+							¥<small>{$vo.oprice}</small>
+							<span class="pull-right" id="item{$vo.id}_subtotal">¥<?php echo sprintf("%01.2f",$vo['num']*$vo['oprice']); ?></span>
+						</p>
+						<div class="item_num_set">
+							<span onClick="decrease_quantity({$vo.id});" class="btn btn-xs btn-success"><i class="fa fa-minus"></i></span>
+							<input id="input_item_{$vo.id}" value="{$vo.num}" orig="1" changed="{$vo.num}" onKeyUp="change_quantity({$vo.id}, this,'{$token}');"type="number"  class="item_num" name="quantity" value="{$vo.num}" />
+							<span onClick="add_quantity({$vo.id});" class="btn btn-xs btn-success"><i class="fa fa-plus"></i></span>
+							<span onClick="drop_cart_item({$vo.id},'{$token}');" class="text-danger item_trash pull-right"><i class="fa fa-trash-o"></i></span>
+						</div>
+					</div>
+				</li>
+				</volist>
+			</ul>
+			<div class="order-bottom">
+				<div>总价: <b id="cart_amount">¥<?php echo sprintf("%01.2f",$vo['num']*$vo['oprice']); ?></b></div>
+			</div>
+		</li>
+	</ul>
+	</volist>
+	<div class="container-fluid">
+	<a href="{:U('Order/jiesuan?token='.$token)}" class="btn btn-block btn-danger">去结算</a>
+	</div>
+	<?php } ?>
+</div>
+<include file="Public:footer" />
+</body>
+</html>

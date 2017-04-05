@@ -1,0 +1,64 @@
+<extend name="Public:innerbase"/> 
+<block name="css">
+<style type="text/css">
+	.wm-row{
+		margin: 20px 0;
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+    <script>
+        function drop_confirm(msg, url){
+            if(confirm(msg)){
+                window.location = url;
+            }
+        }
+    </script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+	<a class="btn btn-sm btn-default" href="{:U('Wbao/index')}"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs">
+		<li><a href="{:U('Wbao/breglist')}">商家注册信息</a></li>
+		<li><a href="{:U('Wbao/creglist')}">狗仔注册信息</a></li>	
+		<li  class="active"><a href="javascript:void(0)">会员兑换码</a></li>
+	</ul>
+	<div class="wm-row">
+		<div class="btn-group">
+		<code><?php echo C('WAP_DOMAIN').'/wap/wbao/index?token='.session('token');?></code><br />
+		</div>
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th class="select"><input type="checkbox" value="反选" name="button" id="selected"  style="color:#94D38A;"></th>
+		<th>手机号码</th>
+		<th>微信昵称</th>
+		<th>兑换时间</th>
+		<th>兑换码</th>
+		<th>是否使用</th>
+	
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="res" id="item"> 	
+		<tr >
+		<td id="playlist"><input type="checkbox" name="items" value="{$item.id}"  class="checkitem" /></td>
+		<td>{$item.telphone}</td>
+		<td>{$item.wechat_name}</td>
+		<td>{$item.createtime|date="Y-m-d H:i:s",###}</td> 
+		<td>{$item.cardsn}</td>
+		
+			<td><if condition="$item.status eq 0"><span style="color:green">未使用</span>  <else />已使用</if></td>
+		</tr>
+
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

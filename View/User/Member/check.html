@@ -1,0 +1,50 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script src="{:STATICS}/spark/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<ul class="nav nav-tabs wm-tabs">
+		<li><a href="{:U('Member/index',['id'=>$_GET['id']])}">会员管理</a></li>
+		<li class="active"><a href="javascript:void(0)">会员审核</a></li>
+	</ul>
+	<div class="page-header wm-page-header">
+	</div>
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+		<THEAD>
+		<TR>
+			<TH>姓名</TH>
+			<TH>联系电话</TH>
+			<TH>申请时间</TH>        
+			<TH style="text-align:center;"></TH>
+		</TR>
+		</THEAD>
+		<TBODY>
+		<empty name="list">
+		<TR><td colspan="4" style="text-align:center;">暂时没有申请信息！</td></TR>
+		<else/>
+		<volist id="list" name="list">
+		<TR>
+			<TD>{$list.truename}</TD>
+			<TD>{$list.tel}</TD>
+			<TD>
+			<if condition="$list['getcardtime'] neq false">
+				{$list.getcardtime|date='Y-m-d',###}
+			<else/>
+			无时间记录
+			</if>
+			</TD>
+			<TD style="text-align:center;">
+				<a href="{:U('check_request?id='.$list['id'])}" class="btn btn-xs btn-primary">审核</a>
+				<if condition="$_SESSION['sub_id'] eq 0"><span class="btn btn-xs btn-danger" onclick='spark.confirm_jump("删除后不可恢复，您确定要继续吗?", "{:U('User/Member/del',['id'=>$list['id']])}")'>
+				删除</span></if>
+			</TD>
+		</TR>
+		</volist>
+		</empty>
+	  </TBODY>
+	</TABLE>
+	<div>{$page}</div>
+</div>
+</block>

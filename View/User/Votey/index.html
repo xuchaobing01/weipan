@@ -1,0 +1,38 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+	<div class="container-fluid">
+		<div style="margin:10px 0;">
+			<a href="{:U('Votey/add')}"  title="发起投票" class="btn btn-success">发起投票</a>
+		</div>
+		<table class="table table-striped wm-table-bordered">
+			<thead>
+				<tr>
+					<th>标题</th>
+					<th class="time">开始时间</th>
+					<th class="time">结束时间</th>
+					<th>浏览人数</th>
+					<th>投票人数</th>
+					<th class="norightborder">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist id="list" name="list">
+				<tr>
+					<td>{$list.title}</td>
+					<td>{$list.start_time|date='Y-m-d',###}</td>
+					<td>{$list.end_time|date='Y-m-d',###}</td>
+					<td>{$list.view}</td>
+					<td>{$list.vote}</td>
+					<td class="norightborder">
+						<a href="{:U('Votey/tongji',array('id'=>$list['id']))}" title="投票结果">投票结果</a> |
+						<a href="{:U('Votey/items',array('vote_id'=>$list['id']))}" title="编辑">投票选项</a> |
+						<a href="{:U('Votey/record',array('vote_id'=>$list['id']))}" title="编辑">投票记录</a> |
+						<a href="{:U('Votey/edit',array('id'=>$list['id']))}" title="编辑">编辑</a> |
+						<a href="javascript:spark.confirm_jump('您确定要删除吗?删除会把投票结果也一起删除！', '{:U('Votey/del',array('id'=>$list['id']))}');">删除</a> 
+					</td>
+				</tr>
+				</volist>
+			</tbody>
+        </table>
+	</div>
+</block>

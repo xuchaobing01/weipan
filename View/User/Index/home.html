@@ -1,0 +1,72 @@
+<extend name="Public:innerbase" />
+<block name="css">
+</block>
+<block name="content">
+<div class="container-fluid">
+	<empty name="wxaccount.wxname">
+	<div class="alert alert-warning">
+		<h4>您还没有绑定公众号！<a href="{:U('edit?id='.$wxaccount['id'])}">立即绑定</a></h4>
+	</div>
+	<else/>
+	<div class="page-header">
+		<h3 style="color:rgb(77, 112, 148)">{$wxaccount['wxname']}</h3>
+		<span class="label label-primary" style="background-color:rgb(209, 202, 20);">{$wxaccount['wxtype']}</span>
+	</div>
+	<table class="table table-bordered">
+		<tbody>
+		
+		 <tr style="color:green">
+
+			<td>会员总量: {$tongji['user']}</td>
+
+			<td>总充值: {$tongji['paycount']}</td>
+
+			<td>总交易次数: {$tongji['ordercount']}</td>
+
+			<td>总流水: {$tongji['order']}</td>
+
+		  </tr>
+
+		   <tr style="color:red">
+
+			<td>今日注册: {$tongji['tuser']}</td>
+
+			<td>今日充值: {$tongji['tpaycount']}</td>
+
+			<td>今日交易次数: {$tongji['tordercount']}</td>
+
+			<td>今日流水: {$tongji['torder']}</td>
+
+		  </tr>
+		  
+		
+		  
+		  
+		  <tr>
+			
+			<td>文本回复: {$chart['text_num']}</td>
+			<td>图文回复: {$chart['img_num']}</td>
+			<td>语音回复: {$chart['voice_num']}</td>
+			<td>请求总数: {$chart['total_request_num']}</td>
+		  </tr>
+
+
+
+		
+		</tbody>
+	</table>
+	<div class="row">
+		<div class="col-md-6">
+			<span class="label label-default">API接口</span>
+			<strong>{:C('api_domain')}/api/{$Think.session.token}</strong>
+		</div>
+		<div class="col-md-4">
+			<span class="label label-default">Token</span>
+			<strong>{$wxaccount.token_sign}</strong>
+		</div>
+	</div>
+	</empty>
+</div>
+</block>
+<block name="js">
+</block>

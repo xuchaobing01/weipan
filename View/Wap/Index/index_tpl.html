@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<title>{$tpl['wxname']}</title>
+
+<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+<meta name="format-detection" content="telephone=no" />
+
+<link href="{:RES}/site/css/reset.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="{:RES}/decoration/snower.css" media="all" />
+
+<block name="css"></block>
+
+<script type="text/javascript" src="{:STATICS}/js/zepto.min.js"></script>
+
+<script type="text/javascript" src="{:RES}/decoration/maivl.js"></script>
+
+</head>
+
+<style>
+
+    .top-img{
+
+        top: 0;
+
+        transition:top 2s;
+
+        -moz-transition:top 2s; /* Firefox 4 */
+
+        -webkit-transition:top 2s; /* Safari and Chrome */
+
+        -o-transition:top 2s; /* Opera */
+
+        position: relative;
+
+        display: block;
+
+        width: 100%;
+
+        height: 50%;
+
+        background: rgb(0,0,0);
+
+        text-align: center;
+
+    }
+
+    .top-img img{
+
+        width:100%;
+
+        height: 100%;
+
+    }
+
+
+
+    .bottom-img{
+
+        transition:top 2s;
+
+        -moz-transition:top 2s; /* Firefox 4 */
+
+        -webkit-transition:top 2s; /* Safari and Chrome */
+
+        -o-transition:top 2s; /* Opera */
+
+        position: relative;
+
+        display: block;
+
+        width: 100%;
+
+        height: 50%;
+
+        background: rgb(0,0,0);
+
+        text-align: center;
+
+    }
+
+    .bottom-img img{
+
+        width:100%;
+
+        height: 100%;
+
+    }
+
+
+
+    .cover{
+
+        position: fixed;
+
+        top: 0;
+
+        left: 0;
+
+        width: 100%;
+
+        height: 100%;
+
+        background: rgba(255, 255, 255, 0);
+
+        z-index: 2000;
+
+        transition:z-index 2s;
+
+        -moz-transition:z-index 2s; /* Firefox 4 */
+
+        -webkit-transition:z-index 2s; /* Safari and Chrome */
+
+        -o-transition:z-index 2s; /* Opera */
+
+    }
+
+</style>
+
+
+
+<body class="theme-id-{$tpl.color_id}">
+
+<if condition="$animation.show eq 1">
+
+    <div class="cover">
+
+        <div class="top-img" ><img src="{$animation.img1}" alt=""></div>
+
+        <div  class="bottom-img"><img src="{$animation.img2}" alt=""></div>
+
+    </div>
+
+    <script>
+
+        setTimeout('startAnimation()', 1500);
+
+        $(".cover").click(function(e){
+
+            startAnimation();
+
+        });
+
+        function startAnimation(){
+
+            $(".top-img").css("top", "-50%");
+
+            $(".bottom-img").css("top", "100%");
+
+            $(".cover").css("z-index", "-1");
+
+        }
+
+    </script>
+
+</if>
+
+	<block name="bg"></block>
+
+	<!-- 背景音乐-->
+
+	<!--漂落物效果 -->
+
+	<if condition="$homeInfo['decoration_style'] neq 0">
+
+	<div class="snower">
+
+		<script type="text/javascript">var urls = ['{:RES}/decoration/images/v56_petal.png']</script>
+
+		<script type="text/javascript" src="{:RES}/decoration/snower1.js"></script>
+
+	</div>
+
+	</if>
+
+	<!-- 幻灯片 -->
+
+	<block name="carousel">
+
+		<include file="index_carousel" />
+
+	</block>
+
+	<!-- 分类菜单 -->
+
+	<block name="cate_menu"></block>
+
+	<!-- 版权 -->
+
+	<block name="copyright">
+
+	<div class="copyright">
+
+		<if condition="$iscopyright eq 1">
+
+			{$homeInfo.copyright}
+
+		<else/>
+			技术支持：<a href="http://www.pinnoocle.com" target="_blank">皮诺客科技</a>
+			<!-- {$siteCopyright} -->
+
+		</if>
+
+	</div>
+
+	</block>
+
+	<!--导航菜单风格 -->
+
+	<block name="menu_style">
+
+	<if condition="$homeInfo['menu_style'] neq 0">
+
+		<include file="Index:menu_style" />
+
+	</if>
+
+	</block>
+
+
+
+</body>
+
+<block name="js"></block>
+
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<script type="text/javascript">
+
+	wx.config({
+
+		debug: false,
+
+		appId:'<?php  echo $shareConfig['appid'];?>', // 必填，公众号的唯一标识
+
+		timestamp:<?php  echo $shareConfig['timestamp'];?>, // 必填，生成签名的时间戳
+
+		nonceStr: '<?php  echo $shareConfig['noncestr'];?>', // 必填，生成签名的随机串
+
+		signature: '<?php  echo $shareConfig['signature'];?>',// 必填，签名
+
+		jsApiList: [ 'checkJsApi',
+
+			'onMenuShareTimeline',
+
+			'onMenuShareAppMessage',
+
+			'onMenuShareQQ',
+
+			'onMenuShareWeibo',
+
+			'hideMenuItems',
+
+			'showMenuItems',
+
+			'hideAllNonBaseMenuItem',
+
+			'showAllNonBaseMenuItem']
+
+	});
+
+	var wxData = {
+
+        "imgUrl" : '<?php echo $tpl['headerpic'];?>',
+
+        "link" : '<?php echo C('WAP_DOMAIN').U('Index/index',['token'=>$token]); ?>',
+
+        "desc" : '<?php echo $tpl['wxname'];?>',
+
+        "title" : "<?php echo $tpl['wxname'];?>"
+
+    };
+
+	wx.ready(function(){
+
+		//分享到朋友圈
+
+		wx.onMenuShareTimeline({
+
+			title: wxData.title, // 分享标题
+
+			link: wxData.link, // 分享链接
+
+			imgUrl: wxData.imgUrl, // 分享图标
+
+			success: function () {
+
+				alert('分享成功！');
+
+			},
+
+			cancel: function () { 
+
+				// 用户取消分享后执行的回调函数
+
+			}
+
+		});
+
+		//分享给朋友
+
+		wx.onMenuShareAppMessage({
+
+			title: wxData.title, // 分享标题
+
+			desc: wxData.desc, // 分享描述
+
+			link: wxData.link, // 分享链接
+
+			imgUrl: wxData.imgUrl, // 分享图标
+
+			type: '', // 分享类型,music、video或link，不填默认为link
+
+			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+
+			success: function () { 
+
+				alert('分享成功！');
+
+			},
+
+			cancel: function () { 
+
+				// 用户取消分享后执行的回调函数
+
+			}
+
+		});
+
+		wx.onMenuShareQQ({
+
+			title: wxData.title, // 分享标题
+
+			desc: wxData.desc, // 分享描述
+
+			link: wxData.link, // 分享链接
+
+			imgUrl: wxData.imgUrl, // 分享图标
+
+			success: function () { 
+
+			   alert('分享成功！');
+
+			},
+
+			cancel: function () { 
+
+			   // 用户取消分享后执行的回调函数
+
+			}
+
+		});
+
+	});
+
+	wx.error(function(res){
+
+		
+
+	});
+
+	function toggleClass(el,style){
+
+		$(el).toggleClass(style);
+
+	}
+
+</script>
+
+</html>

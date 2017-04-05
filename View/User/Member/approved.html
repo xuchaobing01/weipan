@@ -1,0 +1,95 @@
+<extend name="Public:innerbase" />
+
+<block name="js">
+	<script src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+
+</block>
+
+<block name="content">
+
+<div class="container-fluid">
+
+	<ul class="nav nav-tabs wm-tabs">
+
+		<li class="active"><a href="{:U('Member/approve')}">未审核</a></li>
+		<li class="active"><a href="javascript:void(0);">已审核</a></li>
+
+	</ul>
+
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+
+		<THEAD>
+
+		<TR>
+
+			<TH>ID</TH>
+
+			<TH>微信名称</TH>
+
+			<TH>内容</TH>
+
+			<TH>图片</TH>
+
+			<TH>发布时间</TH>
+			<TH>操作</TH>
+
+
+		</TR>
+
+		</THEAD>
+
+		<TBODY>
+
+		<volist id="list" name="list">
+
+		<TR>
+
+			<TD>{$list.id}</TD>
+
+			<TD>{$list.uname}</TD>
+
+			<TD>{$list.Content}</TD>
+			<TD>
+				<volist name="list['imglist']" id="img">
+					<a href="javascript:void(0);" onclick="previewImg2(this);">
+						<img src="{$img}" style="width:40px;height:40px;">
+					</a>
+				</volist>
+			</TD>
+			<TD>{$list.create_time|date='Y-m-d H:i',###}</TD>
+
+
+
+			<TD>
+				<a class="btn btn-xs" onclick="javascript:spark.confirm_jump('确定删除此信息，是否确定','/User/Member/delcomment/id/{$list.id}.html')">删除</a>
+
+			</td>
+		</form>
+
+		</TR>
+
+		</volist>
+
+	  </TBODY>
+
+	</TABLE>
+
+	<div>{$page}</div>
+
+</div>
+<script>
+    function previewImg2(obj, width,height){
+        var url = $(obj).find("img").attr("src");
+        width=width?(width+"px"):"auto";
+        height=height?(height+"px"):"auto";
+        if(url){
+            var html='<img src="'+url+'" style="height:'+height+';width:'+width+';" />';
+        }
+        else{
+            var html='没有图片';
+        }
+        art.dialog({title:'图片预览',content:html});
+    }
+</script>
+</block>

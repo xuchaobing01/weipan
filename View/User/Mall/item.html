@@ -1,0 +1,68 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+.item-img{
+	width:80px;
+	max-height:80px;
+	border:1px solid #ddd;
+	padding:2px;
+	margin-right:5px;
+	vertical-align:top;
+}
+</style>
+</block>
+<block name="content">
+<div class="page-topbar">
+	<ol class="breadcrumb">
+		<li><a href="/User/Index/home.html">控制台</a></li>
+		<li class="active">商品管理</li>
+	</ol>
+</div>
+<div class="container-fluid">
+	<form class="form-inline">
+		<div class="form-group">
+			<label class="control-label">商品标题</label>
+			<input type="text" class="form-control" name="title" value="{$title}" />
+		</div>
+		<button class="btn btn-default" type="submit">查找</button>
+		<a href="{:U('item_add')}" class="btn btn-success">添加商品</a>
+	</form>
+	
+	<table class="table table-striped wm-table-bordered" style="margin-top:10px;">
+		<thead>
+			<tr>
+				<th>商品名称</th>
+				<th width="90">销售量</th>
+				<th width="100">分类</th>
+				<th width="100">原价(元)</th>
+				<th width="100">优惠价(元)</th>
+				<th width="100">排序</th>
+				<th align="center" width="90">是否上架</th>
+				<th width="120">发布时间</th>
+				<th width="120">管理操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="list" id="item">
+			<tr>
+				<td><img class="item-img" src="{$item.img}" /><a href="{:U('item_set?id='.$item['id'])}">{$item.title}</a></td>
+				<td>{$item.buy_num}</td>
+				<td>{$item.cate_name}</td>
+				<td>{$item.price}</td>
+				<td>{$item.oprice}</td>
+				<td>{$item.ordid}</td>
+				<td align="center"><if condition="$item['status'] eq 1"><i class="fa-lg fa fa-check-circle text-success"></i><else/><i class="fa-lg fa fa-ban text-danger"></i></if></td>
+				<td>{$item.add_time|date="Y-m-d H:i",###}</td>
+				<td>
+					<a href="{:U('item_set?id='.$item['id'])}" class="btn btn-xs btn-default">编辑</a>
+					<a data-toggle="ajax-link" data-tip="删除后不可恢复，确定继续吗？" data-reload="true" data-href="{:U('item_del?id='.$item['id'])}" class="btn btn-xs btn-danger">删除</a>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>
+<block name="js">
+</block>

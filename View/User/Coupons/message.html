@@ -1,0 +1,84 @@
+<extend name="Public:innerbase"/> 
+<block name="css">
+<style type="text/css">
+	.wm-row{
+		margin: 20px 0;
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+    <script>
+        function drop_confirm(msg, url){
+            if(confirm(msg)){
+                window.location = url;
+            }
+        }
+    </script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>提交信息管理</h3>
+	</div>
+	<!-- Nav tabs -->
+	<a href="javascript:history.go(-1);" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+			返回
+		</a>
+	<div class="wm-row">
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th class="select"><input type="checkbox" value="反选" name="button" id="selected"  style="color:#94D38A;"></th>
+		<th>名称</th>
+		<th>提交内容</th>
+		<th>提交时间</th>
+		<th>钟意车型</th>
+		<!-- <th>状态</th> -->
+		<!-- <th>操作</th> -->
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="res" id="item"> 	
+		<tr >
+		<td id="playlist"><input type="checkbox" name="items" value="{$item.id}"  class="checkitem" /></td>
+		<td>{$item.title}</td>
+		<td>
+			<a href="###" onclick='spark.alert({"content":"<?php echo $item['tel'];?>-<?php echo $item['intro'];?>",title:"内容"});'>查看内容 <if condition="$item['isshared'] neq 1"> <small class="text-warning">(未分享)</small></if>
+			</a>
+		</td>
+		
+		<td>{$item.time|date="Y-m-d H:i:s",###}</td> 
+		<td>{$item.cx}</td> 
+		<!-- <td><if condition="$item['istop'] neq 1">
+			<a class="btn btn-xs btn-info" href="{:U('User/Power/changetop',array('chk_value'=>$item['id'],'token'=>$token,'cid'=>$item['cid'],'istop'=>1))}">
+				不置顶
+			</a>
+			<else />
+			<a class="btn btn-xs btn-info" href="{:U('User/Power/changetop',array('chk_value'=>$item['id'],'token'=>$token,'cid'=>$item['cid'],'istop'=>2))}">
+				置顶
+			</a>
+				
+			</if>
+		</td> -->
+
+		<!-- <td>
+			<if condition="$item['checked'] neq 1">
+			<a class="btn btn-xs btn-info" href="{:U('User/Power/checkOne',array('chk_value'=>$item['id'],'token'=>$token,'cid'=>$item['cid']))}">
+				审核
+			</a>
+			</if>
+			
+			<a class="btn btn-xs btn-danger" href="javascript:drop_confirm('您确定要删除吗?', '{:U('User/Power/deled',array('chk_value'=>$item['id'],'token'=>$token,'cid'=>$item['cid']))}');">删除</a>
+		<a class="btn btn-xs btn-info" href="{:U('User/Power/replyedit',array('chk_value'=>$item['id'],'token'=>$token))}">编辑</a>
+		</td> -->
+		</tr>
+
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

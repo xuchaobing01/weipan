@@ -1,0 +1,58 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+<div class="container-fluid">
+	<div class="pager-header">
+		<h4>微投票活动信息 ({$count})</h4>
+	</div>
+    <div style="margin:10px 0;">
+		<a href="{:U('Vote/add',array('type'=>'text'))}"  title="发起文字投票" class="btn btn-success">发起文字投票</a>
+		<a href="{:U('Vote/add',array('type'=>'img'))}" title="发起图片投票" class="btn btn-default">发起图片投票</a>
+    </div>
+    <table class="table table-striped wm-table-bordered">
+		<thead>
+			<tr>
+				<th>关键词</th>
+				<th>标题</th>
+				<th>类型</th>
+				<th class="time">开始时间</th>
+				<th class="time">结束时间</th>
+				<th>参与人数</th>
+				<th>是否开始</th>
+				<th class="norightborder">操作</th>
+			</tr>
+        </thead>
+        <tbody>
+            <volist id="list" name="list">
+            <tr>
+                <td>{$list.keyword}</td>
+                <td>{$list.title}</td>
+                <td>
+                    <if condition="$list['type'] eq 'text'">
+						文字投票
+                    <elseif condition="$list['type'] eq 'img'"/>
+                        图片投票
+                    <else/>
+                        微现场投票
+                    </if>
+                </td>
+                <td>{$list.statdate|date='Y-m-d',###}</td>
+                <td>{$list.enddate|date='Y-m-d',###}</td>
+                <td>{$list.count}</td>
+                <td>                    
+                    <if condition="$list['status'] eq 0">
+                     已关闭(<a href="javascript:spark.confirm_jump('开始投票活动', '{:U('Vote/setinc',array('type'=>$list['type'],'id'=>$list['id']))}');">开启</a>) 
+                    <else/>
+                      已开启(<a href="javascript:spark.confirm_jump('你是否真的想结束投票活动.', '{:U('Vote/setdes',array('type'=>$list['type'],'id'=>$list['id']))}');">关闭</a>)
+                   </if>
+                </td>
+                   <td class="norightborder">
+                    <a href="{:U('Vote/totals',array('type'=>$list['type'],'id'=>$list['id']))}" title="投票结果">投票结果</a> |
+                    <a href="{:U('Vote/edit',array('type'=>$list['type'],'id'=>$list['id']))}" title="编辑">编辑</a> |
+                    <a href="javascript:spark.confirm_jump('您确定要删除吗?删除会把投票结果也一起删除！', '{:U('Vote/del',array('type'=>$list['type'],'id'=>$list['id']))}');">删除</a> 
+                </td>
+            </tr>
+			</volist>
+           </tbody>
+        </table>
+	</div>
+</block>

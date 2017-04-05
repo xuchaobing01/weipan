@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,height=device-height"/>
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="/Mobile/Public/jqmobile/jquery.mobile-1.3.2.min.css">
+<link rel="stylesheet" href="/Mobile/Public/css/css_L.css">
+<link rel="stylesheet" href="/Mobile/Public/css/ucenter.css">
+<link rel="stylesheet" href="/Mobile/Public/css/swiper3.1.0.min.css">
+<script src="/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+<script src="/Mobile/Public/jqmobile/jquery.mobile-1.3.2.min.js"></script>
+<style>body {padding-bottom: 60px; }</style>
+</head>
+
+<title>不要返现，直接充值</title>
+<body>
+<script type="text/javascript">
+$.mobile.ajaxEnabled=false;
+var ROOT = '';
+</script>
+<link rel="stylesheet" href="/Mobile/Public/css/css_L.css">
+<link rel="stylesheet" href="/Mobile/Public/css/ucenter.css">
+<style>body {padding-bottom: 60px; }</style>
+<style>
+.ui-btn-text{
+    display: none;
+}
+input.button_L {
+    background-color: #DC423A;
+    border: 1px solid #DC423A;
+    border-radius: 3px;
+    font-size: 1.4em;
+    color: #FFF;
+    line-height: 38px;
+    margin-top: 3px;
+    font-family: 微软雅黑;
+    width: 100%;
+}
+</style>
+    <!-- header End -->
+	<form method="get" action="/mobile.php/Weixin/weixinpay" data-ajax='false'>
+    <div data-role="contentmain_L" style="width:96%; margin:0 auto;">
+        <div class="ui-grid-a  main_L_bg" style="width:100%;">
+           		 <div class="ui-block-a">
+               		 <h4 style=" margin-left:16px;">
+               		     入金金额：
+               		 </h4>
+            	</div>
+           		 <div class="ui-block-b main_L_W">
+                	<div data-role="fieldcontain">
+                   		 <input class="input_L" name="total_fee" id="total_fee" placeholder="请输入金金额" value="" type="text"
+                  		  data-mini="true">
+						  <input class="input_L" name="paymode"  value="1" type="hidden"
+                  		  data-mini="true">
+               		 </div>
+            	</div>
+        </div>
+		<p style="
+    padding-top: 5px;
+    color: grey;
+    font-size: 15px;
+    padding-left: 5px;
+">提示：不参加充返活动，无返现奖励。</p>
+		<input type="submit" value="确 认" data-role="button"  data-transition="none" class="button_L">
+	</div>
+	</form>
+</div> 
+<include file="Public:footer"/>
+
+</body>
+</html>

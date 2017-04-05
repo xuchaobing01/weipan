@@ -1,0 +1,111 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/colorpicker/css/colorpicker.css" />
+</block>
+<block name="content">
+<div class="container-fluid">
+	<ul class="nav nav-tabs" role="tablist">
+		<li><a href="{:U('reply_set')}">回复设置</a></li>
+		<li class="active"><a href="javascript:void(0)">功能设置</a></li>
+		<li><a href="{:U('transport_set')}">物流设置</a></li>
+	</ul>
+	<hr style="border:0;" />
+	<form action="__SELF__" method="post" class="ajax-form form-horizontal">
+		<div class="form-group">
+			<label for="" class="control-label col-sm-2">商城名称</label>
+			<div class="col-sm-4">
+				<input type="text" name="shop_title" class="form-control" value="{$set.shop_title}" />
+				<span class="help-block">微信商城标题</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="control-label col-sm-2">原价重命名</label>
+			<div class="col-sm-4">
+				<input type="text" name="price_rename" class="form-control" value="{$set.price_rename}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="control-label col-sm-2">微信价重命名</label>
+			<div class="col-sm-4">
+				<input type="text" name="wxprice_rename" class="form-control" value="{$set.wxprice_rename}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="control-label col-sm-2">下单提示</label>
+			<div class="col-sm-4">
+				<textarea name="order_tip" class="form-control">{$set.order_tip}</textarea>
+				<span class="help-block">客户下单时的提示，可不填写</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="control-label col-sm-2">首页模板</label>
+			<div class="col-sm-4">
+				<select  name="custom_plate" class="form-control">
+					<option value="1" <if condition="$set.custom_plate eq 1">selected</if>>模板1(首页两列)</option>
+					<option value="2" <if condition="$set.custom_plate eq 2">selected</if>>模板2</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="control-label col-sm-2">主题颜色</label>
+			<div class="col-sm-4">
+				<input type="text" data-color="rgb(255, 146, 180)" data-color-format="rgb" name="theme_color" class="form-control colorpicker" value="{$set.theme_color}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="checkbox">
+					<label>
+					  <input type="checkbox" <if condition="$set['use_coupon'] eq 1">checked</if> name="use_coupon" value="1" />开启优惠券
+					</label>
+				</div>
+				<div class="help-block">开启后会员购物可以使用优惠券</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="checkbox">
+					<label>
+					  <input type="checkbox" <if condition="$set['use_agent_pay'] eq 1">checked</if> name="use_agent_pay" value="1" />开启代付功能
+					</label>
+				</div>
+				<div class="help-block">开启下单后可以找朋友代付</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="transport_free_base_num" class="control-label col-sm-2">售后申诉说明</label>
+			<div class="col-sm-4">
+				<textarea id="after_sale_tip" name="after_sale_tip" class="form-control">{$set.after_sale_tip}</textarea>
+				<div class="help-block">用户申诉退换货时的提示</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+			  <button type="submit" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<script src="{:STATICS}/colorpicker/js/bootstrap-colorpicker.js"></script>
+<script>
+	$('.ajax-form').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				notify(data.info);
+				jump(2000);
+			}
+			else{
+				notify(data.info,'error');
+			}
+		}
+	});
+	
+	function jump(delay){
+		delay = delay || 3000;
+		setTimeout("location.reload()",delay);
+	}
+	$('.colorpicker').colorpicker()
+</script>
+</block>

@@ -1,0 +1,56 @@
+<extend name="Public:innerbase" />
+<block name="css"></block>
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>微助力管理</h3>
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs">
+		<li ><a href="{:U('User/Power/set')}">首页配置</a></li>
+		<li class="active"><a href="javascript:void(0)">活动管理</a></li>
+		<li><a href="{:U('User/Power/activityimg')}">幻灯片管理</a></li>
+		<li><a href="{:U('User/Power/message')}">留言管理</a></li>
+		
+	</ul>
+    <div style="margin-top:10px;">
+		<a style="margin:10px 0;" href="{:U('Power/addactivity')}" title="添加" class="btn btn-primary">添加活动</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="150">名称</th>
+		<th width="200">简介</th>
+        <th width="80">分类排序</th>
+        <th width="180">开始时间</th>
+        <th width="180">结束时间</th>
+        <th width="180">上传时间</th>
+		<th width="150" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="powerlist"> 
+		<tr>
+		<td>{$powerlist.name}</td>
+		<td>
+		<a href="###" onclick='spark.alert({"content":"<?php echo $powerlist['des'];?>",title:"简介内容"});'>查看简介
+			</a>
+		</td>
+		</td>
+        <td>{$powerlist.sorts}</td>
+        <td>{$powerlist.starttime|date="Y-m-d H:i",###}</td>
+        <td>{$powerlist.endtime|date="Y-m-d H:i",###}</td>
+        <td>{$powerlist.createtime|date="Y-m-d H:i",###}</td>
+		<td>
+		<!--<a href="{:U('Power/catSet',array('id'=>$powerlist['id']))}">修改</a>-->
+		<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Power/activityDel',array('id'=>$powerlist['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+  </div> 
+</div>
+</block>

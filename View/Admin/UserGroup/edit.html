@@ -1,0 +1,63 @@
+<extend name="Public:base2"/>
+<block name="content">
+<div class="container2">
+	<form class="form-horizontal" action="" method="post" name="form" id="myform">
+		<div class="form-group">
+			<label class="col-xs-2 control-label">版本名称</label>
+			<div class="col-md-6">
+				<input type="text" name="name" class="form-control" value="{$info.name}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">月请求数限制</label>
+			<div class="col-md-6">
+				<input type="text" name="request_limit" class="form-control" value="{$info.request_limit}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">活动创建次数</label>
+			<div class="col-md-6">
+				<input type="text" name="activity_limit" class="form-control" value="{$info.activity_limit}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">会员卡创建数量</label>
+			<div class="col-md-6">
+				<input type="text" name="member_card_limit" class="form-control" value="{$info.member_card_limit}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">免费短信数量</label>
+			<div class="col-md-6">
+				<input type="text" name="free_sms_count" value="{$info.free_sms_count}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">显示版权</label>
+			<div class="col-md-6">
+				<label class="radio-inline">
+				<input type="radio" class="radio" value="1" name="iscopyright" id="status1" <if condition="($info eq '') OR ($info.iscopyright eq 1)">checked</if> >
+				启用
+				</label>
+				<label class="radio-inline">
+				<input type="radio" class="radio"  value="0" name="iscopyright" id="status2" <eq name="info.iscopyright" value="0">checked</eq> >
+				关闭
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-6 col-xs-offset-2">
+				<input type="submit" class="btn btn-success" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:STATICS}/datetimepicker/css/datetimepicker.css" />
+</block>
+<block name="js">
+<script src="/Public/User/js/date/WdatePicker.js"></script>
+<script type="text/javascript">
+</script>
+</block>

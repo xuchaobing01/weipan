@@ -1,0 +1,37 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<div class="page-title">
+		<h3>用户评论管理</h3>
+		</div>
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="150">订单号</th>
+		<th width="250">商品名称</th>
+        <th width="80">评论内容</th>
+		<th width="180">评论时间</th>
+		<th width="120">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="comments" id="vo"> 
+		<tr>
+		<td>{$vo.order_id}</td>
+		<td>{$vo.item_name}</td>
+        <td>{$vo.comment}</td>
+		<td>{$vo.time|date="Y-m-d H:i",###}</td>
+		<td>
+		<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('comment_del',array('id'=>$vo['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+</div>
+</block>

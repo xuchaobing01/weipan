@@ -1,0 +1,71 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<!--link rel="stylesheet" href="{:STATICS}/vote/style.css" /-->
+<block name="js">
+<include file="Public:upload" />
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{:RES}/js/date/WdatePicker.js" type="text/javascript"></script>
+<script src="{:STATICS}/vote/common.js" type="text/javascript"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+<div class="page-header">
+<a class="btn btn-sm btn-default" href="{:U('Votex/index')}"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+</div>
+<div class="msgWrap bgfc">
+<form class="form" method="post" action="">
+	<if condition="$vo['id'] neq ''">
+	  <input type="hidden" name="id" value="{$vo['id']}">
+	</if>
+	<table class="table" style=" margin:0;">
+	<tbody>
+	<tr>
+	<th width="120">名称：</th>
+	<td><input type="text" name="title" value="{$vo.title}" class="px" style="width:550px;"></td>
+	</tr>
+	<th width="120">可选名称：</th>
+	<td><input type="text" name="subtitle" value="{$vo.subtitle}" class="px" style="width:550px;"></td>
+	</tr>
+	<tr>
+		<th>图片：</th>
+		<td>
+			<input type="text" name="img" value="{$vo.img}" class="px" id="img" style="width:300px;">
+			<div class="btn-group" style="vertical-align:bottom;">
+				<span class="btn btn-xs btn-primary" onclick="selectAsset('img',720,400)">
+					<span class="glyphicon glyphicon-cloud-upload"></span>选择
+				</span>
+				<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+					<span class="glyphicon glyphicon-picture"></span>预览
+				</span>
+			</div>
+		</td>
+	</tr>
+	<tr>
+	<th valign="top">介绍：</th>
+	<td valign="top"><textarea class="px" id="intro" name="intro" style="width: 560px; height: 120px; display: ;"><?php echo html_entity_decode(htmlspecialchars_decode($vo['intro'])); ?></textarea></td>
+	</tr>
+	<tr>
+	<tr>
+	<th width="120">序号：</th>
+	<td><input type="text" name="rank" value="{$vo.rank|default=1}" class="px" style="width:550px;"></td>
+	</tr>
+	<tr>
+	<th width="120">增加票数：</th>
+	<td><input type="text" name="addnum" value="0" class="px" style="width:550px;"></td>
+	</tr>
+	<th>&nbsp;</th>
+	<td>
+		<button type="submit" name="button" class="btn btn-success">保存</button>
+	</td>
+	</tr>
+	</tbody>
+	</table>
+</form>
+</div>
+</div>
+</block>

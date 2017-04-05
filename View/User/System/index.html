@@ -1,0 +1,58 @@
+<extend name="Public:base" />
+<block name="title">
+<title> {:C('site_title')} {:C('site_name')}</title>
+</block>
+<block name="css">
+
+</block>
+<block name="nav">
+	<ul class="nav navbar-nav">
+		<li class="active"><a href="javascript:void(0)">平台管理</a></li>
+	</ul>
+</block>
+<block name="content">
+	<div class="west-pane">
+		<!--<ul id="mainMenu" class="nav nav-pills nav-stacked sidenav" style="max-width: 300px;">
+			<li class="active"><a href="javascript:void(0)" url="{:U('Index/home')}">公众号管理</a></li>
+			<if condition="$_SESSION['sub_id'] eq 0">
+			<li><a href="javascript:void(0)" url="{:U('Index/useredit')}">商户信息</a></li>
+			<li><a href="javascript:void(0)" url="{:U('Index/passedit')}">修改密码</a></li>
+			</if>
+		</ul>-->
+		<include file="Index:left_menu" />
+	</div>
+	<div id="wp" class="wp center-pane">
+		<iframe  frameBorder="0" class="contentFrame" src="{:U('Index/home')}" ></iframe>
+	</div>
+</block>
+<block name="js">
+<script type="text/javascript">
+	$(".wx-sidenav>li>a").click(function(e){
+		if($(this).parent().hasClass("active")){
+			$(this).children('.glyphicon').removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down")
+			.end().siblings(".nav").hide(500);
+			$(this).parent().removeClass("active");
+		}
+		else{
+			$(".wx-sidenav>li.active").removeClass("active")
+			.find(".glyphicon").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down")
+			.end().find(".nav").hide();
+			$(this).parent().addClass("active");
+			$(this).find(".glyphicon")
+			.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up")
+			.end().siblings(".nav").show(500);
+		}
+	});
+	
+	$(".nav-pills>li>a").click(function(e){
+		if(!$(this).hasClass("active")){
+			$(".wx-subnav a.active").removeClass("active");
+			$(this).addClass("active");
+			$("#wp>iframe").attr("src",$(this).attr("src"));
+		}
+		else{
+			$("#wp>iframe")[0].contentWindow.location.reload();
+		}
+	});
+</script>
+</block>

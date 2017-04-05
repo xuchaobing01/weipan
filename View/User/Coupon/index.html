@@ -1,0 +1,52 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>优惠券列表 ({$count}) 条</h4>
+		<small>你本月有 {$group.activity_limit} 次机会可免收活动创建费，已经使用了 {$activity_num} 次机会!</span></small>
+	</div>
+	<a style="margin:10px 0;" href="{:U('Coupon/add')}" title='新增幸运大转盘活动' class='btn btn-success'>新增优惠券活动</a>
+	<TABLE class="table wm-table-bordered">
+		<THEAD>
+		<TR>
+		<TH class="select">选择</TH>
+		<TH>优惠券名称</TH>
+		<TH>关键字</TH>
+		<TH>有效参与人数</TH>
+		<TH>总浏览数</TH>
+		<TH>开始时间/结束时间</TH>
+		<TH>状态</TH>
+		<TH>外链代码</TH>
+		<TH class="norightborder">操作</TH>
+		</TR>
+	  </THEAD>
+	  <TBODY>
+		<volist id="list" name="list">
+			<TR>
+			<TD><input type="checkbox" name='del_id[]' value="842" class="checkitem"></TD>
+			<TD>{$list.title}</TD>
+			<TD>{$list.keyword}</TD> 
+			<TD>{$list.joinnum}</TD>
+			<TD>{$list.pv}</TD>                  
+			<TD>{$list.startdate|date='Y-m-d',###}<br />{$list.enddate|date='Y-m-d',###}</TD>
+			<TD>
+			<if condition="$list['status'] eq 0">未开始<elseif condition="$list['status'] eq 2"/>已经结束<else/>已经开始</if>
+		</TD>
+		  <TD>优惠券 {$list.id}</TD>
+		   <TD class="norightborder">
+		   <a href="{:U('User/Coupon/sn',array('id'=>$list['id'],'type'=>3))}">SN码管理</a> 
+		   <a href="{:U('User/Coupon/edit',array('id'=>$list['id']))}">编辑</a>  
+		   <a href="
+		   <if condition="$list['status'] eq 1">			   
+		    {:U('User/Coupon/setdes',array('id'=>$list['id']))}<else/>
+			{:U('User/Coupon/setinc',array('id'=>$list['id']))}
+		   </if>">
+		   <if condition="$list['status'] eq 0">开始<elseif condition="$list['status'] eq 2"/><else/>结束</if>				   
+		   </a>
+		   <a href="{:U('User/Coupon/del',array('id'=>$list['id']))}">删除</a></TD>
+		</TR>
+		</volist>
+	  </TBODY>
+	</TABLE>
+</div>
+</block>

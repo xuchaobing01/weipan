@@ -1,0 +1,205 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<!--link rel="stylesheet" href="{:STATICS}/vote/style.css" /-->
+<block name="js">
+<include file="Public:upload" />
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{:RES}/js/date/WdatePicker.js" type="text/javascript"></script>
+<script src="{:STATICS}/vote/common.js" type="text/javascript"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/lang/zh-cn/zh-cn.js"> </script>
+<script type="text/javascript">
+$(function(){
+	$("#editForm").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+	var ue = UE.getEditor('UEContent');
+});
+
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('#info', {
+	resizeType : 1,
+	allowPreviewEmoticons : false,
+	allowImageUpload : true,
+	uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+	items : [
+	'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+	});
+});
+
+$(function(){
+	function check(el){
+		if($(el).is(':checked')){
+			$('#signEndTime').show();
+		}
+		else $('#signEndTime').hide();
+	}
+	check($('#onlineSign'));
+	$('#onlineSign').change(function(){
+		check(this);
+	});
+})
+</script>
+
+<script type="text/javascript">
+	$("[data-toggle='upload-reward-img']>.upload-file").AjaxFileUpload({
+		action: "{:U('Qiniu/upload')}",
+		onComplete: function(filename, resp) {
+			if(resp.error !=0){
+				alert(resp.message);
+			}
+			else{
+				var wrapper = $(sprintf(TPL,resp.url,targetName,resp.url));
+				wrapper.appendTo('#'+target);
+				wrapper.find('.img-remove').click(function(){
+					$(this).parent().remove();
+				});
+			}
+		}
+	});
+	
+	$(function(){
+		$('[data-toggle="upload-reward-img"]').click(function(){
+			window.target = $(this).attr('data-target');
+			window.targetName = $(this).attr('data-target-name');
+		});
+		$('.img-remove').click(function(){
+			$(this).parent().remove();
+		});
+		$('.upload-music').click(function(){
+			window.targetMusic = $(this).attr('data-target');
+		});
+	})
+	$(".upload-music").AjaxFileUpload({
+		action: "/User/Qiniu/Upload.html",
+		onSubmit:function(){
+			spark.showIndicator();
+		},
+		onComplete: function(filename, response) {
+			spark.hideIndicator();
+			if(response.error == 0){
+				$('#'+targetMusic).val(response.url);
+			}
+			else{
+				alert(response.message);
+			}
+		},
+		onError: function(ret){
+			spark.hideIndicator();
+			alert(ret);
+		}
+	});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+<div class="page-header">
+	<a class="btn btn-sm btn-default" href="{:U('Bargain/shop',array('id'=>$pid))}"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+</div>
+<div style="margin-top:10px;">
+	<form class="form-horizontal" method="post" action="">
+	<input type="hidden" name="pid" value="{$pid}" class="form-control" />
+		<if condition="$vo['id'] neq ''">
+		  <input type="hidden" name="id" value="{$vo['id']}">
+		</if>
+		<div class="form-group">
+			<label class="control-label col-xs-2">商品名称</label>
+			<div class="col-md-4">
+				<input type="text" name="shop_title" value="{$vo.shop_title}" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">商品图片</label>
+			<div class="col-md-4">
+				<input type="hidden" name="shop_img" value="{$vo.shop_img}" class="form-control" id="img" style="display:inline-block;width:250px;" />
+				<img id="imgHolder" style="width:216px;" class="img" src="{$vo.shop_img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">展示图片</label>
+			<div class="col-md-4">
+				<input type="hidden" name="view_img" value="{$vo.view_img}" class="form-control" id="img1" style="display:inline-block;width:250px;" />
+				<img id="img1Holder" style="width:216px;" class="img1" src="{$vo.view_img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img1',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img1')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">已砍价人数</label>
+			<div class="col-md-2">
+				<div class="input-group">
+					<input type="text" id="price"  name="bnum" value="{$vo.bnum}" class="form-control" />
+					<span class="input-group-addon">人</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-2">商品总价</label>
+			<div class="col-md-2">
+				<div class="input-group">
+					<input type="text" id="price"  name="total" value="{$vo.total}" class="form-control" />
+					<span class="input-group-addon">元</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">最低价</label>
+			<div class="col-md-2">
+				<div class="input-group">
+					<input type="text" id="price"  name="lowprice" value="{$vo.lowprice}" class="form-control" />
+					<span class="input-group-addon">元</span>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<div class="form-group">
+			<label class="control-label col-xs-2">需砍价次数</label>
+			<div class="col-md-4">
+				<textarea class="form-control" id="info2" name="num" style="height: 120px;">{$vo.num|default=10}</textarea>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-2">限制数量：</label>
+			<div class="col-md-4">
+				<input type="text" name="tlimit" value="{$vo.tlimit|default=10}" class="form-control" />
+			</div>
+		</div>
+			
+		<div class="form-group">
+			<div class="col-md-4 col-xs-offset-2">
+				<button type="submit" name="button" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+</block>

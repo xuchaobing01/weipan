@@ -1,0 +1,86 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css" />
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#editForm").validationEngine("attach",{ 
+			promptPosition:"centerRight",
+			scroll:true,
+			showOneMessage:true
+		});
+	});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>题目设置</h4>
+		<a class="btn btn-sm btn-default" href="{:U('Diaoyan/timu',['id'=>$_GET['pid']])}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" method="post">
+		<input type="hidden" name="pid" value="{$pid}" />
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="control-label col-xs-2">题目名称</label>
+			<div class="col-md-4">
+				<input type="text" name="title" id="title" value="{$set.title}" class="validate[required] form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">选项A</label>
+			<div class="col-md-4">
+				<input type="text" name="optia" id="optia" value="{$set.optia}" class="validate[required] form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">选项B</label>
+			<div class="col-md-4">
+				<input type="text" name="optib" id="optib" value="{$set.optib}" class="validate[required] form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">选项C</label>
+			<div class="col-md-4">
+				<input type="text" name="optic" id="optic" value="{$set.optic}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">选项D</label>
+			<div class="col-md-4">
+				<input type="text" name="optid" id="optid" value="{$set.optid}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">选项E</label>
+			<div class="col-md-4">
+				<input type="text" name="optie" id="optie" value="{$set.optie}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">可选数目</label>
+			<div class="col-md-2">
+				<select name="max" class="form-control" >
+					<option value="1" <eq name="set['max']" value="1">selected</eq>>1</option>
+					<option value="2" <eq name="set['max']" value="2">selected</eq>>2</option>
+					<option value="3" <eq name="set['max']" value="3">selected</eq>>3</option>
+					<option value="4" <eq name="set['max']" value="4">selected</eq>>4</option>
+					<option value="5" <eq name="set['max']" value="5">selected</eq>>5</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-6 col-xs-offset-2">
+				<input type="submit" class="btn btn-success" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

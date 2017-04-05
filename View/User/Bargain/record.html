@@ -1,0 +1,131 @@
+<extend name="Public:innerbase"/>
+<script src="/Public/Common/vote/js/script.js" type="text/javascript"></script>
+<block name="content">
+	<div class="container-fluid">
+		<div style="margin:10px 0;">
+			<a href="{:U('Bargain/index')}" class="btn btn-default btn-sm">返回</a>
+		</div>		
+						<script type="text/javascript"> 
+						var jsonCity = "/Public/Common/vote/js/content/json-array-of-city.js"; 
+						var jsonDistrict = "/Public/Common/vote/js/content/json-array-of-district.js"; 
+							function getcity(num,id){
+								$.get( jsonCity, 
+									function (r) { 
+										var pre=num; // pre: 初始值 
+										for (var i = 0; i < r.length; i++) { 
+											s = ''; 
+											if (pre !== "" && pre !== 0 && r[i].code == pre) { 
+												//alert($("#"+id).html());
+												//document.write(r[i].name);
+												 $("#"+id).append(r[i].name);
+
+											} 
+										} 		
+									}, "json" ); 
+							}
+							function getDistrict(num,id){
+								$.get( jsonDistrict, 
+									function (r) { 
+										var pre=num; // pre: 初始值 
+										for (var i = 0; i < r.length; i++) { 
+											s = ''; 
+											if (pre !== "" && pre !== 0 && r[i].code == pre) { 
+				
+												 $("#"+id).append(r[i].name);
+
+											} 
+										} 		
+									}, "json" ); 
+							}
+						
+						
+		
+
+	
+	</script>
+		<table class="table table-striped wm-table-bordered">
+			<thead>
+				<tr>
+					<th>商品信息</th>
+					<th>昵称</th>
+					<th>手机号</th>
+					<th class="time">姓名</th>
+					
+					<th>尺码</th>
+					<th>城市</th>
+					<th>详细地址</th>
+					<th class="norightborder">操作</th>
+					
+					
+			
+				</tr>
+			</thead>
+			<tbody>
+				<volist id="list" name="list">
+				<tr>
+					<td>{$list.shop_title}</td>
+					<td>{$list.wechat_name}</td>
+					<td>{$list.telphone}</td>
+					<td>{$list.name}</td>
+				
+					<td>{$list.chima}</td>
+					<td id="{$list.id}">
+						<if condition="$list['city'] neq ''">	
+							<script type="text/javascript">
+			                 getcity({$list.city},{$list.id});
+			                 getDistrict({$list.district},{$list.id});
+			             	</script>
+             	 		</if> 
+				 </td>
+					<td>{$list.msg}</td>
+					<td class="norightborder"><a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Bargain/del_record',array('id'=>$list['id']))}');">删除</a> 
+					</td>
+
+				</tr>
+				</volist>
+			</tbody>
+        </table>
+		<div>{$page}</div>
+	</div>
+	<script type="text/javascript"> 
+	var jsonCity = "/Public/Common/vote/js/content/json-array-of-city.js"; 
+	var jsonDistrict = "/Public/Common/vote/js/content/json-array-of-district.js"; 
+	function getcity(num){
+		for (var i = 0; i < jsonCity.length; i++) { 
+		if (pre !== "" && pre !== 0 && jsonCity[i].code === pre) { 
+			return jsonCity[i].name; 
+		} 
+
+	}
+	
+$(function(){
+	$("#delall").click(function(){
+		var arrChk=$("input[name='items']:checked");
+		var allid='';
+		 $(arrChk).each(function(){
+			allid = allid + this.value +',';     
+		 });
+		 if(allid !=''){
+			 $.ajax({
+					type	:	"get",
+					url  	:	"{:U('votex/verifyAll',array('cid'=>$cid))}",
+					data	:	"allid=" + allid,
+					timeout :	30000,
+					dataType	:	"json",
+					success:function(dataHtml){
+						alert('批量审核成功');
+						location.reload();
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						alert('操作失效')
+					}
+				});	 
+		 }				
+	})
+	
+	$("#selected").click(function(){
+		$('input[name="items"]').attr("checked",this.checked); 	 
+	})
+})
+</script>
+</block>

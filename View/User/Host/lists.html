@@ -1,0 +1,46 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4 class="left">订单类型管理</h4>
+		<a href="{:U('Host/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<a style="margin:10px 0;" class="btn btn-success" href="{:U('Host/listAdd',array('id'=>$_GET['id']))}" title="添加">
+		<span class="glyphicon glyphicon-plus"></span>新增订单类型
+	</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th class="select">选择</th>
+		<th width="160">订单类型</th>
+		<th width="70">原价</th>
+		<th width="80">优惠价</th>
+		<th>简要说明</th>
+		<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr></tr>
+		<volist name="li" id="list"> 
+		<tr>
+		<td><input type="checkbox" name="del_id[]" value="285" class="checkitem"></td>
+		<td>{$list.type}</td>
+		<td>{$list.price}</td>
+		<td>{$list.yhprice}</td>
+		<td>{$list.info}</td>
+		<td colspan="10">
+		<a  class="btn btn-xs btn-default" href="{:U('Host/listEdit',array('id'=>$list['id'],'hid'=>$_GET['id']))}">编辑</a>
+		<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Host/list_del',array('id'=>$list['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

@@ -1,0 +1,68 @@
+
+<!doctype html>
+<html lang="zh">
+<head><script type="text/javascript" src="//af.alicdn.com/waf/3725663d54606dd679c38de025a3e7bd.js"></script>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>个人信息</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"> 
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="wap-font-scale" content="no">
+    <link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/style.css">
+    <link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/common.css"> 
+</head>
+<body class="page-mobile ">
+    <div class="wrapper identityVerification-wrapper">
+    <!-- 验证手机短信 E -->
+    <div id="step1">
+        <div class="com-prompt">
+            <h2>请填写您的真实信息，否则无法为您的投资承保。后续仅支持提现至实名认证信息办理的微信帐号或银行卡内</h2>
+        </div>
+        <ul class="com-columns span5">
+            <li class="comc-item">
+                <div class="com-formbox">
+                    <span class="formbox-hd">真实姓名</span>
+                        <span class="formbox-bd">
+                        <input type="text" id="real_name"  value="" class="input-txt" placeholder="真实姓名"/>
+                                                </span>
+                </div>
+            </li>
+            <li class="comc-item">
+                <div class="com-formbox">
+                    <span class="formbox-hd">身份证号</span>
+                            <span class="formbox-bd">
+                            <input type="text" id="id_number" value="" onkeydown="if(event.keyCode==32||event.keyCode==188||event.keyCode==222){return false;}" data-mini="true" class="input-txt" placeholder="身份证号"/>
+                                                        </span>
+                </div>
+            </li>
+            
+        </ul>
+
+        <!-- 通用按钮 S -->
+        <div class="def-p com-btnbox mt30">
+        <a href="javascript:void(0);" class="btn btn-1" id="submit">提交</a>
+                </div>
+        <!-- 通用按钮 E -->
+        <!-- 海外用户提示 S -->
+        <div class="def-p txtr mt10">
+            <!-- <a href="javascript:void(0);" class="fcblue" id="overseaUser">港澳台/外籍用户认证？</a> -->
+        </div>
+        <!-- 海外用户提示 E -->
+    </div>
+    </div>
+
+<script type='text/javascript'>var ROOT = "";</script>
+<script src="{:RES}/jinrong/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="{:RES}/jinrong/Mobile/Public/js/common.js"></script>
+<script type="text/javascript" src="{:RES}/jinrong/Mobile/Public/js/bank_information.js"></script>
+<div class="loading-wrapper" style="display: none;">
+<div class="loading-area">
+<div id="floatingBarsG1" class="floatingBarsG"></div>
+<p id="msg">海外户籍用户请联系客服进行认证</p> 
+</div>
+<div class="mask" style="opacity: 0.3;"></div>
+</div>
+    </body>
+</html>

@@ -1,0 +1,108 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+#uploadFile{
+	position: absolute;
+	opacity: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	margin:0;
+	padding:0;
+	cursor: pointer;
+}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<a href="{:U('Guess/index')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+			返回
+		</a><h4>优惠券管理</h4>		
+	</div>
+	<div role="tabpanel tabbable tabbable-custom">
+	  <!-- Nav tabs -->
+		<!-- Tab panes -->
+		<div class="tab-content" style="padding-top:5px;">
+			<div role="tabpanel" class="tab-pane active" id="student">
+				<div class="upload-button" style="margin:10px 0;" >
+					<span class="btn btn-primary">
+					<input class="upload" type="file" name="file" id="uploadFile" />
+					导入优惠券
+					</span>
+					<div class="btn-group">
+						<button  id="delall" type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown">批量删除 
+						</button>
+					</div>
+				</div>
+				<table class="table wm-table-bordered table-hover table-striped">
+					<thead>
+					<tr>
+					<th width="50" class="select"><input type="checkbox" value="反选" name="button" id="selected"  style="color:#94D38A;"></th>
+					<th width="50">名称</th>
+					<th width="120">编号</th>
+					<th width="120">获奖者</th>
+					<th width="120">状态</th>
+				
+					<!--<th width="200">操作</th>-->
+					</tr>
+					</thead>
+					<tbody>
+					<volist name="res" id="vo"> 
+					<tr>
+					<td><input type="checkbox" name="items" value="{$vo.id}"  class="checkitem" /></td>
+					<td>{$i}</td>
+					<td>{$vo.coupons}</td>
+					<td>{$vo.wechat_name}</td>
+					<td><if condition="$vo['isuser'] eq 1">
+					<span style="color:red">已使用</span>
+			<else />
+			
+			未使用
+		</if></td>
+					
+					<!--<td>
+					<a class="btn btn-xs btn-default" href="{:U('student_edit?id='.$vo['id'])}">修改</a>
+					<a class="btn btn-xs btn-danger" href="{:U('stu_delete?id='.$vo['id'])}">删除</a>
+					</td>-->
+					</tr>
+					</volist>
+					</tbody>
+				</table>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="teacher"></div>
+		</div>
+	</div>
+	<div>{$page}</div>
+</div>
+<div class="modal fade" id="indicatorModal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<i class="fa fa-lg fa-spinner fa-spin"></i>&nbsp;正在上传数据，请稍候...
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</block>
+<block name="js">
+<script src="/Public/Common/js/jquery.ajaxfileupload.js"></script>
+<script type="text/javascript">
+$("#uploadFile").AjaxFileUpload({
+	action: "{:U('Guess/coupons_import',array('cid'=>$cid))}",
+	onSubmit: function(filename) {
+		$('#indicatorModal').modal('show');
+		return true;
+	},
+	onComplete: function(filename, response) {
+		$('#indicatorModal').modal('hide');
+		location.reload();
+	}
+});
+
+
+</script>
+</block>

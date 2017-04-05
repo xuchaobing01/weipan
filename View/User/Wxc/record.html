@@ -1,0 +1,25 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+	<div class="container-fluid">
+		<div style="margin:10px 0;">
+			<a href="{:U('Votex/index')}" class="btn btn-success">返回</a>
+		</div>
+		<table class="table table-striped wm-table-bordered">
+			<thead>
+				<tr>
+					<th>微信名</th>
+					<th>累计投票次数</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist id="list" name="list">
+				<tr>
+					<td>{$list.wechat_name}</td>
+					<td>{$list.vote_num}</td>
+				</tr>
+				</volist>
+			</tbody>
+        </table>
+		<div>{$page}</div>
+	</div>
+</block>

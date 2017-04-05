@@ -1,0 +1,214 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>酒店设置 </h4>
+		<span>首页地址</span>
+		<code>{:C('WAP_DOMAIN')}/index.php?m=Wap&c=Hotel&a=index&token={$_SESSION['token']}</code>
+	</div>
+	<form class="form-horizontal" method="post" action="">
+		<input type="hidden" name="id" value="{$set.id}" /> 
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >关键词</label>
+			<div class="col-md-4">
+				<input type="text" name="keyword" value="{$set.keyword}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >酒店名称</label>
+			<div class="col-md-4">
+				<input type="text" name="title" value="{$set.title}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >酒店地址</label>
+			<div class="col-md-4">
+				<input type="text" name="address" value="{$set.address}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >电话</label>
+			<div class="col-md-4">
+				<input type="text" name="tel" value="{$set.tel}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >手机</label>
+			<div class="col-md-4">
+				<input type="text" name="tel2" value="{$set.tel2}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="ppicurl" class="col-sm-2 control-label wm-control-label">封面图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" name="ppicurl" id="ppicurl" value="{$set.ppicurl|default=RES.'/images/photo/noneimg.jpg'}" class="form-control" />
+				<img id="ppicurlHolder" style="width:216px;height:120px;" <if condition="($set eq null) OR($set['ppicurl'] eq '')">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$set.ppicurl}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('ppicurl',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('ppicurl')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+					&nbsp;&nbsp;建议尺寸:720*400
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >预订说明</label>
+			<div class="col-md-4">
+				<textarea class="form-control" id="info2" name="info2" style="height: 180px; ">{$set.info2}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >酒店详情</label>
+			<div class="col-md-4">
+				<textarea class="form-control" id="info" name="info" style="height: 180px;">{$set.info}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >支付方式</label>
+			<div class="col-md-8">
+				<label class="checkbox-inline"><input <?php if($set['use_wxpay']=='1')echo 'checked';?> name="use_wxpay" value="1" type="checkbox"  />微信支付</label>
+				<label class="checkbox-inline"><input <?php if($set['use_offline_pay']=='1')echo 'checked';?> name="use_offline_pay" value="1" type="checkbox"  />门店支付</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >模板消息</label>
+			<div class="col-md-4">
+				<label class="checkbox-inline"><input <?php if($set['use_tpl_msg']=='1')echo 'checked';?> type="checkbox" name="use_tpl_msg" value="1" />预订成功后微信通知</label>
+				<input type="text" style="margin:4px 0;" name="tpl_msg_id" value="{$set['tpl_msg_id']}" class="form-control" />
+				<span class="help-block">模板选择：酒店旅游/酒店/酒店预订成功通知</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >短信通知</label>
+			<div class="col-md-4">
+				<label class="checkbox-inline"><input <?php if($set['use_sms_note']=='1')echo 'checked';?> type="checkbox" name="use_sms_note" value="1" />预订成功后通知商户</label>
+				<span class="help-block">通知手机号为商家手机</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<button type="submit" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<script src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="{:STATICS}/qiniu.js"></script>
+  <div class="content"> 
+   <div class="cLineB"> 
+    
+    <a href="{:U('Host/index',array('token'=>$token))}" class="right  btnGreen" style="margin-top:-27px">返回</a>
+	<span>页面地址</span>
+	<code>{:C('site_url')}/index.php?g=Wap&m=Host&a=index&token={$token}&wechat_id={wechat_id}&hid={$set.id}</code>
+   </div>
+   <form class="form" method="post" action="" enctype="multipart/form-data"> 
+    <input type="hidden" name="id" value="{$set.id}" /> 
+    <div class="msgWrap bgfc"> 
+     <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%"> 
+      <tbody> 
+       <tr> 
+        <th width="120"><span class="red">*</span>关键词：</th> 
+        <td><input type="text" name="keyword" value="{$set.keyword}" class="px" style="width:400px;" /> <span class="red">只能写一个关键词</span></td> 
+       </tr> 
+       <tr> 
+        <th><span class="red">*</span>商家名称：</th> 
+        <td><input type="text" name="title" value="{$set.title}" class="px" style="width:400px;" /></td> 
+       </tr> 
+       <tr style="display:none"> 
+        <th><span class="red">*</span>商家地址：</th> 
+        <td><input type="text" name="address" value="{$set.address}" class="px" style="width:400px;" /></td> 
+       </tr> 
+       <tr> 
+        <th><span class="red">*</span>商家电话：</th> 
+        <td><input type="text" name="tel" value="{$set.tel}" class="px" style="width:400px;" /> 电话号码</td> 
+       </tr> 
+       <tr> 
+        <th><span class="red">*</span>手机号：</th> 
+        <td><input type="text" name="tel2" value="{$set.tel2}" class="px" style="width:400px;" /> 手机号</td> 
+       </tr> 
+       <tr> 
+        <th><span class="red">*</span>订单封面图片：</th> 
+        <td>
+			<input type="text" name="ppicurl" value="{$set.ppicurl}" id="pic" class="px" style="width:400px;" />
+			<a href="javascript:void(0)" onclick="selectAsset('pic',700,420)" class="a_upload">上传</a> 
+			<a href="javascript:void(0)" onclick="previewImg('pic')">预览</a>&nbsp;&nbsp;推荐大小为720x400
+		</td> 
+       </tr> 
+       <tr> 
+        <th><span class="red">*</span>订单页头部图片：</th> 
+        <td>
+		<input type="text" id="pic1" name="headpic" value="<if condition="$set.headpic neq false">{$set.headpic}<else/>{:RES}/images/cart_info/online.jpg</if>" class="px" style="width:400px;" /> 
+		<a href="javascript:void(0)" onclick="selectAsset('pic1',700,420)" class="a_upload">上传</a> 
+		<a href="javascript:void(0)" onclick="previewImg('pic1')">预览</a>
+		&nbsp;&nbsp;不会自定义请留空:填写图片外链地址，推荐大小为720x125，高度可根据自身需求调整。<br />不填默认本图片: 
+		<a target="ss" href="{:C('site_url')}/Tpl/User/default/common/images/cart_info/online.jpg">点击查看</a>
+		</td> 
+       </tr>
+       <tr> 
+        <th valign="top"><span class="red">*</span>商家图片：</th> 
+        <td valign="top">
+         <div class="bdrcontent"> 
+          <div id="div_ptype"> 
+           <table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%"> 
+            <thead> 
+             <tr> 
+              <th width="160">文字描述</th>  
+              <th width="160">图片地址</th> 
+              <th width="160">图片跳转地址以http://开头</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr> 
+              <td width="160"><input type="text" name="name" value="{$set.name}" class="px" style="width:160px;" /></td>  
+              
+              <td width="200">
+			  <input type="text" name="picurl" value="{$set.picurl}" id="pic2" class="px" style="width:160px;" />
+				<a href="javascript:void(0)" onclick="selectAsset('pic2',700,420)" class="a_upload">上传</a> 
+				<a href="javascript:void(0)" onclick="previewImg('pic2')">预览</a>
+				&nbsp;&nbsp;</td> 
+              <td width="200">
+			  <input type="text" name="url" value="{$set.url}" class="px" style="width:160px;" />
+			  </td>
+             </tr> 
+            </tbody> 
+            
+           </table> 
+          </div> 
+         </div> 
+ 
+</td> 
+       </tr> 
+       <tr> 
+        <th valign="top"><span class="red">*</span>商家介绍：</th> 
+        <td valign="top"><textarea class="px" id="info" name="info" style="width: 410px; height: 180px;">{$set.info}</textarea></td> 
+       </tr> 
+       <tr> 
+        <th valign="top"><span class="red">*</span>订单说明：</th> 
+        <td valign="top"><textarea class="px" id="info2" name="info2" style="width: 410px; height: 180px; ">{$set.info2}</textarea></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div>
+        <div class="msgWrap"> 
+       <table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%"> 
+       <tbody>
+       <tr>         
+        <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td>  <td><button type="submit" name="button" class="btnGreen">保存</button> | <a href="{:U('Host/index',array('token'=>$token))}" class="btnGray vm">取消</a></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     </div>
+    
+   </form> 
+  </div> 
+</body>
+</html>

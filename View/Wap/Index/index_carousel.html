@@ -1,0 +1,60 @@
+<!--»ÃµÆÆ¬¿Ø¼þ-->
+<div style="-webkit-transform:translate3d(0,0,0);">
+	<div id="banner_box" class="box_swipe" style="visibility: visible;">
+		<ul style="list-style: none; width: {$num*433}px; transition: 500ms; -webkit-transition: 500ms; -webkit-transform: translate3d(-866px, 0, 0);">
+		<volist name="flash" id="so">
+			<li style="width: 433px; display: table-cell; vertical-align: top;">
+				<a href="{$so.url|default='javascript:void(0)'}">
+					<img src="{$so.img}"  style="width:100%;">
+				</a>
+			</li>
+		</volist>
+		</ul>
+		<ol>
+			<volist name="flash" id="so">
+			<li <if condition="$i eq 1">class="on"</if>></li>
+			</volist>
+		</ol>
+	</div>
+</div>
+<style>
+.box_swipe{
+	overflow:hidden;
+	position:relative;
+}
+
+.box_swipe>ol{
+	height:20px;
+	position: relative;
+	z-index:10;
+	margin-top:-25px;
+	text-align:right;
+	padding-right:20px;
+	background-color:rgba(0,0,0,0.5);
+}
+
+.box_swipe>ol>li{
+	display:inline-block;
+	margin:5px;
+	width:10px;
+	height:10px;
+	background-color:#757575;
+	border-radius: 10px;
+}
+.box_swipe>ol>li.on{
+	background-color:#ffffff;
+}
+</style>
+<script type="text/javascript" src="{:STATICS}/js/swipe.js"></script>
+<script>
+	$(function(){
+		new Swipe(document.getElementById('banner_box'), {
+			speed:500,
+			auto:3000,
+			callback: function(){
+				var lis = $(this.element).next("ol").children();
+				lis.removeClass("on").eq(this.index).addClass("on");
+			}
+		});
+	});
+</script>

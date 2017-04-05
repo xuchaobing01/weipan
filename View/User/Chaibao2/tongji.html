@@ -1,0 +1,28 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+<div class="container-fluid" style="padding-top:20px;">
+	<div class="page-header">
+        <h4>拆礼包活动统计</h4>
+       	<a href="{:U('Chaibao2/index')}" class="btn btn-default btn-sm">
+			<span class="fa fa-angle-left"></span>&nbsp;返回
+		</a>
+    </div>
+	<TABLE class="table wm-table-bordered">
+		<THEAD>
+			<TR>
+				<TH>日期</TH>
+				<TH>参与人数</TH>
+			</TR>
+		</THEAD>
+		<TBODY>
+			<volist id="list" name="records">
+			<TR>
+				<TD>{$list.date}</TD>
+				<TD>{$list.num}</TD>
+			</TR>
+			</volist>
+		  </TBODY>
+		</TABLE>
+        <div class="pages">{$page}</div>
+    </div>
+</block>

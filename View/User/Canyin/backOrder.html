@@ -1,0 +1,29 @@
+<extend name="Public:innerbase" />
+<block name="content">
+    <form method="post">
+	<div class="container" style="padding: 30px 20px">
+		<div class="row">
+			<label class="col-xs-2">门店：</label>
+			<span class="form-control-static col-xs-4">
+			<select name="shopId" >
+            <volist name="company" id="vo">
+                <option value="{$vo.id}">{$vo.name}</option>
+            </volist>
+			</select>
+			</span>
+		</div><br>
+		<div class="row">
+            <label class="col-xs-2"><button type="button">确定</button></label>
+		</div>
+	</div>
+    </form>
+    <script>
+        $("button").click(function(e){
+            $("form").submit();
+            parent.window.location.reload();
+        })
+    </script>
+</block>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+</html>

@@ -1,0 +1,116 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="{:STATICS}/cxselect/js/jquery.cxselect.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<include file="Public:upload" />
+
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>智能客服</h4>
+	</div>
+	<div class="alert alert-info">提示：<br/>您的智能机器人需要您的调教才能进行正常的应答，在专属客服调教菜单进行调教
+单一回复客服：可选择回复欢迎文字或者微官网</div>
+	<ul class="nav nav-tabs wm-tabs">
+		<li><a href="{:U('set')}">客服设置</a></li>
+		<li class="active"><a href="{:U('list')}" target="_self">客服回答库</a></li>
+	</ul>
+	<span type="button" class="btn btn-success" style="margin:20px 0;" data-toggle="modal" data-target="#editModal">添加</span>
+	<table id="answersTable" class="table wm-table-bordered">
+		<thead>
+			<tr>
+				<th>客户问题</th>
+				<th>回答</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="lists" id="item">
+			<tr>
+				<td>{$item.question}</td>
+				<td>{$item.answer}</td>
+				<td>
+					<button type="button" class="btn btn-xs btn-default btn-edit" data-toggle="modal" data-target="#editModal"  data-id="{$item['id']}">编辑</button>
+					<a class="btn btn-xs btn-danger" href="{:U('del?id='.$item['id'])}">删除</a>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+<div class="modal fade" id="editModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<input type="hidden" id="id" name="id" /> 
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">添加客服话术</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>问题</label>
+					<input id="question" class="form-control" name="question" value="" />
+				</div>
+				<div class="form-group">
+					<label>回答</label>
+					<input id="answer" class="form-control" name="answer" value="" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button id="btnSave" type="button" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript">
+var action = 'add';
+$('#btnSave').click(function(){
+	var question = $('#question').val();
+	var answer = $('#answer').val();
+	if(question ==''){
+		$('#question').parent().addClass('has-error').end().focus();
+		return;
+	}
+	if(answer== ''){
+		$('#answer').parent().addClass('has-error').end().focus();
+		return;
+	}
+	var url = action=='add'?"{:U('add')}":"{:U('edit')}";
+	var data={question:question,answer:answer};
+	if(action == 'edit'){
+		data['id'] = $('#id').val();
+	}
+	$.post(url,
+		data,
+		function(data){
+			if(data.code==0){
+				location.reload();
+			}
+			else{
+				alert(data.message);
+			}
+		},
+		'json'
+	);
+});
+$('.btn-add').click(function(){
+	action = 'add';
+});
+$('.btn-edit').click(function(){
+	action = 'edit';
+	var $tr = $(this).parents('tr');
+	$('#question').val($tr.children('td:first').text());
+	$('#answer').val($tr.children('td').eq(1).text());
+	$('#id').val($(this).attr('data-id'));
+});
+</script>
+</block>

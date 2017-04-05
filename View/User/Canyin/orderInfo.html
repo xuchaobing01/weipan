@@ -1,0 +1,168 @@
+<extend name="Public:innerbase" />
+<block name="content">
+	<div class="container">
+		<div class="row">
+			<label class="col-xs-2">支付状态：</label>
+			<span class="form-control-static col-xs-4">
+			<if condition="$thisOrder.paid eq 1">已付款<else/>未付款</if>
+			</span>
+            <label class="col-xs-2">下单时间：</label>
+			<span class="form-control-static col-xs-4">
+			{$thisOrder.create_time|date="Y-m-d H:i",###}
+			</span>
+		</div>
+		<div class="row">
+			<label class="col-xs-2">订购人：</label>
+			<span class="form-control-static col-xs-4">
+			{$thisOrder.linkman}
+			</span>
+			<label class="col-xs-2">电话：</label>
+			<span class="form-control-static col-xs-4">
+			{$thisOrder.cellphone}
+			</span>
+		</div>
+		<div class="row">
+			<label class="col-xs-2">地址：</label>
+			<span class="form-control-static col-xs-4">
+			{$thisOrder.address}
+			</span>
+			<label class="col-xs-2">就餐时间：</label>
+			<span class="form-control-static col-xs-4">
+			{$thisOrder.year}-{$thisOrder.month}-{$thisOrder.day}
+			</span>
+		</div>
+		<div class="row">
+			<label class="col-xs-2">餐品总数：</label>
+			<span class="form-control-static col-xs-4 text-success">
+			{$thisOrder.total}
+			</span>
+			<label class="col-xs-2">总价：</label>
+			<span class="form-control-static col-xs-4 text-danger">
+			{$thisOrder.price}元
+			</span>
+		</div>
+		<h4 class="菜品详情"></h4>
+		<table class="table wm-table-bordered">
+			<thead>
+				<th>菜品名称</th>
+				<th>单价</th>
+				<th>数量</th>
+			</thead>
+			<tbody>
+				<volist name="dishesList" id="dishes">
+				<tr>
+				<td>{$dishes.name}</td>
+				<td>{$dishes.price}元</td>
+				<td>{$dishes.count}</td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+
+    <style>
+        #d_btn>button{
+            padding: 10px 30px; border: 0;margin: 0 20px;
+            font-weight: bold;
+        }
+    </style>
+    <div style="text-align: center;" id="d_btn">
+
+        <button class="btnPrint">
+            <if condition="$thisOrder.state eq '1'">
+                配送
+                <elseif condition="$thisOrder.state eq '2'" />
+                完成
+                <else/>
+                已完成
+            </if>
+        </button>
+    </div>
+    <form id="form1" action="/User/Canyin/orderinfo" method="post" >
+
+    </form>
+    <script>
+        $(".btnPrint").click(function(e){
+            var txt=$(this).html().trim();
+            if(txt=="已完成"){
+                return;
+            }
+            // 订单状态置为正在配送
+            $("#form1").append('<input type="hidden" name="id" value="{$thisOrder.id}">');
+            var state=3;
+            var state_txt="已完成";
+            if(txt=="配送"){
+                state=2;
+                state_txt="正在配送";
+            }
+            $("td[s_order_id='{$thisOrder.id}']", window.parent.document).html(state_txt);
+            $("#form1").append('<input type="hidden" name="state" value="'+state+'">');
+
+            $("#form1").submit();
+
+
+        });
+
+        $(".btnReview").click(function(e){
+            //spark.confirm_jump('您确定要退回吗?', '/User/Dining/backOrder/id/{$thisOrder.id}');
+            if(window.confirm("您确定要发回总店审核吗？")){
+                $.ajax({
+                    url:'/User/Dining/backOrder/id/{$thisOrder.id}',
+                    type:"get",
+                    dataType:"json"
+                });
+                $(this).html("已发回总店审核");
+                $(this).attr("disabled", 'disabled');
+            }
+        });
+    </script>
+</block>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<body id="nv_member">
+<form class="form" method="post" id="form" action="">
+<if condition="$isUpdate eq 1">
+<input type="hidden" name="id" value="{$set.id}" />
+</if>
+<input type="hidden" name="discount" id="discount" value="{$set.discount}" />
+    <div class="msgWrap bgfc">
+     <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
+      <tbody>
+		<tr>
+        <th><span class="red">*</span>发货状态：</th>
+        <td><select name="sent"><option value="0" <if condition="$thisOrder.sent eq 0">selected</if>>未发</option><option value="1" <if condition="$thisOrder.sent eq 1">selected</if>>已发</option></select></td>
+		</tr>
+		<tr>
+       <th>&nbsp;</th>
+		<td>
+		<input type="hidden" name="groupon" value="1" />
+		<button type="submit" name="button" class="btnGreen">保存</button></td>
+		</tr>
+      </tbody>
+     </table>
+     </div>
+   </form>
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+<th width="120" align="center" style="text-align:center">名称</th>
+<th class="60" align="center" style="text-align:center">数量</th>
+<th width="160" align="center" style="text-align:center">单价（元）</th>
+
+</tr>
+</thead>
+<tbody>
+<tr></tr>
+<volist name="products" id="o">
+<tr>
+<td align="center">
+<img src="{$o.logourl}"  width="100"/><br>
+{$o.name}</td>
+<td align="center">{$o.count}</td>
+<td align="center">{$o.price}</td>
+</tr>
+</volist>
+</tbody>
+</table>
+</body>
+</html>

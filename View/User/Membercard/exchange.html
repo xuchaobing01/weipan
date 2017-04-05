@@ -1,0 +1,91 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<block name="js">
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript">
+KindEditor.ready(function(K) {
+	var editor2 = K.create('#info', {
+	resizeType : 1,
+	allowPreviewEmoticons : false,
+	allowImageUpload : true,
+	uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+	items : [
+	'source','undo','redo','copy','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr',
+	 '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+	'insertunorderedlist','link', 'unlink','']
+	});
+});
+
+KindEditor.ready(function(K) {
+	var editor2 = K.create('#info2', {
+		resizeType : 1,
+		allowPreviewEmoticons : false,
+		allowImageUpload : true,
+		uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+		items : [
+		'source','undo','redo','copy','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr',
+		 '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		'insertunorderedlist','link', 'unlink','']
+		});
+	});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>会员卡积分策略</h3>
+		<a href="{:U('Membercard/card')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form method="post" action="" class="form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2">每天签到奖励积分</label>
+			<div class="col-md-3">
+				<input type="text" name="everyday" class="form-control" value="{$exchange.everyday}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">连续6天签到奖励积分</label>
+			<div class="col-md-3">
+				<input type="text" name="continuation" class="form-control" value="{$exchange.continuation}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">消费1元奖励积分</label>
+			<div class="col-md-3">
+				<input type="text" name="reward" class="form-control" value="{$exchange.reward}" />
+				<span class="help-block">最小非零值为0.01，0表示消费不奖励积分</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">首次领卡送积分</label>
+			<div class="col-md-3">
+				<input type="number" name="startup_score" class="form-control" value="{$exchange.startup_score}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">会员卡使用说明</label>
+			<div class="col-md-5">
+				<textarea class="form-control" id="info" name="cardinfo" style="height: 200px;">{$exchange.cardinfo}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">积分规则说明</label>
+			<div class="col-md-5">
+				<textarea class="form-control" id="info2" name="cardinfo2" style="height: 200px;">{$exchange.cardinfo2}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-md-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</block>

@@ -1,0 +1,82 @@
+<extend name="index_tpl" />
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:STATICS}/font-awesome/css/font-awesome.min.css" media="all" />
+<link href="{:RES}/css/allcss/cate26_{$tpl.color_id}.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.link_tel{
+	display: block!important;
+	line-height: 40px!important;
+	margin: 10px 10px 0 10px;
+	margin-top: 10px!important;
+	background: {$homeInfo.theme_color|default='rgb(234, 89, 70)'};
+	color: rgb(255, 255, 255)!important;
+	text-align: center;
+	border-radius: 5px;
+	word-spacing: nowrap;
+	overflow: hidden;
+	font-size: 24px;
+	font-weight: bold;
+	position: relative;
+}
+.link_tel:before{
+	position: absolute;
+	background: url(/Public/Wap/images/photo/plugmenu1.png) no-repeat center;
+	width: 28px;
+	height: 28px;
+	left: 15px;
+	top: 5px;
+	content: '';
+	background-size: 100%;
+}
+</style>
+</block>
+<block name="cate_menu">
+<section style="padding-top: 10px;">
+	<a href="tel:{$company.tel}" class="link_tel">
+		<if condition="$company.tel neq false">{$company.tel}<else/>没有留电话</if>
+	</a>
+</section>
+<!--用户分类管理-->
+<section>
+	<ul class="list_ul">
+	<volist name="info" id="vo">
+		<li>
+			<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">
+			<figure>
+				<div style="background-image:url({$vo.img});">&nbsp;</div>
+				<figcaption style="height:33px; overflow:hidden;">{$vo.name}</figcaption>
+			</figure>
+			</a>
+		</li>
+	</volist>
+	</ul>
+</section>
+</block>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>{$tpl.wxname}</title>
+<base href="." />
+<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+
+<script type="text/javascript" src="{:STATICS}/js/zepto.min.js"></script>
+
+</head>
+<body onselectstart="return true;" ondragstart="return false;">
+<div class="body">
+	<include file="index_carousel_new" />
+	
+	<div class="copyright" style="text-align:center;padding:10px 0">
+	<if condition="$iscopyright eq 1">
+	{$homeInfo.copyright} </br>
+	<else/>
+	{$siteCopyright}
+	</if>
+	</div>
+</div>
+<include file="menu_style"/> 
+</body>
+</html>

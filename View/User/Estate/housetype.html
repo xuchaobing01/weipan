@@ -1,0 +1,41 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>户型管理</h3>   
+	</div>
+	<a style="margin:10px 0;" href="{:U('Estate/housetype_add')}" class="btn btn-success">
+		添加户型
+	</a>
+	<table class="table wm-table-bordered">
+		<thead>
+			<tr>
+			<th>户型名称</th>
+			<th>所属子楼盘</th>
+			<th>显示顺序</th>
+			<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<if condition="$housetype eq ''">
+			<tr>
+			<td colspan="6" style="text-align:center; height:30px;"><strong>没有任何户型信息.</strong></td>
+			</tr>
+		<else/>
+			<volist name="housetype" id="list">
+			<tr>
+			<td>{$list['name']}</td>
+			<td>{$list['title']|default="独立户型"}</td>
+			<td>{$list['sort']}</td>
+			<td>
+			<a class="btn btn-xs btn-default"  href="{:U('Estate/housetype_add',array('id'=>$list['id']))}" class="btn">编辑</a>
+			<a class="btn btn-xs btn-danger"  href="{:U('Estate/housetype_del',array('id'=>$list['id']))}" onclick="return(confirm('确定要删除吗？'))" class="btn">删除</a></a>
+			</td>
+			</tr>
+			</volist>
+		</if>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

@@ -1,0 +1,63 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h3>{$title}</h3>
+		<a class="btn btn-sm btn-default" href="{:U('Flash/index')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form class="form-horizontal" role="form" method="post" action="<if condition="$info">{:U('Flash/upsave')}<else/>{:U('Flash/insert')}</if>">
+		<input type="hidden" name="id" value="{$info.id}" />
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">幻灯片图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$info.img}" id="img" name="img" />
+				<img id="imgHolder" style="width:216px;height:120px;" class="img-rounded" <if condition="$info['img'] eq ''">data-src="$holder.js/216x120/gray/text:720*400"</if> src="{$info.img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">幻灯片描述</label>
+			<div class="col-md-6">
+				<input type="text" class="form-control" id="keyword" value="{$info.info}" name="info" />
+				<span class="help-block">尽量简短，可以留空</span>
+			</div>
+		</div>
+		<div id="classify-addr" class="form-group">
+			<label for="url" class="col-sm-2 control-label">外链地址</label>
+			<div class="col-sm-6">
+				<div class="input-group">
+					<input type="text" class="form-control" id="url" value="{$info.url}" name="url" />
+					<div class="input-group-btn">
+						<a class="btn btn-primary" href="javascript:void(0)" onclick="selectLink('url')">选择</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sort" class="col-sm-2 control-label">排序</label>
+			<div class="col-sm-2">
+				<input type="text" class="form-control text-center" id="sort" value="{$info.sort}" name="sort" />
+				<span class="help-block">值越大越靠前</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

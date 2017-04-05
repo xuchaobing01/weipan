@@ -1,0 +1,362 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style type="text/css">
+.vipcard{
+	margin: 0 auto;
+	position: relative;
+	height: 159px;
+	text-align: left;
+	width: 267px;
+}
+
+#cardbg{
+	height: 159px;
+	width: 267px;
+	position:absolute;
+	border-radius: 8px;
+	-webkit-border-radius:8px;
+	-moz-border-radius:8px;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow:0 0 4px rgba(0, 0, 0, 0.6);
+	-webkit-box-shadow:0 0 8px rgba(0, 0, 0, 0.6);
+	top:0;
+	left:0;
+	z-index:1;
+}
+.vipcard .logo {
+	max-height:70px;
+	position:absolute;
+	top:8px;
+	left:5px;
+	z-index:2;
+	width: 30px;
+}
+.vipcard .verify {
+	display:inline-block;
+	height:40px;
+	top:105px;
+	right:12px;
+	text-align:right;
+	line-height:24px;
+	color:#000;
+	font-size:20px;
+	text-shadow:0 1px rgba(255, 255, 255, 0.2);
+	z-index:2;
+}
+
+.vipcard h1 {
+	position:absolute;
+	right:10px;
+	top:7px;
+	text-shadow:0 1px rgba(255, 255, 255, 0.2);
+	color:#000;
+	font-size:11px;
+	line-height:25px;
+	text-align:right;
+	font-weight: normal;
+	z-index:2;
+}
+.vipcard .verify span {
+display:inline-block;
+text-align:left;
+}
+.vipcard .verify em {
+display:block;
+line-height:13px;
+font-size:10px;
+font-weight:normal;
+font-style:normal;
+}
+.pdo {
+	position:absolute;
+	top:0;
+	left:0;
+	display:inline-block;
+}
+.userinfoArea td {
+    padding: 8px 0 0px 15px;
+}
+#tishi{
+	text-align: center;display: block;
+}
+.banner{
+	display:block; width:213px;height: 278px;overflow: hidden;
+}
+.banner img{
+	display:block; width:213px; border:0;
+}
+.bannerbtn{ position:relative; display:block}
+.bannerbtn .qiaodaobtn{ position: absolute; display:block; bottom:0}
+</style>
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript" src="{:RES}/js/cart/jscolor.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="#home" data-toggle="tab">会员卡设计</a></li>
+		<li><a href="#setting" data-toggle="tab">会员页面设计</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<form class="form-horizontal" method="post">
+	<div class="tab-content">
+		<!-- 会员卡设计 -->
+		
+		<div class="tab-pane active" id="home">
+			
+			<div class="page-header wm-page-header">
+				<h4>会员卡风格</h4>
+				<a class="btn btn-default btn-sm" href="{:U('card')}">
+					<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+				</a>
+			</div>
+			
+				<input type="hidden" name="id" value="{$card.id}" />
+				<div class="form-group">
+					<label class="col-sm-2">会员卡等级</label>
+					<div class="col-md-4">
+						<input type="text" name="type_name" value="{$card.type_name|default='普通卡'}" id="type_name" class="form-control" />
+						<span class="help-block">如：普通卡，白金卡，钻石卡</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">会员卡名称</label>
+					<div class="col-md-4">
+						<input type="text" name="cardname" value="{$card.cardname}" id="cardname" class="form-control" />
+						<span class="help-block">如：微市场会员卡</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">最低领卡消费</label>
+					<div class="col-md-4">
+						<input type="text" name="base_expense" value="{$card.base_expense|default=0}" id="base_expense" class="form-control" />
+						<span class="help-block">填0则无消费要求</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">文字颜色</label>
+					<div class="col-md-4">
+						<input type="text" name="vipnamecolor" id="vipnamecolor" value="{$card.vipnamecolor}" class="color form-control" style="width: 120px; background-image: none; background-color:{$card.vipnamecolor}; color: rgb(255, 255, 255);">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">会员卡图标</label>
+					<div class="col-md-6">
+						<input type="hidden" name="logo" id="logo" value="{$card.logo|default=RES.'/images/cart_info/transparent.png'}" class="form-control" />
+						<img id="logoHolder" style="width:60px;height:60px;" class="img-rounded" src="{$card.logo|default=RES.'/images/cart_info/transparent.png'}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('logo',100,100)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('logo')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">会员卡正面</label>
+					<div class="col-md-6">
+						<input type="hidden" name="diybg" id="diybg" class="form-control" value="{$card.diybg|default=RES.'/images/card/card_bg01.png'}" />
+						<img id="diybgHolder" style="width:162px;height:96px;" class="img-rounded" src="{$card.diybg|default=RES.'/images/card/card_bg01.png'}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('diybg',540,320,'membercard')">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('diybg')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">会员卡背面</label>
+					<div class="col-md-6">
+						<input type="hidden" name="bg" id="bg" value="{$card.bg|default=RES.'/images/card/card_bg01.png'}" class="form-control" />
+						<img id="bgHolder" style="width:162px;height:96px;" class="img-rounded" src="{$card.bg|default=RES.'/images/card/card_bg01.png'}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('bg',540,320,'membercard')">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('logo')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">卡号文字颜色</label>
+					<div class="col-md-4">
+						<input type="text" name="numbercolor" id="numbercolor" value="{$card.numbercolor}" class="color form-control" style="width: 120px; background-image: none; background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">首页提示文字</label>
+					<div class="col-md-4">
+						<input type="text" name="msg" value="{$card.msg}" id="tishi2" class="form-control" />
+						<span class="help-block">如：微时代会员卡，方便携带收藏，永不挂失</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-4 col-sm-offset-2">
+						<input type="submit" class="btn btn-primary" value="保存" />
+					</div>
+				</div>
+		</div>
+		<!-- 会员页面设计 -->
+		<div class="tab-pane" id="setting">
+		<div class="page-header wm-page-header">
+			<h4>页面顶部图片风格</h4>
+		</div>
+			<div class="form-group">
+				<label class="col-sm-2">最新通知</label>
+				<div class="col-md-3">
+					<input type="hidden" name="Lastmsg" id="Lastmsg" value="{$card.Lastmsg|default=RES.'/images/cart_info/news.jpg'}" class="form-control" />
+					<div class="banner">
+						<img src="{:RES}/images/cart_info/news-2.jpg" />
+						<img id="LastmsgHolder" src="{$card.Lastmsg|default=RES.'/images/cart_info/news.jpg'}" />
+						<img src="{:RES}/images/cart_info/news-3.jpg" />
+					</div>
+				</div>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('Lastmsg',640,110)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('Lastmsg')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2">会员特权</label>
+				<div class="col-md-3">
+					<input type="hidden" name="vip" id="vip" value="{$card.vip|default=RES.'/images/cart_info/vippower.jpg'}" class="form-control" />
+					<div class="banner">
+						<img src="{:RES}/images/cart_info/vippower-2.jpg" />
+						<img id="vipHolder" src="{$card.vip|default=RES.'/images/cart_info/vippower.jpg'}" />
+						<img src="{:RES}/images/cart_info/vippower-3.jpg" />
+					</div>
+				</div>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('vip',640,110)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('vip')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2">会员签到</label>
+				<div class="col-md-3">
+					<input type="hidden" name="qiandao" id="qiandao" value="{$card.qiandao|default=RES.'/images/cart_info/qiandao.jpg'}" class="form-control" />
+					<div class="banner">
+						<img src="{:RES}/images/cart_info/qiandao-2.jpg">
+						<img id="qiandaoHolder" src="{$card.qiandao|default=RES.'/images/cart_info/qiandao.jpg'}">
+						<div class="bannerbtn">
+							<img src="{:RES}/images/cart_info/qiandao-3.jpg">
+							<img class="qiaodaobtn" src="{:RES}/images/cart_info/qiandao-4.png">
+						</div>
+					</div>
+				</div>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('qiandao',640,110)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('qiandao')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2">消费记录</label>
+				<div class="col-md-3">
+					<input type="hidden" name="shopping" id="shopping" value="{$card.shopping|default=RES.'/images/cart_info/shopping.jpg'}" class="form-control" />
+					<div class="banner">
+						<img src="{:RES}/images/cart_info/shopping-2.jpg">
+						<img id="shoppingHolder" src="{$card.shopping|default=RES.'/images/cart_info/shopping.jpg'}" />
+						<img src="{:RES}/images/cart_info/shopping-3.jpg">
+					</div>
+				</div>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('shopping',640,110)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('shopping')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2">个人资料</label>
+				<div class="col-md-3">
+					<input type="hidden" name="memberinfo" id="memberinfo" value="{$card.memberinfo|default=RES.'/images/cart_info/user.jpg'}" class="form-control" />
+					<div class="banner">
+						<img src="{:RES}/images/cart_info/user-2.jpg">
+						<img id="memberinfoHolder" src="{$card.memberinfo|default=RES.'/images/cart_info/user.jpg'}" />
+						<img src="{:RES}/images/cart_info/user-3.jpg">
+					</div>
+				</div>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('memberinfo',640,110)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('memberinfo')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2">会员卡说明</label>
+				<div class="col-md-3">
+					<input type="hidden" name="membermsg" id="membermsg" value="{$card.membermsg|default=RES.'/images/cart_info/vippower.jpg'}" class="form-control" />
+					<div class="banner">
+						<img src="{:RES}/images/cart_info/info-2.jpg" />
+						<img id="membermsgHolder" src="{$card.membermsg|default=RES.'/images/cart_info/vippower.jpg'}" />
+						<img src="{:RES}/images/cart_info/info-3.jpg" />
+					</div>
+				</div>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('membermsg',640,110)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('membermsg')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2">联系方式</label>
+				<div class="col-md-3">
+					<input type="hidden" name="contact" id="contact" value="{$card.contact|default=RES.'/images/cart_info/addr.jpg'}" class="form-control" />
+					<div class="banner">
+						<img src="{:RES}/images/cart_info/addr-2.jpg">
+						<img id="contactHolder" src="{$card.contact|default=RES.'/images/cart_info/addr.jpg'}">
+						<img src="{:RES}/images/cart_info/addr-3.jpg">
+					</div>
+				</div>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('contact',640,110)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('contact')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-4 col-sm-offset-2">
+					<input type="submit" class="btn btn-primary" value="保存" />
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+</block>

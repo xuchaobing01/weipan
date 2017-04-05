@@ -1,0 +1,45 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4 class="left">微预约管理</h4>
+	</div>
+	<a style="margin:10px 0;" class="btn btn-success" href="{:U('Selfform/add',array('token'=>$token))}" title="添加">
+		<span class="glyphicon glyphicon-plus"></span>添加
+	</a>
+	<input name="delall" type="hidden" value="">
+	<input name="wxid" type="hidden" value="">
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th>名称</th>
+		<th>关键词</th>
+		<th>创建时间</th>
+		<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr></tr>
+		<volist name="list" id="item"> 
+		<tr>
+		<td>{$item.name}</td>
+		<td>{$item.keyword}</td>
+		<td>{$item.time|date="Y-m-d H:i:s",###}</td>
+		<td class="norightborder">
+			<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'kefu')">
+                <a class="btn btn-xs btn-default"
+                   href="{:U('Selfform/infos',array('id'=>$item['id']))}">订单管理</a></if>
+			<if condition="($_SESSION['sub_id'] eq 0)">
+			<!--<a class="btn btn-xs btn-default" href="{:U('Selfform/product',array('id'=>$item['id']))}">产品管理</a>-->
+			<a class="btn btn-xs btn-default" href="{:U('User/Selfform/inputs',array('id'=>$item['id']))}">表单项管理</a>
+			<a class="btn btn-xs btn-default" href="{:U('Selfform/set',array('id'=>$item['id']))}">编辑</a>
+			<a class="btn btn-xs btn-danger" href="{:U('Selfform/del',array('id'=>$item['id']))}">删除</a>
+			</if>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

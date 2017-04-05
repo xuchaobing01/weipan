@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>商品详情</title>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/flat-ui/css/flat-ui.css" />
+<style>
+.price{
+	font-size: 16px;
+	color: #999;
+}
+.oprice{
+	font-size: 16px;
+	color: #333;
+}
+.swipe{
+	overflow:hidden;
+	position:relative;
+}
+
+.swipe>ol{
+	height:20px;
+	position: relative;
+	z-index:10;
+	margin-top:-20px;
+	text-align:left;
+	padding-left:20px;
+	background-color:rgba(0,0,0,0.5);
+}
+
+.swipe>ol>li{
+	display:inline-block;
+	margin:4px 2px;
+	width:24px;
+	height:4px;
+	background-color:rgb(153, 153, 153);
+}
+.swipe>ol>li.on{
+	background-color:rgb(228, 57, 60);
+}
+.btn-link{color:#B5971F;}
+</style>
+<style>
+	h4{
+		font-size: 20px;
+	}
+	#colors, #sizes{
+		display: inline-block;
+	}
+	.span-color, .span-size{
+		color: #333;
+		float: left;
+		line-height: 24px;
+		height: 24px;
+		display: inline-block;
+		padding: 0 5px;
+		margin: 0 10px 10px 0;
+		background: #fff;
+		min-width: 49px;
+		text-align: center;
+		border: 1px solid #edeeef;
+		font-size: 12px;
+		cursor: pointer;
+	}
+	.color1, .size1{
+		font-size: 16px;
+		color: #999;
+		float:left;
+	}
+	.current {
+		background: #f90;
+		color: #fff;
+		border: 1px solid #f90;
+		text-shadow: none;
+	}
+	.option_box p{
+		margin:0;
+	}
+	.mod_btn {
+        display: inline-block;
+        box-shadow: none;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: none;
+        color: #999;
+        padding: 0 5px;
+        cursor: pointer;
+        width: 45%;
+        height: 40px;
+        line-height: 40px;
+        font-size: 17px;
+    }
+    .btn_em {
+        color: #fff;
+        background: #202020;
+    }
+    .btn_strong {
+        color: #fff;
+        background: #d20816;
+    }
+    .buy-div{
+        width: 100%;
+        text-align: center;
+    }
+	#home img{
+		max-width:100%;
+	}
+	.comment-avatar{
+		background-color: rgb(30, 107, 184);
+		width: 40px;
+		border-radius: 50%;
+		box-shadow: rgb(156, 168, 175) 1px 1px;
+	}
+	.item_num_set{
+		padding: 5px 0;
+	}
+	.item_num{
+		border: 0;
+		outline: 0;
+		text-align: center;
+		width: 40px;
+		border-bottom: 1px solid rgb(109, 109, 109);
+	}
+	#footbar{
+		position:fixed;
+		bottom:0;
+		height: 52px;
+		left:0;
+		right:0;
+		background-color: #CCCBD1;
+		padding: 2px 20px;
+	}
+	.spec-list{overflow:hidden;}
+	.spec-list li{float:left;border:1px solid gray;padding: 5px 10px;line-height: 1em;margin-right: 10px;}
+	.spec-list li.selected{border-color:#E4393C;background:url(/Public/Wap/images/selected.png) bottom right no-repeat;}
+	.spec-list li span{display:inline-block;font-size: 12px;}
+</style>
+<script charset="utf-8" src="/Public/Common/js/swipe.js" type="text/javascript"></script>
+</head>
+<body style="padding-bottom: 60px;">
+	<if condition="$item['title'] neq ''">
+	<div id='slider' class='swipe'>
+		<div class='swipe-wrap'>
+			<volist name="item['img_list']" id="img">
+				<div>
+					<img src="{:$img['url']}" style="width:100%;"/>
+				</div>
+			</volist>
+		</div>
+		<ol>
+			<volist name="item['img_list']" id="img">
+				<li <?php if($i==1)echo 'class="on"';?>></li>
+			</volist>
+		</ol>
+	</div>
+	<div class="container">
+		<div class="page-header" style="margin-top: 10px;">
+			<h4 class="ware_title">{$item.title}</h4>
+			<p>{$item.intro}</p>
+		</div>
+		<ul class="product-tags">
+			<li>
+				<span class="oprice">微信价：</span>
+				<span class="fontColor3" id="salePrice">¥<?php if($item['specs']){echo $item['price_range'];}else{echo $item['oprice'];} ?></span>
+				<notempty name="item.buy_limit"><span>每人限购<b style="color: rgb(234, 57, 63);">{$item.buy_limit}</b>件</span></notempty>
+			</li>
+			<li>
+				<span class="price">原&nbsp;&nbsp;&nbsp;&nbsp;价：</span>
+				<span style="font-size:15px;text-decoration: line-through;">¥{$item.price}</span>
+			</li>
+			<li><span class="price">品&nbsp;&nbsp;&nbsp;&nbsp;牌：</span> {$item.brand}</li>
+			<li><span class="price">销售情况:</span> 售出 {$item.buy_num} 件</li>
+		</ul>
+		<if condition="$spec_list neq ''">
+		<ul class="spec-list">
+			<volist name="spec_list" id="spec">
+			<li data-index="{$i}"><span>{$spec->name}</span></li>
+			</volist>
+		</ul>
+		</if>
+		<div class="sell-block" style="padding:0;border:0;overflow:hidden;">
+			<label class="">数量: </label>
+			<if condition="$item['goods_stock'] gt 0">
+			<span id="btnDec" class="btn btn-xs btn-success"><i class="fa fa-minus"></i></span>
+			<input type="hidden" id="buyLimit" value="{$item['buy_limit']}" />
+			<input id="quantity" value="1" type="number"  class="item_num" name="quantity" />
+			<span id="btnInc" class="btn btn-xs btn-success"><i class="fa fa-plus"></i></span>
+			</if> 
+			<span>
+			<if condition="$item['goods_stock'] gt 0">
+			（库存<span class="stock" id="goods_stock">{$item.goods_stock}</span>件）
+			<else/>
+			（暂时缺货）
+			</if>
+			</span>
+		</div>
+	</div>
+	<hr style="border:0;"/>
+	<div class="container">
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="active"><a href="#home" role="tab" data-toggle="tab">商品详情</a></li>
+			<li><a href="#profile" role="tab" data-toggle="tab">用户评论</a></li>
+		</ul>
+		<div class="tab-content" style="padding-top:20px;">
+			<div class="tab-pane active" id="home">
+				{$item.info}
+			</div>
+			<div class="tab-pane" id="profile">
+				<ul class="media-list">
+					<volist name="comments" id="vo">
+					<li class="media">
+						<a class="pull-left">
+							<span class="media-object">
+                                <if condition="$vo.headimgurl && $vo.headimgurl neq '0'">
+                                    <img class="comment-avatar" src="{$vo.headimgurl}64" />
+                                <else/>
+                                    <img class="comment-avatar" src="{$vo.thumbnail|default='/Public/Wap/images/photo/plugmenu2.png'}" />
+                                </if>
+							</span>
+                            <span style="font-size: 13px;">{$vo.wechat_name}</span>
+						</a>
+						<div class="media-body">
+							<h4 class="media-heading">{$vo.info}</h4>
+							<p><i>{$vo.add_time|date='Y/m/d H:i:s',###}</i></p>
+                            <if condition="$vo.info_reply neq ''"><p>回复：<i>{$vo.info_reply}</i></p></if>
+						</div>
+					</li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="footbar">
+		<a id="collect" class="btn btn-sm btn-link" onclick="collect()"><span class="fa <?php if($item['favor'] == 0)echo 'fa-star-o';else echo 'fa-star';?> fa-2x"></span></a>
+		<a class="btn btn-sm btn-link" href="{:U('Cart/index',['token'=>$token])}"><span class="fa fa-shopping-cart fa-2x"></span></a>
+		<button <if condition="$item['goods_stock'] lt 1">disabled</if> class="btn btn-sm btn-warning" onclick="shopCart()">加入购物车</button>
+		<button  <if condition="$item['goods_stock'] lt 1">disabled</if> class="btn btn-sm btn-danger" onclick="buys()">立即购买</button>
+	</div>
+<else/>
+	<h2 style="margin:20px;">该商品已下架！</h2>
+</if>
+<div class="modal fade" id="cartModal">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title modal_title"></h4>
+			</div>
+			<div class="modal-body">
+				<p class="text-success">
+				购物车内共有<span class="modal_cart_num"></span> 种商品,共计 ¥<span class="modal_cart_price"></span>
+			 </p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">继续购物</button>
+				<a href="{:U('Cart/index',['token'=>$token])}" class="btn btn-primary">查看购物车</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="shopCart"></div>
+</body>
+<script type="text/javascript">
+	var specs = {$spec_list|json_encode};
+	var specSelected = null;
+    function buys()
+    {
+        if(!check()) return false;
+        add_cart(1);
+    }
+
+    function shopCart(){
+        if(!check()) return false;
+        add_cart(2);
+    }
+
+    function check(){
+        var quantity = $("#quantity").val();
+		if(specs !=null && specSelected==null){
+			alert('请选择规格！');
+			return false;
+		}
+        if (quantity == ''){
+            alert('请输入购买数量');
+            return false;
+        }
+        if (parseInt(quantity) < 1){
+            alert("购买数量不能小于1");
+            return false;
+        }
+        if(isNaN(quantity)){
+            alert("请输入数字!");
+            return false;
+        }
+        return true;
+    }
+	//收藏商品
+	function collect(){
+		var data ={};
+		data['item_id'] = {$item.id};
+     	var url  = "{:U('User/collect',['token'=>$token])}";
+		//提交到后台购物车
+     	$.post(url,data,function(data){
+     		if(data.errcode==1){
+				$('#collect span').removeClass('fa-star-o').addClass('fa-star');
+     		}
+			else if(data.errcode==2){
+				$('#collect span').removeClass('fa-star').addClass('fa-star-o');
+     		}
+			alert(data.errmsg);
+     	},'json');
+	}
+    function add_cart(flag){
+        var data ={};
+		data['goodId'] = {$item.id};
+        data['quantity'] = $("#quantity").val();
+		if(specs !=null){
+			data['specName'] = specSelected['name'];
+		}
+     	var url  = "{:U('Cart/add_cart',['token'=>$token])}";
+		//提交到后台购物车
+     	$.post(url,data,function(data){
+     		if(data.status==1)
+     		{
+     			if(flag == 1){ //立即购买
+                    location.href="{:U('Cart/index',['token'=>$token])}";
+                }
+				else{ // 加入到购物车
+                    $('.modal_title').html(data.msg);
+                    $('.modal_cart_num').text(data.count);
+                    $('.modal_cart_price').html(data.sumPrice);
+                    $('#cartModal').modal()
+                    setTimeout("$('#cartModal').modal('hide')", 3000);
+                }
+     		}
+			else{
+				alert(data.msg);
+     		}
+     	},'json');
+    }
+	
+	function setInc(el){
+		var limit = parseInt($('#buyLimit').val());
+		var num = parseInt($(el).val());
+		if(!isNaN(num) && (limit==0||num<limit)){
+			$(el).val(num+1);
+		}
+	}
+	
+	function setDec(el){
+		var num = parseInt($(el).val());
+		if(!isNaN(num)&&num>1){
+			$(el).val(num-1);
+		}
+	}
+    </script>
+	<script type="text/javascript">
+    $("#quantity").change(function(e){
+        var num = parseInt($("#goods_stock").html());
+        if($(this).val() > num || num == 0){
+            alert("库存不足");
+            $(this).val("");
+        }
+    })
+	//产品图片
+	$(function(){
+		new Swipe(document.getElementById('slider'), {
+			speed:500,
+			auto:3000,
+			callback: function(){
+				var lis = $(this.element).next("ol").children();
+				lis.removeClass("on").eq(this.index).addClass("on");
+			}
+		});
+		$('#btnInc').click(function(){
+			setInc($('#quantity'));
+		});
+		$('#btnDec').click(function(){
+			setDec($('#quantity'));
+		});
+		$('.spec-list li').click(function(){
+			if(!$(this).hasClass('selected')){
+				$('.spec-list li.selected').removeClass('selected');
+				$(this).addClass('selected');
+				specSelected = specs[parseInt($(this).attr('data-index'))-1];
+				$('#salePrice').html('¥'+specSelected['price']);
+				$('#goods_stock').html(specSelected['stock']);
+			}
+		});
+	});
+</script>
+<script type="text/javascript" src="/Public/Common/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	var shareData = {
+        "appId": "<?php echo $appid;?>", // 服务号可以填写appId,wx7a2d802083170153
+        "imgUrl" : '<?php echo $item['img'];?>',
+        "link" : '<?php echo C('WAP_DOMAIN').U('Item/index',['token'=>$token,'id'=>$item['id']]); ?>',
+        "desc" : '<?php echo str_replace(["\r\n","\r","\n"],'',$item['intro']);?>',
+        "title" : "<?php echo $item['title'];?>"
+    };
+	var imgSrc = $('.swipe-wrap img').map(function(){return $(this).attr('src')}).toArray();
+	
+</script>
+<?php echo analysor(['token'=>$token,'wechat_id'=>$wechat_id,'module'=>'mall','page'=>'item_'.$item['id']]);?>
+</html>

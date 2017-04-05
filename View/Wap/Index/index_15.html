@@ -1,0 +1,37 @@
+<extend name="index_tpl" />
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:RES}/css/index/tpl_15_{$tpl.color_id}.css"  />
+<style type="text/css">
+	.mainmenu li:last-of-type {
+		margin-bottom: 0;
+	}
+	.mainmenu {
+		margin: 50px auto;/*可修改菜单距离顶部的高度*/
+		bottom: auto;
+		top:0;
+	}
+</style>
+</block>
+<block name="carousel">
+</block>
+<block name="cate_menu">
+<div class="mainmenu">
+	<ul>
+		<div id="insert1" ></div>
+		<volist name="info" id="vo">
+		<li>
+			<div class="menubtn">
+				<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">{$vo.name}</a>
+			</div>
+		</li>
+		</volist>
+		<div id="insert2" ></div>    
+        <div class="clr"></div>
+	</ul>
+</div>
+</block>
+<block name="bg">
+<div class="mainbg">
+	<img src="<if condition="$homeInfo.homeurl neq false">{$homeInfo.homeurl}<else/>{:RES}/images/themes/bg1.jpg</if> "/>
+</div>
+</block>

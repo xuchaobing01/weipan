@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+<meta charset="utf-8" />
+<title>{$res.title}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="initial-scale=1, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link href="{:RES}/css/ktv/style.css" rel="stylesheet" type="text/css" />
+<script src="{:STATICS}/js/zepto.min.js" type="text/javascript"></script>
+<style>
+#mess_share {
+margin: 15px 0;
+display: block;
+}
+#share_1 {
+float: left;
+width: 49%;
+display: block;
+}
+#share_2 {
+float: right;
+width: 49%;
+display: block;
+}
+.button2 {
+font-size: 16px;
+padding: 8px 0;
+border: 1px solid rgb(173, 173, 171);
+color: rgb(0, 0, 0);
+background-color: rgb(232, 232, 232);
+background-image: linear-gradient(to top, rgb(219, 219, 219), rgb(244, 244, 244));
+box-shadow: 0 1px 1px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgb(239, 239, 239);
+text-shadow: 0.5px 0.5px 1px rgb(255, 255, 255);
+text-align: center;
+border-radius: 3px;
+width: 100%;
+}
+#mess_share img {
+width: 22px!important;
+height: 22px!important;
+vertical-align: top;
+border: 0;
+}
+#mcover {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.7);
+display: none;
+z-index: 20000;
+}
+#mcover img {
+position: fixed;
+right: 18px;
+top: 5px;
+width: 260px!important;
+height: 180px!important;
+z-index: 20001;
+}
+</style>
+</head>
+<body>
+<div class="content">
+	<div class="marginb">
+		<!--<h3>{$res.title}</h3>-->
+		<h5 style="color:#aaa;font-size:12px;">
+		<span style="rgb(116, 116, 172)">{$res.author}</span>&nbsp; {$res.updatetime|date="Y-m-d",###}</h5>
+	</div>
+	<if condition="$res['pic'] neq ''">
+	<div class="showpic">
+		<img src="{$res.pic}" />
+	</div>
+	</if>
+	<php>echo htmlspecialchars_decode($res['info'])</php>
+	<php>echo htmlspecialchars_decode($res['content'])</php>
+	<div id="mess_share">
+		<div id="share_1">
+			<button class="button2" onclick="document.getElementById('mcover').style.display='block';">
+				<img src="http://stc.weimob.com/img/icon_msg.png?=2014-08-28">&nbsp;发送给朋友
+			</button>
+		</div>
+		<div id="share_2">
+			<button class="button2" onclick="document.getElementById('mcover').style.display='block';">
+				<img src="http://stc.weimob.com/img/icon_timeline.png?=2014-08-28">&nbsp;分享到朋友圈
+			</button>
+		</div>
+		<div class="clr"></div>
+	</div>
+</div>
+<div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display: none;">
+	<img src="/Public/Wap/images/guide.png">
+</div>
+<div style="display:none"><php>echo htmlspecialchars_decode($tpl['tongji'])</php></div>
+<include file="menu_style" />
+<div class="copyright" style="text-align: center;color: rgb(128, 128, 128);">
+<if condition="$iscopyright eq 1">
+{$homeInfo.copyright}
+<else/>
+{$siteCopyright}
+</if>
+</div> 
+</body>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+	wx.config({
+		debug: false,
+		appId:'<?php  echo $shareConfig['appid'];?>', // 必填，公众号的唯一标识
+		timestamp:<?php  echo $shareConfig['timestamp'];?>, // 必填，生成签名的时间戳
+		nonceStr: '<?php  echo $shareConfig['noncestr'];?>', // 必填，生成签名的随机串
+		signature: '<?php  echo $shareConfig['signature'];?>',// 必填，签名
+		jsApiList: [ 'checkJsApi',
+			'onMenuShareTimeline',
+			'onMenuShareAppMessage',
+			'onMenuShareQQ',
+			'onMenuShareWeibo',
+			'hideMenuItems',
+			'showMenuItems',
+			'hideAllNonBaseMenuItem',
+			'showAllNonBaseMenuItem']
+	});
+	var wxData = {
+        "imgUrl" : '<?php echo $res['pic'];?>',
+        "link" : '<?php echo C('WAP_DOMAIN').U('Index/article',['token'=>$token,'id'=>$_GET['id']]); ?>',
+        "desc" : '<?php echo $res['text'].$res['summary'];?>',
+        "title" : "<?php echo $res['title'];?>"
+    };
+	wx.ready(function(){
+		//分享到朋友圈
+		wx.onMenuShareTimeline({
+			title: wxData.title, // 分享标题
+			link: wxData.link, // 分享链接
+			imgUrl: wxData.imgUrl, // 分享图标
+			success: function () {
+				alert('分享成功！');
+			},
+			cancel: function () { 
+				// 用户取消分享后执行的回调函数
+			}
+		});
+		//分享给朋友
+		wx.onMenuShareAppMessage({
+			title: wxData.title, // 分享标题
+			desc: wxData.desc, // 分享描述
+			link: wxData.link, // 分享链接
+			imgUrl: wxData.imgUrl, // 分享图标
+			type: '', // 分享类型,music、video或link，不填默认为link
+			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+			success: function () { 
+				alert('分享成功！');
+			},
+			cancel: function () { 
+				// 用户取消分享后执行的回调函数
+			}
+		});
+		wx.onMenuShareQQ({
+			title: wxData.title, // 分享标题
+			desc: wxData.desc, // 分享描述
+			link: wxData.link, // 分享链接
+			imgUrl: wxData.imgUrl, // 分享图标
+			success: function () { 
+			   alert('分享成功！');
+			},
+			cancel: function () { 
+			   // 用户取消分享后执行的回调函数
+			}
+		});
+	});
+	wx.error(function(res){
+		
+	});
+	function toggleClass(el,style){
+		$(el).toggleClass(style);
+	}
+</script>
+</html>

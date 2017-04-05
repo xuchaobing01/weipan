@@ -1,0 +1,39 @@
+<extend name="Public:innerbase" />
+<block name="js"></block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>导师管理</h4>
+		<code><?php echo C('WAP_DOMAIN').U('Wap/Ski/coach_index',['token'=>session('token')]);?></code>
+	</div>
+	<a style="margin:10px 0;" href="{:U('coach_edit')}" title="添加" class="btn btn-primary">添加导师</a>
+	<table class="table wm-table-bordered table-hover table-striped">
+		<thead>
+		<tr>
+		<th width="50">姓名</th>
+		<th width="120">级别</th>
+		<th width="120">领证时间</th>
+		<th width="160">教学价格(元/天)</th>
+		<th width="120">类型</th>
+		<th width="200" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="vo"> 
+		<tr>
+		<td>{$vo.name}</td>
+		<td>{$vo.level}</td>
+		<td>{$vo.certificate_time|date="Y-m-d",###}</td>
+		<td>{$vo.price}</td>
+		<td><php>echo $vo['type']==1?"郝世花专职导师":"郝世花教练联盟";</php></td>
+		<td>
+		<a class="btn btn-xs btn-default" href="{:U('coach_edit?id='.$vo['id'])}">修改</a>
+		<a class="btn btn-xs btn-danger" href="{:U('coach_delete?id='.$vo['id'])}">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>

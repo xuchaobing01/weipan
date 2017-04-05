@@ -1,0 +1,93 @@
+<extend name="index_tpl" />
+<block name="css">
+<link href="{:RES}/site/css/reset.css" rel="stylesheet" type="text/css" />
+<link href="{:RES}/site/css/tpl_202.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	body{
+		background-image: url({$homeInfo.homeurl});
+	}
+	.copyright{
+		position: absolute;
+		bottom: 10px;
+		width: 100%;
+	}
+</style>
+</block>
+<block name="carousel"></block>
+<block name="cate_menu">
+<div class="html">
+    <div class="stage" id="stage">
+        <section id="sec-index">
+			<div class="body">
+				<div class="index" id="index">
+				<a class="box mod-index index-main on">
+					<i>...</i>
+				</a>
+				<volist name="info" id="vo" key="i">
+				<if condition="$i lt 9">
+				<a href="{$vo.url}" class="box mod-index">
+					<i><img alt='{$vo.name}' src='{$vo.img}' /><small>{$vo.name}</small></i>
+				</a>
+				</if>
+				</volist>
+				</div>
+			</div>
+        </section>
+    </div><!--.stage end-->
+</div><!--.html end-->
+</block>
+<block name="js">
+<script type="text/javascript">
+	$(document).ready(function(){
+        var $index=$("#index"),
+        $a=$index.find(".mod-index"),
+        $main=$index.find(".index-main");
+		setTimeout(function(){
+			$a.addClass("on");
+		},"2000s","ease-in");
+		$main.click(function(){
+        $index.removeAttr("style");
+        $a.removeAttr("style");
+        if($a.hasClass("on")){
+            $a.toggleClass("on");
+            $index.css({"-webkit-transition-delay":"1s"}).toggleClass("move");
+        }else{
+            $index.toggleClass("move");
+            $a.css({"-webkit-transition-delay":"2s"}).toggleClass("on");
+        }
+    });
+        // 静态背景图
+        //$(".html").css("background-image", "url(http://vcl-pictures.qiniudn.com/Fmm2bGMbDS0WQDTcN6ckc5OpCWfO)");
+
+
+        showBtnUp(100);
+
+        $("a.dev-prev").click(function(){
+            history.back();
+        });
+
+        $("a.dev-next").click(function(){
+          history.go(1);
+        });
+
+        $("a.dev-index").click(function(){
+          //window.open("http://m.vcooline.com/18450?id=5418&amp;openid=ou6CBuCrpqj065m2wm8zQos2K05c#mp.weixin.qq.com");
+          location.href = "http://m.vcooline.com/18450?id=5418&amp;openid=ou6CBuCrpqj065m2wm8zQos2K05c#mp.weixin.qq.com";
+        });
+
+        $("a.dev-refresh").click(function(){
+          location.reload();
+        });
+
+        $("a.dev-tel").attr("href", "tel:电话号码未设置");
+
+        $("a.dev-member").click(function(){
+          $(this).attr("href", "http://m.vcooline.com/app/vips?wxmuid=15624#mp.weixin.qq.com")
+        });
+
+        $("a.dev-location").click(function(){
+          $(this).attr("href", "http://m.vcooline.com/18450/map?id=5418")
+        });
+      });
+    </script>
+</block>

@@ -1,0 +1,206 @@
+<extend name="Public:innerbase" />
+<block name="css">
+</block>
+<block name="content">
+	<div class="container-fluid">
+	<ul class="nav nav-tabs">
+	  <li class="active"><a href="#tab1" data-toggle="tab">账号</a></li>
+	  <li><a href="#tab2" data-toggle="tab">统计</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div class="tab-pane active" id="tab1">
+			<div class="page-header">
+				<div class="row">
+				<strong class="col-sm-2">
+					<span class="glyphicon glyphicon-user"></span>&nbsp;账户等级
+				</strong>
+				
+				<div class="col-sm-3">
+					<span class="label label-info">{$Think.session.gname}</span>
+				</div>
+				<strong class="col-sm-2">到期时间</strong>
+				
+				<div class="col-sm-3">
+					<span class="label label-info ">{$Think.session.viptime|date="Y年m月d日",###}</span>
+				</div>
+				</div>
+			</div>
+			<div style="margin:10px 0;">
+				<button id="addAccount" type="button" class="btn btn-primary" title="您还可以添加{$wechatCardLeft}个公众账号！" data-toggle="tooltip" data-placement="right">
+				  <span class="glyphicon glyphicon-plus"></span>
+				  添加微信公众号
+				</button>
+			</div>
+			<div class="">
+			<TABLE class="table wm-table-bordered">
+				<THEAD>
+					<TR>
+					  <TH>公众号名称</TH>
+					  <TH>账号类型</TH>
+					  <TH>创建时间</TH>
+					  <TH>素材库</TH>
+					  <TH>用户请求数</TH>
+					  <TH>操作</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+				<TR></TR>
+				<volist name="wechats" id="vo"> 
+				  <TR>
+					<TD>
+						<p>
+							<img src="{$vo.headerpic}" width="50" height="50" class="img-rounded"/>
+						</p>
+						<p>{$vo.wxname}</p>
+					</TD>
+					<TD align="center">
+						{$vo.wxtype}
+					</TD>
+					<TD>
+					  <p>{$vo.createtime|date="Y年m月d日",###}</p>
+					  <!--<p>
+						<a  href="http://sighttp.qq.com/authd?IDKEY=36efe0b81dab043fa0dfb59f6cef6e4e23de191dbd415eb0" id="smemberss" class="green" target="_blank">
+						  <em>升级续费</em>
+						</a>
+					  </p>-->
+					</Td>
+					<TD>
+						<p>
+							文本: {$vo['chart']['text_num']}<br/>
+							图文: {$vo['chart']['img_num']}<br/>
+							语音: {$vo['chart']['voice_num']}
+						</p>
+					</TD>
+					<TD>
+						<p>请求数: {$vo['chart']['request_num']}</p>
+					</TD>
+					<TD class="norightborder">
+						<if condition="$_SESSION['sub_id'] eq 0">
+						<a class="btn btn-default btn-xs" href="{:U('Index/edit',array('id'=>$vo['id']))}">
+						  <span class="glyphicon glyphicon-edit"></span>&nbsp;编辑
+						</a>
+						<span class="btn btn-default btn-xs account-delete" data-id="{$vo['id']}">
+							<span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+						</span>
+						</if>
+						<button class="btn btn-primary btn-xs account-config" url="{:U('Function/index',array('id'=>$vo['id']))}">
+						  <span class="glyphicon glyphicon-cog"></span>&nbsp;功能管理
+						</button>
+						<button data-toggle="modal" data-target="#apiModal" class="btn btn-default btn-xs account-api" token="{$vo['token']}">API接口</button>
+					</TD>
+				  </TR>
+				</volist>
+			  </TBODY>
+			</TABLE>
+			</div>
+		</div>
+		<div class="tab-pane" id="tab2" style="padding-top:20px;">
+			<div class="row">
+				<div class="col-sm-2">
+					<strong>用户请求数</strong>
+				</div>
+				<div class="col-sm-8">
+					<div class="progress" style="width:70%" title="已使用/限制：{$uchart['request_num']}/{$group['request_limit']}" >
+					  <div class="progress-bar" role="progressbar" aria-valuenow="{$uchart['request_num']}" aria-valuemin="0" aria-valuemax="{$group['request_limit']}" style="width:<php>echo $uchart['request_percent']>5?$uchart['request_percent']:8;</php>%">
+						{$uchart['request_num']}
+					  </div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<strong>文本回复数</strong>
+				</div>
+				<div class="col-sm-8">
+					<div class="progress" style="width:70%" title="已使用/限制：{$uchart['text_num']}/{$group['text_limit']}">
+					  <div class="progress-bar" role="progressbar" aria-valuenow="{$uchart['text_num']}" aria-valuemin="0" aria-valuemax="{$group['text_limit']}" style="width:<php>echo $uchart['request_percent'];</php>%">
+						{$uchart['text_num']}
+					  </div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<strong>图文回复数</strong>
+				</div>
+				<div class="col-sm-8">
+					<div class="progress" style="width:70%" title="已使用/限制：{$uchart['img_num']}/{$group['img_limit']}">
+					  <div class="progress-bar" role="progressbar" aria-valuenow="{$uchart['img_num']}" aria-valuemin="0" aria-valuemax="{$group['img_limit']}" style="width:<php>echo $uchart['img_percent'];</php>%">
+						{$uchart['img_num']}
+					  </div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<strong>语音回复数</strong>
+				</div>
+				<div class="col-sm-8">
+					<div class="progress" style="width:70%" title="{$uchart['voice_num']}/{$group['voice_limit']}">
+					  <div  class="progress-bar" role="progressbar" aria-valuenow="{$uchart['voice_num']}" aria-valuemin="0" aria-valuemax="{$group['voice_limit']}" style="width:<php>echo $uchart['voice_percent']</php>%">
+						{$uchart['voice_num']}
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+<!-- Modal -->
+<div class="modal fade" id="apiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">请到
+		<a href="http://mp.weixin.qq.com/" target="_blank">微信公众平台</a>
+		开发者模式中，填写如下接口信息</h4>
+		</div>
+		<div class="modal-body">
+			<p>
+			<strong class="col-sm-2">URL</strong>
+			<code id="apiUrl"></code>
+			</p>
+			<p>
+			<strong class="col-sm-2">Token</strong>
+			<code id="apiToken"></code>
+			</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+		</div>
+    </div>
+  </div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/spark/spark.util.js"></script>
+<script type="text/javascript">
+	$(".account-config").click(function (argument) {
+		window.parent.location=$(this).attr("url");
+	});
+	$('#addAccount,.progress').tooltip({placement:'right'});
+	$("#addAccount").click(function(e){
+		<if condition="$wechatCardLeft neq 0">
+			location.href="{:U('Index/edit')}";
+		<else/>
+			spark.alert('您的等级所能创建的公众号数量已经到达上限，请购买后再创建');
+		</if>
+	});
+	$(".account-api").click(function (e) {
+		var token =$(this).attr('token');
+		$('#apiToken').html(token);
+		$('#apiUrl').html("{:C('api_domain')}/api/"+token);
+	});
+	//删除时提醒用户
+	$(".account-delete").click(function(){
+		var accountId = $(this).attr('data-id');
+		spark.confirm('删除后该公众号的配置都将清空，确定继续',function(){
+			location.href='{:U('Index/del')}?id='+accountId;
+		});
+	});
+</script>
+</block>

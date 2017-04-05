@@ -1,0 +1,52 @@
+<extend name="index_tpl" />
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:RES}/css/index/tpl_12_{$tpl.color_id}.css"  />
+</block>
+<block name="cate_menu">
+ <div class="mainmenu">
+	<ul>
+		<div id="insert1"></div>
+		<volist name="info" id="vo">
+		<li>
+			<div class="menubtn">
+				<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">{$vo.name}</a>
+			</div>
+		</li>
+		</volist>
+		<div id="insert2"></div>
+		<div class="clr"></div>
+	</ul>
+</div>
+</block>
+<block name="bg">
+<div class="mainbg banner">
+	<div id='bgSlider' class='swipe'>
+		<div class='swipe-wrap'>
+			<volist name="homeInfo.homeImgs" id="bg">
+			<div>
+				<img src="{$bg}" style="width:100%;"/>
+			</div>
+			</volist>
+		</div>
+		<ol>
+			<volist name="homeInfo.homeImgs" id="bg">
+			<li></li>
+			</volist>
+		</ol>
+	</div>
+</div>
+</block>
+<block name="js">
+<script>
+$(function(){
+	var swipe = new Swipe(document.getElementById('bgSlider'), {
+		speed:500,
+		auto:5000,
+		callback: function(){
+			var lis = $(this.element).next("ol").children();
+			lis.removeClass("on").eq(this.index).addClass("on");
+		}
+	});
+});
+</script>
+</block>

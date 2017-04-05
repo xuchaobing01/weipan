@@ -1,0 +1,214 @@
+<extend name="Public:innerbase" />
+
+
+
+<block name="js">
+
+
+
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+
+
+
+</block>
+
+
+
+<block name="content">
+
+
+
+<div class="container-fluid">
+
+
+
+	<ul class="nav nav-tabs wm-tabs">
+
+
+
+		<li class="active"><a href="javascript:void(0)">{$userinfo['wechat_name']}({$userinfo['phone']}){$userinfo['title']}</a></li>
+
+
+
+		<!-- <li><a href="{:U('Member/check',['id'=>$_GET['id']])}">会员审核</a></li> -->
+
+
+
+	</ul>
+
+<div class="page-header">
+	<a class="btn btn-sm btn-default" href="{:U('Member/index')}"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+</div>
+
+	
+
+
+
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+
+
+
+		<THEAD>
+
+
+
+		<TR>
+
+
+
+			<TH>ID</TH>
+
+
+
+			
+
+
+
+			<TH>姓名</TH>
+			<TH>电话</TH>
+			
+			<TH>一级人数</TH>
+			<TH>二级人数</TH>
+			<TH>三级人数</TH>
+
+			<TH>注册时间</TH>
+
+
+
+			<TH>余额</TH>
+
+
+
+			<TH>虚拟金额(元)</TH> 
+
+
+
+			<TH>冻结金额</TH>
+
+
+
+			<TH>状态</TH>
+
+
+
+			    <TH>操作</TH>    
+
+
+
+			
+
+
+
+		</TR>
+
+
+
+		</THEAD>
+
+
+
+		<TBODY>
+
+
+
+		<volist id="list" name="list">
+
+
+
+		<TR>
+
+
+
+			<TD>{$list.id}</TD>
+
+
+
+			<TD>{$list.wechat_name}</TD>
+
+
+
+			<TD>{$list.phone}</TD>
+			
+			<TD><if condition="$list['num'][0]['count'] gt 0"><a href="{:U('Member/mychild',['lever'=>0,'pid'=>$list['id']])}"> <span style="color:red;"> {$list['num'][0]['count']|default=0}</span></a><else /> 0</if></TD>
+			<TD><if condition="$list['num'][1]['count'] gt 0"><a href="{:U('Member/mychild',['lever'=>1,'pid'=>$list['id']])}"> <span style="color:#0012ff;"> {$list['num'][1]['count']|default=0}</span></a><else /> 0</if></TD>
+			<TD><if condition="$list['num'][2]['count'] gt 0"><a href="{:U('Member/mychild',['lever'=>2,'pid'=>$list['id']])}"> <span style="color:green;"> {$list['num'][2]['count']|default=0}</span></a><else /> 0</if></TD>
+
+
+
+			<TD>	{$list.create_time|date='Y-m-d H:i',###}</TD>
+
+
+
+			<TD>
+
+
+
+			{$list.money}
+
+
+
+			</TD>
+
+
+
+			<TD>{$list.coin}</TD>
+
+
+
+			<TD>{$list.dongjie}</td>
+
+
+
+				<TD><if condition="$list.status eq 1"><span style="color:red">冻结</span><else />正常</if></td>
+
+
+
+		<TD style="text-align:center;">
+
+				<a href="{:U('detail?id='.$list['id'])}" class="btn btn-xs btn-primary">查看</a>
+
+				<if condition="$list.status eq 1">
+
+				<span class="btn btn-xs btn-danger" onclick='spark.confirm_jump("会员解冻可登录个人页面，您确定要继续吗?", "{:U('User/Member/del',['id'=>$list['id'],'status'=>0])}")'>
+
+				解冻</span>
+				<else />
+<span class="btn btn-xs btn-danger" onclick='spark.confirm_jump("会员冻结后不可登录个人页面，您确定要继续吗?", "{:U('User/Member/del',['id'=>$list['id'],'status'=>1])}")'>冻结
+
+				</span>
+
+			</if>
+
+			</TD>
+
+
+
+		</form>
+
+
+
+		</TR>
+
+
+
+		</volist>
+
+
+
+	  </TBODY>
+
+
+
+	</TABLE>
+
+
+
+	<div>{$page}</div>
+
+
+
+</div>
+
+
+
+</block>

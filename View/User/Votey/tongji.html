@@ -1,0 +1,32 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+	<div class="container-fluid">
+		<div style="margin:10px 0;">
+			<a href="{:U('Votey/index')}" class="btn btn-success">返回</a>
+		</div>
+		<table class="table table-striped wm-table-bordered">
+			<thead>
+				<tr>
+					<th>排名</th>
+					<th>编号</th>
+					<th class="time">名称</th>
+					<th class="time">图片</th>
+					<th>介绍</th>
+					<th>票数</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist id="list" name="list">
+				<tr>
+					<td>{$list.rank}</td>
+					<td>{$list.id}</td>
+					<td>{$list.title}</td>
+					<td><img src="{$list.img}" style="width:50px;" /></td>
+					<td>{$list.intro}</td>
+					<td>{$list.vote_num}</td>
+				</tr>
+				</volist>
+			</tbody>
+        </table>
+	</div>
+</block>

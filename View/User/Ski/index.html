@@ -1,0 +1,39 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>产品管理</h4>
+		<code>{:url(U('Wap/Ski/index?token='.session('token')),'WAP_DOMAIN')}</code>
+	</div>
+	<a style="margin:10px 0;" href="{:U('add')}" title="添加" class="btn btn-primary">添加产品</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="160">名称</th>
+		<th width="120">分类</th>
+		<th width="60">价格</th>
+		<th width="130">修改时间</th>
+		<th width="200" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="vo"> 
+		<tr>
+		<td>{$vo.name}</td>
+		<td>{$vo['catename']}</td>
+		<td>{$vo.price}元</td>
+		<td>{$vo.time|date="Y-m-d H:i",###}</td> 
+		<td>
+		<a class="btn btn-xs btn-default" href="{:U('set',array('id'=>$vo['id']))}">修改</a>
+		<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('del',array('id'=>$vo['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>

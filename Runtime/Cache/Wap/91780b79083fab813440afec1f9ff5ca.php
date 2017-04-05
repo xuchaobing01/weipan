@@ -1,0 +1,374 @@
+<?php if (!defined('THINK_PATH')) exit();?>
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>全民经纪人</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="wap-font-scale" content="no">
+    <link rel="stylesheet" href="<?php echo RES;?>/jinrong/Mobile/Public/css/invite.css"> 
+</head>
+<body class="body-bg2">
+
+
+<!--banner start-->
+<div class="top-banner">
+    <!--<img src="/Mobile/Public/images/logo_new.png" class="logo">-->
+           <!-- <div class="date">活动时间：6月26日起</div>-->
+        <img src="<?php echo RES;?>/jinrong/Mobile/Public/images/yaoqing.png" class="banner" >
+</div>
+<!--banner end-->
+<div class="wrap">
+    <div class="tab-nav">
+        <ul class="j_tab">
+            <li class="current">
+                <a href="javascript:void(0);">
+                    <p><strong>NO.1</strong> 赚现金返利</p>
+                    <p class="slogan">我的朋友超有钱</p>
+                    <span class="triangle-t"></span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">
+                    <strong>NO.2</strong> 拿iPhone 7
+                    <p class="slogan">我的朋友超级多</p>
+                    <span class="triangle-t"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-con j_tab_c">
+        <!--赢返利现金 start-->
+        <sction class="tab-a">
+            <div class="txt fn14">
+                <h2 class="col-y1">赚现金返利</h2>
+                <p class="mt6">
+                    我有土豪朋友！立马赚高额返利！<br>
+                    只要好友投资充值就有返利<a href="javascript:void(0);" class="col-y2 j_rule_t1"> 活动规则>></a>
+
+                </p>
+                            </div>
+            <div class="action-info">
+                <div class="info-d">
+                    <div class="pic-d"></div>
+                    <p>好友<span class="col-y1">交易手续费累积</span>5000元以下</p>
+                    <p>您将获得<span class="col-y1 fn16">10%返利</span></p>
+                </div>
+                <div class="info-h">
+                    <div class="pic-h"></div>
+                    <p>好友<span class="col-y1">交易手续费累积</span>5000元以上</p>
+                    <p>您将获得<span class="col-y1 fn16">15%返利</span></p>
+                </div>
+            </div>
+            <!--已登录显示-->
+                        <div class="card-con">
+                <p class="fn16 col-fe"><span class="dot"></span> 好友已为您赚取返利</p>
+                <div class="card-money">
+                    <span class="symbol">¥</span>
+
+                    <span><?php if($share['money'] == ''): ?>0.00<?php else: echo ($share['money']); endif; ?><!-- <span style="
+    font-size: 15px;
+">待解冻:0.00元</span> --></span>
+                    <a href="javascript:;"><span class="get"> </span></a>
+                    <!--已领取时显示查看--> 
+                    <!--<a href="/event/2015123004/earn.html" class="get">查看 <i class="arrow-r"></i></a>-->
+                </div>
+                <div class="card-fd">
+                    <a href="<?php echo U('User/my_friends');?>"> <span class="dot"></span> 我邀请的好友数：<span class="col-y3"><?php if($share['num'] == ''): ?>0<?php else: echo ($share['num']); endif; ?>人，详情 </span> <span class="arrow-r"></span></a>
+                </div>
+            </div>
+                    </sction>
+        <!--赢返利现金 end-->
+        <!--拿iPhone 7 start-->
+        <sction class="tab-b" style="display:none">
+            <div class="txt fn14">
+                <h2 class="col-y1">拿iPhone 7</h2>
+                <p class="mt6">
+                    没有土豪朋友？拿不到高额返利？<br>
+                    多邀多得一样赚翻，<a href="javascript:void(0);" class="col-y2 j_rule_t2"> 活动规则>></a>
+                </p>
+                            </div>
+            <img src="<?php echo RES;?>/jinrong/Mobile/Public/images/prize_new.jpg" class="prize">
+            <!--已登录时显示-->
+                        <div class="card-con">
+                <div class="fn16 col-f"><a href="<?php echo U('User/my_friends');?>"> <span class="dot"></span> 我邀请的好友数：<span class="col-y3"><?php if($share['num'] == ''): ?>0<?php else: echo ($share['num']); endif; ?>，详情 </span> <span class="arrow-r"></span></a></div>
+            </div>
+            <!--未登录时显示-->
+                       <!-- <div class="ranking">
+                <div class="title col-y1">
+                    <h2>邀请有效好友数排名</h2>
+                                            <p class="fn12">（实时刷新）</p>
+                                    </div>
+
+                <table cellpadding="0" cellspacing="0" class="user-list">
+                    <tr>
+                        <th colspan="3">
+                            <div class="tit">
+                                <span class="w1">用户</span>
+                                <span>邀请有效好友数</span>
+                                <span class="w2">奖品</span>
+                            </div>
+                        </th>
+                    </tr>
+
+                                                    <tr class="r1">
+                                <td>
+                                    <div class="other-ava ava">
+                                        <span class="num-1"></span>
+                                        <img src="/Mobile/Public/images/photos_new/09.jpg" class="user-ava">
+                                    </div>
+                                    <p style=" font-size: 10px">186******73</p>
+                                </td>
+                                <td>84人</td>
+                                <td><span class="prize-box"><img src="/Mobile/Public/images/prize/pr1.png" height="30"></span> iPhone 7 64G  </td>
+                            </tr>
+                                                    <tr class="r1">
+                                <td>
+                                    <div class="other-ava ava">
+                                        <span class="num-2"></span>
+                                        <img src="/Mobile/Public/images/photos_new/010.jpg" class="user-ava">
+                                    </div>
+                                    <p style=" font-size: 10px">155******64</p>
+                                </td>
+                                <td>80人</td>
+                                <td><span class="prize-box"><img src="/Mobile/Public/images/prize/pr2.png" height="30"></span> iPad mini 4 64G </td>
+                            </tr>
+                                                    <tr class="r1">
+                                <td>
+                                    <div class="other-ava ava">
+                                        <span class="num-3"></span>
+                                        <img src="/Mobile/Public/images/photos_new/08.jpg" class="user-ava">
+                                    </div>
+                                    <p style=" font-size: 10px">135******48</p>
+                                </td>
+                                <td>73人</td>
+                                <td><span class="prize-box"><img src="/Mobile/Public/images/prize/pr3.png" height="30"></span> Apple Watch Sport </td>
+                            </tr>
+                        
+                                                                        <tr>
+                                <td width="15%" class="pt20">
+                                    <div class="other-ava">
+                                        <span class="num">4</span>
+                                        <img src="/Mobile/Public/images/photos_new/05.jpg" class="user-ava">
+                                    </div>
+                                    <p class="tel">186******77</p>
+                                </td>
+                                <td  width="15%" class="pt20">46人</td>
+                                <td class="pt20"><span class="prize-box"><img src="/Mobile/Public/images/prize/pr4.png" height="30"></span>Kindle Paperwhite3代 </td>
+                            </tr>
+                                                    <tr>
+                                <td width="15%" class="pt20">
+                                    <div class="other-ava">
+                                        <span class="num">5</span>
+                                        <img src="/Mobile/Public/images/photos_new/06.jpg" class="user-ava">
+                                    </div>
+                                    <p class="tel">156******61</p>
+                                </td>
+                                <td  width="15%" class="pt20">38人</td>
+                                <td class="pt20"><span class="prize-box"><img src="/Mobile/Public/images/prize/pr5.png" height="30"></span>Kindle 标清入门版</td>
+                            </tr>
+                                                    <tr>
+                                <td width="15%" class="pt20">
+                                    <div class="other-ava">
+                                        <span class="num">6</span>
+                                        <img src="/Mobile/Public/images/photos_new/07.jpg" class="user-ava">
+                                    </div>
+                                    <p class="tel">186******16</p>
+                                </td>
+                                <td  width="15%" class="pt20">31人</td>
+                                <td class="pt20"><span class="prize-box"><img src="/Mobile/Public/images/prize/pr6.png" height="30"></span>乐视TV New C1S 官方版</td>
+                            </tr>
+                                                    <tr>
+                                <td width="15%" class="pt20">
+                                    <div class="other-ava">
+                                        <span class="num">7</span>
+                                        <img src="http://wx.qlogo.cn/mmopen/MrCv0Ycib5RWibk80ibK0YZ8Pgibe9GM6rVW2iaFo0EiclV1ZuXGUz5eYTDtSU5808ZCBJSwsDnkNY0HtLA90EdS5vWpMamozTpRGt/0" class="user-ava">
+                                    </div>
+                                    <p class="tel">136******78</p>
+                                </td>
+                                <td  width="15%" class="pt20">24人</td>
+                                <td class="pt20"><span class="prize-box"><img src="/Mobile/Public/images/prize/pr7.png" height="30"></span>富士instax mini8拍立得相机</td>
+                            </tr>
+                                                    <tr>
+                                <td width="15%" class="pt20">
+                                    <div class="other-ava">
+                                        <span class="num">8</span>
+                                        <img src="/Mobile/Public/images/photos_new/01.jpg" class="user-ava">
+                                    </div>
+                                    <p class="tel">134******75</p>
+                                </td>
+                                <td  width="15%" class="pt20">14人</td>
+                                <td class="pt20"><span class="prize-box"><img src="/Mobile/Public/images/prize/pr8.png" height="30"></span>小米盒子3</td>
+                            </tr>
+                                                    <tr>
+                                <td width="15%" class="pt20">
+                                    <div class="other-ava">
+                                        <span class="num">9</span>
+                                        <img src="/Mobile/Public/images/photos_new/04.jpg" class="user-ava">
+                                    </div>
+                                    <p class="tel">189******73</p>
+                                </td>
+                                <td  width="15%" class="pt20">12人</td>
+                                <td class="pt20"><span class="prize-box"><img src="/Mobile/Public/images/prize/pr9.png" height="30"></span>华为荣耀盒子M321</td>
+                            </tr>
+                                                    <tr>
+                                <td width="15%" class="pt20">
+                                    <div class="other-ava">
+                                        <span class="num">10</span>
+                                        <img src="/Mobile/Public/images/photos_new/03.jpg" class="user-ava">
+                                    </div>
+                                    <p class="tel">133******26</p>
+                                </td>
+                                <td  width="15%" class="pt20">12人</td>
+                                <td class="pt20"><span class="prize-box"><img src="/Mobile/Public/images/prize/pr10.png" height="30"></span>小米智能手环 光感版</td>
+                            </tr>
+                                                            </table>
+               <a href="/event/2015123004/rank.html" class="past-rank-btn col-y1" >查看往期排名>></a>
+            </div>-->
+        </sction>
+        <!--拿iPhone 7 end-->
+    </div>
+    <div class="how-link">
+        <a href="<?php echo U('About/help');?>">让好友知道港云外汇为什么可以赚钱？<span class="arrow-r"></span></a>
+    </div>
+    <div class="rule-con">
+        <h3>如何成为全民经纪人？</h3>
+        <p>1.点击“立即邀请”按钮，将您的图片名片保存到手机后，发送给好友。好友使用微信扫一扫并关注“港云外汇”公众号并注册，您马上成为好友的经纪人，好友充值后您即可获得充值返利。</p>
+        <!--<p>2.点击“立即邀请”按钮，分享到微信群或朋友圈，邀请好友注册并投资港云外汇。</p>-->
+		<p>2.邀请同一好友，可自动同时参与“赢返利现金”、“拿iphone 7”两个活动。</p>
+    </div> 
+</div>
+<div class="footer-btn-b">
+    <a href="javascript:void(0);" id="give-btn"  data-is-login="1">立即邀请</a>
+</div>
+
+<!--规则弹出层-->
+<div class="rule-layer j_rule_c1">
+    <div class="rule-title">
+        <h3>【一重礼·赚现金返利】</h3>
+        <span class="close j_close"></span>
+    </div>
+    <div class="line"></div>
+    <div class="rule-txt">
+        <p>1.被邀请的好友新注册并交易成功，您可获得其交易手续费的返利。返利在好友完成每笔交易时自动转为您的余额。</p>
+        <p>1）<span class="s-bg">交易返利：</span>好友每笔交易产生的手续费，您可获得好友交易产生手续费的10-15%返利；</p>
+        <p>有效时间：一次邀请，终生有效，终生获得该好友的所有返利。</p>
+        <p>返利示例：</p>
+        <table cellspacing="0" cellpadding="0" width="100%" class="rule-tab">
+            <tr>
+                <th width="33.33%">累积交易手续费</th>
+                <th width="33.33%">您赚取的返利</th>
+            </tr>
+            <tr>
+                <td>5000元及以上</td>
+                <td>10%返利</td>
+            </tr>
+            <tr>
+                <td>5000元以上</td> 
+                <td>15%返利</td>
+            </tr>
+        </table>
+        <p>2.您可以邀请多个好友帮您赚取返利，人数不限。您将同时自动参与“拿iPhone7”活动。</p> 
+        <p>3.返利将在好友充值成功后实时入账，返利在好友完成每笔交易时自动转为您的余额。</p>
+    </div>
+    <a href="javascript:void(0);" class="f-btn j_close">我已阅读</a>
+</div>
+
+<div class="rule-layer j_rule_c2">
+    <div class="rule-title">
+        <h3>【二重礼·拿iPhone7】</h3>
+        <span class="close j_close"></span>
+    </div>
+    <div class="line"></div>
+    <div class="rule-txt">
+		<p>1. 您除了在“赚现金返利”活动中获得相应返利外，还将自动参与“拿iPhone7”活动。</p>
+        <p>2. 活动期间，统计所有用户邀请的有效投资用户数量并排名，前十的用户在活动结束后获得实物奖励   (详见排行榜)。</p>
+        <p>3. <span class="s-bg">有效投资用户：</span>累计在“港云外汇”投资满5000或累计充值满20000（至少满足其中1个）。注：累计投资次数小于5次，则视为无效。</p>
+        <p>4. <span class="s-bg">排名规则：</span>优先按邀请的有效投资用户数量排名如果数量一致，继续按被邀请好友微交易投资金额之和排名。</p>
+        <p>5. 奖励派送：每月10号工作人员将联系上月排名前十的用户确认收货地址并安排配送。</p>
+    </div>
+    <a href="javascript:void(0);" class="f-btn j_close">我已阅读</a>
+</div>
+<div class="bg-layer"></div>
+<!--分享微信弹出层-->
+<div class="mask text-center">
+</div>
+<script type='text/javascript'>var ROOT = "";</script>
+<script src="<?php echo RES;?>/jinrong/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+    //当鼠标滚动时显示送理财特权按钮
+    $(function ()
+    {
+        $(window).scroll(function()
+        {
+            if (window.scrollY>0)
+            {
+                $(".footer-btn-b").addClass("fixed-btn-f");
+            }
+        });
+    });
+</script>
+
+<script>
+    //分享弹层
+    $(".footer-btn-b").click(function(){
+		$(".mask").html('<img src="<?php echo ($imgurl); ?>" width=200 alt="" class="an2"/><p>长按图片保存，发送给好友注册吧！</p>');
+	    $(".mask").show().css({opacity: 0.8});
+    })
+    $(".mask").click(function(){
+    $(".mask").hide();
+    })
+    //内容切换
+    $(".j_tab").children("li").click(function(){
+        $(this).addClass("current").siblings("li").removeClass("current");
+        var activeindex = $(".j_tab").children("li").index(this);
+        $(".j_tab_c").children().eq(activeindex).show().siblings().hide();
+        document.cookie = "index="+activeindex;//获取用户所在页面
+    });
+
+    function getCookie(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+        if(arr=document.cookie.match(reg))
+        {return arr[2];}
+        else{return null;}
+    }
+    //用户返回至上一次显示页面
+    if(getCookie('index') == 1){
+        $(".j_tab").children("li").eq(1).addClass("current").siblings("li").removeClass("current");
+        $(".j_tab_c").children().eq(1).show().siblings().hide();
+    }else{
+        $(".j_tab").children("li").eq(0).addClass("current").siblings("li").removeClass("current");
+        $(".j_tab_c").children().eq(0).show().siblings().hide();
+    }
+    //规则弹层
+    $(".j_rule_t1").click(function(){
+        var scrollTop = $("body").scrollTop();
+        $("body").css({"overflow":"hidden", "position": "fixed", "top": scrollTop*-1});
+        $(".j_rule_c1").show();
+        $(".j_rule_c2").hide();
+        $(".bg-layer").show();
+        $("bg-layer").bind("touchmove",function(event){event.preventDefault();});
+    })
+    $(".j_rule_t2").click(function(){
+        $(".j_rule_c2").show();
+        $(".j_rule_c1").hide();
+        $(".bg-layer").show();
+        $("body").bind("touchmove",function(event){event.preventDefault();});
+
+    })
+    $(".j_close").click(function(){
+        $(".rule-layer").hide();
+        $(".bg-layer").hide();
+        $("body").css({"overflow":"auto", "position": "static", "top": "auto"});
+        $("body").unbind("touchmove");
+        $("bg-layer").unbind("touchmove");
+    })
+</script>
+</body>
+</html>
+<!--<img src="http://jyjnpx.cn/mobile.php/weixin/create_qrcode_img">-->

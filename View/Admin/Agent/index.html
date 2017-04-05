@@ -1,0 +1,45 @@
+<extend name="Public:base2"/>
+<block name="content">
+<a href="{:U('edit')}" class="btn btn-primary">添加代理</a>
+<hr/>
+<table class="table table-striped" id="alist">
+	<thead>
+	<tr>
+	<td width="70">编号</td>
+	<td width="200">公司</td>
+	<td>级别</td>
+	<td>联系人</td>
+	<td>联系电话</td>
+	<td width="120">创建时间</td>
+	<td width="60">状态</td>
+	<td width="150">操作</td>
+	</tr>
+	</thead>
+	<tbody>
+	<volist name="list" id="vo">
+		<tr>
+			<td>{$vo.id}</td>
+			<td >{$vo.company}</td>
+			<td >{$vo.level|get_agent_level}</td>
+			<td>{$vo.linkman}</td>
+			<td>{$vo.mobile}</td>
+			<td>{$vo.create_time|date="Y-m-d",###}</td>
+			<td align="center">
+			<eq name="vo.status" value="1">
+			<span class="text-success"><span class="glyphicon glyphicon-ok-sign"></span></span>
+			<else/>
+			<span class="text-error"><span class="glyphicon glyphicon-ban-circle"></span></span>
+			</eq>
+			</td>
+			<td>
+				<a class="btn btn-default btn-xs" href="{:U('edit',array('id'=>$vo['id']))}">修改</a>
+				<a class="btn btn-danger btn-xs" href="{:U('del',array('id'=>$vo['id']))}" onclick="return confirm('确定删除该用户吗?')">删除</a>
+			</td>
+		</tr>
+	</volist>
+	</tbody>
+</table>
+<div class="listpage">{$page}</div>
+</block>
+<block name="script">
+</block>

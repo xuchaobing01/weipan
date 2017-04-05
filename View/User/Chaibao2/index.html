@@ -1,0 +1,39 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+<div class="container-fluid" style="padding-top:20px;">
+    <a href="{:U('Chaibao2/add')}" class='btn btn-success'><i class="fa fa-plus"></i>&nbsp;新增活动</a>
+	<hr/>
+	<TABLE class="table wm-table-bordered">
+		<THEAD>
+			<TR>
+				<TH>活动名称</TH>
+				<TH>关键词</TH>
+				<TH>有效参与人数</TH>
+				<TH>总浏览数</TH>
+				<TH>开始时间/结束时间</TH>
+				<TH>操作</TH>
+			</TR>
+		</THEAD>
+		<TBODY>
+			<TR></TR>
+			<volist id="list" name="list">
+			<TR>
+				<TD>{$list.title}</TD>
+				<TD>{$list.keyword}</TD> 
+				<TD>{$list.joinnum}</TD>
+				<TD>{$list.pv}</TD>
+				<TD>{$list.startdate|date='Y-m-d',###}/{$list.enddate|date='Y-m-d',###}</TD>
+				<TD class="norightborder">
+				   <a href="{:U('sn?type=2&id='.$list['id'])}">SN码管理</a> 
+				   <a href="{:U('coupons?id='.$list['id'])}">小票管理</a> 
+				   <a href="{:U('tongji?lid='.$list['id'])}">运营统计</a>
+				   <a href="{:U('edit?id='.$list['id'])}">编辑</a>
+				   <a href="{:U('del?id='.$list['id'])}">删除</a>
+				</TD>
+			</TR>
+			</volist>
+		  </TBODY>
+		</TABLE>
+        <div class="pages">{$page}</div>
+    </div>
+</block>

@@ -1,0 +1,84 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="{:STATICS}/spark/spark.util.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<include file="Public:upload" />
+<script>
+$(function(){
+	$("#form").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+	$(".datetime-picker").datetimepicker({format: 'yyyy-mm-dd',language:'zh-CN',minView:2,autoclose:true});
+});
+	function find(da) {
+		$("input[name='type']").val(da);
+	}
+	
+	function che() {
+		var temp=/^(\+|-)?\d+($|\.\d+$)/
+		var s = document.getElementById("money");
+		if(temp.test(s.value)==false){
+			alert("充值金额不正确！");
+			return false;
+		}
+	}
+
+	function check(){
+		var pass1= $("input[name='password']").val();
+		var repass1= $("input[name='repassword']").val();
+		
+		if(pass1 != repass1){
+			alert("一级密码不一致！");
+			return false;
+		}
+		
+	}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<ul class="nav nav-tabs wm-tabs">
+		<li><a href="{:U('Member/adlist')}">幻灯片管理</a></li>
+		<li  class="active"><a href="{:U('Member/addad')}">添加幻灯片</a></li>
+	</ul>
+	<form id="form" class="form-horizontal" method="post" style="margin-top:20px;">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">图像</label>
+			<div class="col-sm-4" >
+				<input type="hidden" class="form-control" value="" id="imgUrl" name="imgUrl" />
+				<img id="imgUrlHolder" style="width:375px;height:328px;" class="img-rounded" src="/Public/User/images/thumbnail.png"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+				<span class="btn btn-xs btn-primary" onclick="selectAsset('imgUrl',120,120)">
+					<span class="glyphicon glyphicon-cloud-upload"></span>选择
+				</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('imgUrl')">
+					<span class="glyphicon glyphicon-picture"></span>预览
+				</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">排序</label>
+			<div class="col-md-4">
+				<input type="text" name="sort" class="validate[required] form-control" value="0" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-md-4 col-xs-offset-2">
+				<button type="submit" onclick="return check()" class="btn btn-success">保存</button>
+			</div>
+
+		</div>
+	</form>
+</div>
+</block>

@@ -1,0 +1,108 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>交易记录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="wap-font-scale" content="no">
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/style.css">
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/common.css"> 
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/ucenter.css"> 
+	<style> body{padding-bottom:80px;}</style>
+</head>
+<body class="page-mobile ">
+<div class="jz-head">
+<a href="###" id="account_icon_btn" class="pos-left head-show jz-my_head">
+<img src="{$user['headimgurl']}" width="33" height="33" alt="">
+</a>
+<span>{$user['wechat_name']}</span>
+<a href="javascript:void(0);" id="screen" class="font-sm pos-right">
+<if condition="$_SESSION['is_sim'] eq 1">
+           切换模拟盘
+                <else />
+                切换实盘赚翻天
+
+                </if>
+
+
+
+    </a>
+</div>
+    <div class="account-top-view text-center">
+         <if condition="$_SESSION['is_sim'] eq 1">
+             <p class="font-sm">余额</p>
+                <p class="account-total">{$user['money']}</p>
+                <else />
+                 <p class="font-sm">模拟盘余额</p>
+                <p class="account-total">{$user['coin']}</p>
+
+               
+
+                </if>
+
+       
+<if condition="$_SESSION['is_sim'] eq 1">
+    <span class="span-right">累计交易：{$total['count']}笔<p>累计流水：<if condition="$total['sum'] eq ''">0.00<else />{$total['sum']}</if> 元</p></span>
+    <span class="span-left">今日交易：{$today['count']}笔<p>今日盈利：<if condition="$today['sum'] eq ''">0.00<else />
+
+<?php echo $today['sum']-$today['lastsum']; ?></if> 元</p></span>
+ <else />
+        <span class="span-right">累计模拟交易：{$total['count']}笔<p>累计模拟流水：<if condition="$total['sum'] eq ''">0.00<else />{$total['sum']}</if>元</p></span>
+		<span class="span-left">今日模拟交易：{$today['count']}笔<p>今日模拟盈利：<if condition="$today['sum'] eq ''">0.00<else /><?php echo $today['sum']-$today['lastsum']; ?></if>元</p></span>
+    </if>      
+    </div>
+<div class="water">
+<div class="water-1"></div>
+<div class="water-2"></div>
+</div>
+    <div class="wrapper investrecord-wrapper">
+        <!-- 投资记录 S -->
+    <table class="rec-table rec-table6" id="all_list">
+        <tr class="rec-tr">
+            <th class="rec-th">资产类型</th>
+            <th class="rec-th">涨/跌</th>
+            <th class="rec-th">到期时间</th> 
+			<th class="rec-th">买入金额</th>
+			<th class="rec-th">盈利情况</th> 
+			<th class="rec-th">订单状态</th> 
+        </tr>
+    </table>
+    <!-- 投资记录 E -->
+<div class="def-p com-agreement fz12 am-unchecked mt10 hide" id="cash_tips">
+<span class="vam">提现审核时间为工作日9:00-17:00。通过审核后，提现资金将在10分钟内到账。</span>
+</div>
+<div class="com-empty hide"><div class="come-txt"></div></div> 
+<div class="more-btn hide">
+<a href="javascript:void(0);" style="display: block;"></a>
+<div class="loading">
+<span id="floatingBarsG2" class="floatingBarsG"></span><span>加载中...</span>
+</div>
+</div>
+</div> 
+<div class="loading-wrapper" style="display: none;">
+<div class="loading-area">
+<div id="floatingBarsG1" class="floatingBarsG"></div>
+<p id="msg">登录中...</p> 
+</div>
+<div class="mask" style="opacity: 0.3;"></div>
+</div>
+<script type='text/javascript'>var ROOT = "";</script>
+<script src="{:RES}/jinrong/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="{:RES}/jinrong/Mobile/Public/js/common.js"></script>
+<script type="text/javascript" src="{:RES}/jinrong/Mobile/Public/js/history.js"></script>
+
+
+<script type="text/javascript">
+$(function(){
+    $('.jz-footer ul a').removeClass('active');   
+})</script>
+
+<include file="Public:footer"/>
+
+</body>
+</html>

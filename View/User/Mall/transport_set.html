@@ -1,0 +1,75 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/pnotify/pnotify.custom.min.css" />
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<ul class="nav nav-tabs" role="tablist">
+		<li><a href="{:U('reply_set')}">回复设置</a></li>
+		<li><a href="{:U('set')}">商城设置</a></li>
+		<li class="active"><a href="javascript:void(0)">物流设置</a></li>
+	</ul>
+	<hr style="border:0;" />
+	<form action="__SELF__" method="post" class="ajax-form form-horizontal">
+		<div class="form-group">
+			<label for="transport_fee" class="control-label col-sm-2">订单运费</label>
+			<div class="col-sm-4">
+				<input type="text" id="transport_fee" name="transport_fee" class="form-control" value="{$set.transport_fee|default=0}" />
+				<div class="help-block">商城邮费，为0时全场包邮</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="transport_free_line" class="control-label col-sm-2">免运费额度</label>
+			<div class="col-sm-4">
+				<input type="text" id="transport_free_line" name="transport_free_line" class="form-control" value="{$set.transport_free_line|default=0}" />
+				<div class="help-block">默认为 0，表示不设置免运费额度，大于0表示购买金额超出该值后将免运费</div>
+			</div>
+		</div>
+		<!--<div class="form-group">
+			<label for="transport_free_base_num" class="control-label col-sm-2">免邮订单商品数量</label>
+			<div class="col-sm-4">
+				<input type="text" id="transport_free_base_num" name="transport_free_base_num" class="form-control" value="{$set.transport_free_base_num|default=0}" />
+				<div class="help-block">默认为 0，表示不对免邮订单作商品数量限制，大于0表示商品数量要不小于该值</div>
+			</div>
+		</div>-->
+		
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+			  <button type="submit" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/js/jquery.form.js"></script>
+<script src="{:STATICS}/pnotify/pnotify.custom.min.js"></script>
+<script>
+	$('.ajax-form').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+				jump(2000);
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		}
+	});
+	function jump(delay){
+		delay = delay || 3000;
+		setTimeout("location.reload()",delay);
+	}
+</script>
+</block>

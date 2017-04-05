@@ -1,0 +1,35 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+		<div class="page-header">
+			<h3 style="color:rgb(77, 112, 148)">{$wxaccount['wxname']}</h3>
+			<span class="label label-primary" style="background-color:rgb(209, 202, 20);">{$wxaccount['wxtype']}</span>
+		</div>
+		<table class="table table-bordered">
+			<tbody>
+			  <tr>
+				<td>套餐有效期: {$Think.session.viptime|date='Y年m月d日',###}</td>
+				<td>文本回复: {$chart['text_num']}</td>
+				<td>图文回复: {$chart['img_num']}</td>
+				<td>语音回复: {$chart['voice_num']}</td>
+			  </tr>
+			  <tr>
+				<td>本月请求数: {$chart['request_num']}</td>
+				<td>请求总数: {$chart['total_request_num']}</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			  </tr>
+			</tbody>
+		</table>
+		<div class="row">
+			<div class="col-md-4">
+				<span class="label label-default">Token</span>
+				<strong>{$Think.session.token}</strong>
+			</div>
+			<div class="col-md-6">
+				<span class="label label-default">API接口</span>
+				<strong>{:C('api_domain')}/api/{$Think.session.token}</strong>
+			</div>
+		</div>
+	</div>
+</block>

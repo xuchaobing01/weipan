@@ -1,0 +1,95 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+.action {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 1px 1px 3px #666666;
+    width: 359px;
+}
+td{text-align: -webkit-left;font-size:12px;}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript">
+	function submit(callback){
+		var data={};
+		data['pid']=$('#pid').val();
+		data['id']=$('#id').val();
+		data['title']=$('#title').val();
+		data['keyword']=$('#keyword').val();
+		data['url']=$('#url').val();
+		data['sort']=$('#sort').val();
+		data['is_show']=$('input:radio:checked').val();
+		data['__hash__']=$('input[name="__hash__"]').val();
+		$.ajax({
+			url:"{:U('Diymen/class_edit')}",
+			type:'POST',
+			data:data,
+			dataType:'json',
+			success:function(resp){
+				if(resp['status']==0){
+					parent[callback](resp.record_id);
+				}
+			}
+		})
+	}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<form class="form-horizontal" action="" method="post">
+	<input type="hidden" value="{$show.id}" id="id" name="id" /> 
+	<div class="form-group">
+		<label class="control-label col-xs-3">父级菜单</label>
+		<div class="col-xs-6">
+			<select name="pid" id="pid" class="form-control">
+				<option  value="0">请选择菜单</option>
+				<volist id="class" name="class">
+					<option  value="{$class.id}" <if condition="$show['pid'] eq $class['id']">selected</if>>{$class.title}</option>
+				</volist>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-3">菜单名称</label>
+		<div class="col-xs-6">
+			<input class="form-control" id="title" name="title" title="主菜单名称" value="{$show.title}" type="text" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-3">关联关键词</label>
+		<div class="col-xs-6">
+			<input class="form-control" id="keyword" name="keyword" title="关联关键词" value="{$show.keyword}" type="text" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-3">外链接url</label>
+		<div class="col-xs-6">
+			<input class="form-control" name="url" id="url"  title="外链接url" value="{$show.url}" type="text" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-3">显示</label>
+		<div class="col-xs-6">
+			<label class="radio-inline">
+			<input type="radio" name="is_show" <if condition="$show eq '' OR $show['is_show'] eq 1">checked="checked"</if> value="1">是
+			</label>
+			<label class="radio-inline">
+			<input type="radio" name="is_show" <if condition="$show neq '' AND $show['is_show'] eq 0">checked="checked"</if> value="0">否
+			</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-3">排序</label>
+		<div class="col-xs-6">
+			<input class="form-control" id="sort" name="sort" title="排序" value="{$show.sort|default=1}" type="text" />
+		</div>
+	</div>
+	<div class="form-group hidden">
+		<div class="col-xs-offset-3 col-xs-6">
+			<input class="btn btn-primary" type="submit" name="submit" value="提交">
+		</div>
+	</div>
+</form>
+</div>
+</block>

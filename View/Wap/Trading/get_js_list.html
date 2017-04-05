@@ -1,0 +1,30 @@
+<volist name="result" id="vo">
+<li class="page3">
+    <div class="po-avt-wrap">
+        <img class="po-avt data-avt" src="{$vo['headImgUrl']}">
+    </div>
+    <div class="po-cmt">
+        <div class="po-hd">
+            <p class="po-name"><span class="data-name">{$vo['uname']}</span></p>
+            <div class="post">
+                <div class="kwd" ><p id="kwd">{$vo['Content']}</p></div>
+                <p>
+                <volist name="vo['imglist']" id="img">
+                        <img class="list-img" src="/public/wap/jinrong/mobile/public/images/logo.jpg"  data-original="{$img}" style="width: {$vo['width']}%;max-height: 80%;" typename="wxpic">
+                </volist>
+                </p>
+            </div>
+            <p class="time">{$vo['create_time']|date="Y-m-d H:i:s",###}</p>
+            <div style="float:right;position:relative;top:-30px;height:10px;margin-right: 5px" class="feed">
+                <div style="background-position:left center;height:55px;width:40px;background-size:cover;" class="heart" id="like{$vo['id']}" rel="like"></div>
+                <div class="likeCount" id="likeCount{$vo['id']}">{$vo['likes']}</div>
+            </div>
+        </div>
+        <div class="r"></div>
+
+    </div>
+</li>
+</volist>
+<script>
+    $(".page3 img").lazyload({effect: "fadeIn"});
+</script>

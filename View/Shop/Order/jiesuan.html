@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>订单结算</title>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/flat-ui/css/flat-ui.css" />
+
+<style>
+	.media-object{
+		max-width: 80px;
+	}
+	.media h5{
+		font-size: 15px;
+		padding-top: 4px;
+	}
+	.media p{
+		font-size: 14px;
+	}
+	.content-block{
+		border-top: 1px solid rgb(238, 238, 238);
+		border-bottom: 1px solid rgb(238, 238, 238);
+		margin: 20px 0;
+		background-color: rgb(255, 255, 255);
+		padding: 10px 0 10px 10px;
+		font-size: 14px;
+	}
+	.content-block-footer{
+		border-top: 1px solid rgb(238, 238, 238);
+		padding: 10px;
+		height: 16px;
+		line-height: 16px;
+		color: rgb(153, 153, 153);
+	}
+	.content-block-footer .after{
+		float: right;
+		margin-right:10px;
+	}
+	.content-block .after{
+		float: right;
+		margin-right:20px;
+	}
+	.media-list{
+		padding-left: 10px;
+	}
+	.media-list .media:not(:last-child){
+		border-bottom: 1px solid rgb(238, 238, 238);
+	}
+	.address-list{
+		list-style:none;
+		padding-left:10px;
+		margin:0;
+	}
+	.address-list .address:not(:last-child){
+		border-bottom: 1px solid rgb(238, 238, 238);
+	}
+	.address{
+		position:relative;
+		padding-left: 25px;
+		cursor:pointer;
+		font-size: 14px;
+	}
+	.address .icon{
+		position: absolute;
+		left: -5px;
+		font-size: 20px;
+		top: 2px;
+		visibility: hidden;
+	}
+	.address-wrap{
+		padding: 5px;
+	}
+	.active .icon{
+		visibility: visible;
+	}
+	.order-price{
+		padding: 10px;
+		margin-bottom: -20px;
+		font-size:18px;
+	}
+	.order-price strong{
+		font-size: 24px;
+	}
+	.inline-control{
+		display:inline-block;
+		width:auto;
+	}
+</style>
+<style>
+	#delivers {
+		display: inline-block;
+	}
+	.span-deliver {
+		color: #333;
+		float: left;
+		line-height: 24px;
+		height: 24px;
+		display: inline-block;
+		padding: 0 5px;
+		margin: 0 10px 10px 0;
+		background: #fff;
+		min-width: 49px;
+		text-align: center;
+		border: 1px solid #edeeef;
+		font-size: 12px;
+		cursor: pointer;
+	}
+	.deliver1 {
+		line-height: 24px;
+		height: 24px;
+		display: inline-block;
+		margin: 0 5px 10px 0;
+		text-align: center;
+		float: left;
+	}
+	.current {
+		background: #f90;
+		color: #fff;
+		border: 1px solid #f90;
+		text-shadow: none;
+	}
+</style>
+</head>
+<body>
+<div class="">
+	<div class="order-price">
+		<strong class="text-primary">¥{$sumPrice}</strong>&nbsp;(运费¥{$freesum|sprintf="%.2f",###})
+	</div>
+	<div class="content-block">
+		<ul class="media-list">
+			<volist name="items" id="item">
+			<li class="media">
+				<a class="pull-left" href="{:U('Item/index',['token'=>$token,'id'=>$item['id']])}">
+				  <img class="media-object" src="{$item.img}" alt="" style="height: auto; ">
+				</a>
+				<div class="media-body">
+					<h5 class="media-heading">{$item.title}</h5>
+					<notempty name="item.spec">
+					<p style="margin: 0;">规格：{$item.spec}</p>
+					</notempty>
+					<p>¥{$item.oprice}&nbsp;x&nbsp;{$item.num}</p>
+				</div>
+			</li>
+			</volist>
+		</ul>
+		<div class="content-block-footer">
+			商品总价：<span class="after text-warning">¥{$goodsPrice}</span>
+		</div>
+	</div>
+	<div class="content-block">
+	<ul class="address-list">
+		<volist name='address_list' id='vo' >
+		<li class="address <?php echo $i==1?'active':'';?>">
+			<div class="address-wrap">
+			<input type="hidden" name="addr_id" value="{$vo.id}" />
+			<input type="hidden" name="consignee" value="{$vo.consignee}" />
+			<input type="hidden" name="mobile" value="{$vo.mobile}" />
+			<input type="hidden" name="sheng" value="{$vo.sheng}" />
+			<input type="hidden" name="shi" value="{$vo.shi}" />
+			<input type="hidden" name="qu" value="{$vo.qu}" />
+			<input type="hidden" name="address" value="{$vo.address}" />
+			<span class="fui-check-inverted text-primary icon"></span><b>{$vo.consignee}({$vo.mobile})</b><br/>
+			<span>{$vo.sheng}&nbsp;{$vo.shi}&nbsp;{$vo.qu}&nbsp;{$vo.address}</span>
+			</div>
+		</li>
+		</volist>
+		<li class="address address-new" style="padding-top:5px;">
+			<div class="address-wrap" style="display:none;">
+			<input type="hidden" name="addr_id" value="0" />
+			<input type="hidden" name="consignee" value="" />
+			<input type="hidden" name="mobile" value="" />
+			<input type="hidden" name="sheng" value="" />
+			<input type="hidden" name="shi" value="" />
+			<input type="hidden" name="qu" value="" />
+			<input type="hidden" name="address" value="" />
+			<span class="fui-check-inverted text-primary icon"></span><b id="new_consignee"></b><br/>
+			<span id="new_address"></span>
+			</div>
+			<a data-toggle="modal" data-target="#createAddress" id="alterAddress" data-backdrop="static" class="btn btn-primary btn-xs"><i class="fui-plus"></i>&nbsp;添加收货地址</a>
+		</li>
+	</ul>
+	</div>
+    <div class="content-block">
+        <span class="deliver1">配送时间：</span>
+        <div id="delivers">
+            <span class="span-deliver">工作日</span>
+            <span class="span-deliver">双休日</span>
+            <!--<span class="span-deliver">节假日</span>-->
+            <span class="span-deliver buxian" >不限</span>
+        </div>
+        <input name="deliver_day" id="deliver_day" type="hidden">
+        
+
+            $("#delivers span").click(function(e){
+                $(this).siblings("span").removeClass("current");
+                if($(this).hasClass("current")){
+                    $(this).removeClass("current");
+                }else{
+                    $(this).addClass("current");
+                }
+            });
+        </script>
+    </div>
+
+	<div class="content-block" style="padding-right:10px;">
+		<textarea id="postscript"  class="form-control" rows="2" placeholder="有特殊需求要告诉卖家，请在此备注留言"></textarea>
+	</div>
+	<if condition="$set['use_coupon'] eq 1">
+	<!--优惠券选择 -->
+	<div class="content-block">
+		优惠：<span class="text-warning">¥<span id="discount">0.00</span></span>
+		<span class="after">
+		<if condition="$coupons eq 0">
+		<small>暂无优惠券可用</small>
+		<else/>
+		<a class="btn btn-xs btn-primary" data-toggle="modal" data-backdrop="static" data-target="#couponModal">选择优惠券</a>
+		</if>
+		</span>
+	</div>
+	</if>
+	<div class="content-block">
+		<h4 class="text-warning" style="margin: 5px 0;">应付:¥<span id="shouldPay">{$sumPrice}</span></h4>
+	</div>
+	<div style="padding:10px">
+		<select id="pay_type" name="pay_type" class="form-control">
+			<volist name="paytype" id="vo">
+			<option value="{$vo.value}">{$vo.name}</option>
+			</volist>
+		</select>
+	</div>
+	<if condition="$token eq 'svhsxh1405406082'">
+	<div class="container">
+	<div class="alert alert-warning" style="font-size:12px;">
+		<b>支付方式：支持货到付款</b>
+        <small>支持支付宝转账，鼹鼠村支付宝账号：caiwu@yanshucun.com（转账请与客服联系）</small>
+	</div>
+	</div>
+	</if>
+	<div style="padding:10px">
+		<button type="button" data-loading-text="正在提交订单..." id="submitOrder" class="btn btn-success btn-block">下单并支付</button>
+		<if condition="$set['use_agent_pay'] eq 1">
+		<!--代付功能 -->
+		<button type="button" id="agentPay" class="btn btn-default btn-block">找人代付</button>
+		</if>
+	</div>
+</form>
+</div>
+<div class="modal fade" id="createAddress">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<strong class="modal-title">新建收货地址</strong>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="consignee">收货人姓名</label>
+					<input type="text" class="form-control input-sm" id="consignee" name="consignee" placeholder="">
+				</div>
+				<div class="form-group">
+				<label for="mobile">收货人电话</label>
+				<input type="text" name="mobile" class="form-control input-sm" id="mobile" placeholder="" />
+				</div>
+				<div class="form-group">
+					<label for="exampleInputFile">所在地区</label>
+					<div class="region">
+                        <if condition="$myaddress">
+                            <select name="qu2" class="form-control" id="s3">
+                                <option value="">请选择地区</option>
+                                <volist name="myaddress" id="maddr">
+                                    <option value="{$maddr.name}">{$maddr.name}</option>
+                                </volist>
+                            </select>
+                        <else/>
+                            <select name="sheng2" class="form-control inline-control" id="s1"></select>
+                            <select name="shi2" class="form-control inline-control" id="s2"></select>
+                            <select name="qu2" class="form-control inline-control" id="s3"></select>
+                            
+                                new PCAS("sheng2","shi2","qu2","","","");
+                            </script>
+                        </if>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="address">详细地址</label>
+					<textarea class="form-control"  id="address" name="address" placeholder="请填写街道详细门牌号"></textarea>
+				</div>
+				<button type="button" id="submitAddress" class="btn btn-block btn-primary btn-sm">保存</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<if condition="$coupons">
+<div class="modal fade" id="couponModal">
+	<div class="modal-dialog" style="margin-top: 100px;">
+		<div class="modal-content">
+			<div class="modal-body">
+				<label class="radio coupon checked">
+					<input type="radio" name="coupon_id" value="0" data-toggle="radio">
+					不使用优惠券
+					<input type="hidden" name="coupon_title" value="" />
+					<input type="hidden" name="coupon_discount" value="0" />
+				</label>
+				<volist name="coupons" id="coupon">
+				<label class="radio coupon">
+					<input type="radio" name="coupon_id" value="{$coupon.id}" data-toggle="radio">
+					{$coupon.title}
+					<input type="hidden" name="coupon_title" value="{$coupon.coupon_title}" />
+					<input type="hidden" name="coupon_discount" value="{$coupon.discount_money}" />
+				</label>
+				</volist>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</if>
+</body>
+
+
+
+
+	var sumPrice = {$sumPrice};
+	function checkAddress(){
+		var consignee=  $.trim($('#consignee').val());
+		var address=  $.trim($('#address').val());
+		var mobile=  $.trim($('#mobile').val());
+		var sheng=  $.trim($('#s1').val());
+		var shi=  $.trim($('#s2').val());
+		var qu=  $.trim($('#s3').val());
+		if(consignee=='')
+		{
+			alert('请输入收货人姓名');
+			return false;
+		}
+		if(mobile=='')
+		{
+			alert('请输入手机号码');
+			return false;
+		}
+		if(isNaN(mobile))
+		{
+			alert('请输入正确的手机号码');
+			return false;
+		}
+        if($('#s1').length==0){
+            if($('#s33').val()==""){
+                alert("请选择地区");
+                return false;
+            }
+        }
+		else if(sheng=='')
+		{
+			alert('请选择所在地区');
+			return false;
+		}
+		if(address=='')
+		{
+			alert('请输入详细地址');
+			return false;
+		}
+
+
+		return {consignee:consignee,address:address,mobile:mobile,sheng:sheng,shi:shi,qu:qu};
+	}
+	
+	/*
+	 *function getAddress 获取选择收货地址
+	 */
+	function getAddress(){
+		var $li = $('.address-list>li.active');
+		if($li.length==0) return false;
+		var ret={};
+		ret.addr_id=  $.trim($li.find('input[name=addr_id]').val());
+		ret.consignee=  $.trim($li.find('input[name=consignee]').val());
+		ret.address=  $.trim($li.find('input[name=address]').val());
+		ret.mobile=  $.trim($li.find('input[name=mobile]').val());
+		ret.sheng=  $.trim($li.find('input[name=sheng]').val());
+		ret.shi=  $.trim($li.find('input[name=shi]').val());
+		ret.qu=  $.trim($li.find('input[name=qu]').val());
+		ret.address=  $.trim($li.find('input[name=address]').val());
+		return ret;
+	}
+	
+	$('#submitOrder').click(function(){	//提交订单
+		var data = getAddress();
+		if(data ==false) {
+			alert('请添加收货地址');
+			return false;
+		}
+        if($("#delivers span.current").length==0){
+            alert("请选择配送时间");
+            return false;
+        }
+        var str = "";
+        $("#delivers span.current").each(function(i,o){
+            str+=$(o).html()+" ";
+        });
+		
+        $("#deliver_day").val(str);
+        data['deliver_day']=str;
+		data['postscript'] = $('#postscript').val();
+		data['pay_type'] = $('#pay_type').val();
+		data['coupon_id'] = $('.coupon.checked input[name=coupon_id]').val() || 0;
+		$(this).button('loading');
+		$.ajax({
+			url:"{:U('pay?token='.$token)}",
+			data:data,
+			type:'post',
+			dataType:'json',
+			success:function(resp){
+				if(resp.status==0){
+					location.href=resp.url;
+				}
+				else{
+					alert(resp.msg);
+					$('#submitOrder').button('reset');
+				}
+			}
+		});
+	})
+	
+	$('#agentPay').click(function(){	//找人代付
+		var data = getAddress();
+		data['postscript'] = $('#postscript').val();
+		data['pay_type'] = 0 ;
+		data['coupon_id'] = $('.coupon.checked input[name=coupon_id]').val() || 0;
+		$.ajax({
+			url:"{:U('pay?token='.$token)}",
+			data:data,
+			type:'post',
+			dataType:'json',
+			success:function(resp){
+				if(resp.status==0){
+					location.href=resp.url;
+				}
+				else{
+					alert(resp.msg);
+				}
+			}
+		});
+	})
+	
+	$('#submitAddress').click(function(){
+		var ret = checkAddress();
+		if(ret != false){
+			var $li = $('.address-new');
+			$li.find('input[name=consignee]').val(ret.consignee);
+			$li.find('input[name=mobile]').val(ret.mobile);
+			$li.find('input[name=sheng]').val(ret.sheng);
+			$li.find('input[name=shi]').val(ret.shi);
+			$li.find('input[name=qu]').val(ret.qu);
+			$li.find('input[name=address]').val(ret.address);
+			
+			$li.find('#new_consignee').html(ret.consignee+'('+ret.mobile+')');
+			$li.find('#new_address').html(ret.sheng+'&nbsp;'+ret.shi+'&nbsp;'+ret.qu+'&nbsp;'+ret.address);
+			$('.address-list').find('.address.active').removeClass('active');
+			$li.addClass('active').find('.address-wrap').show();
+			$('#createAddress').modal('hide');
+			$(this).html('修改地址');
+			$('#alterAddress').html('修改地址');
+		}
+	});
+	
+	$('.address-list .address-wrap').click(function(){
+		var $li = $(this).parent();
+		if(!$li.hasClass('active')){
+			$li.siblings('.active').removeClass('active');
+			$li.addClass('active');
+		}
+	});
+	$('.coupon').click(function(){
+		var discount = parseFloat($(this).find('input[name=coupon_discount]').val());
+		$('#discount').html(discount.toFixed(2));
+		var price = sumPrice - discount;
+		if(price < 0)price = 0;
+		$('#shouldPay').html(price.toFixed(2));
+		$('#couponModal').modal('hide');
+	})
+</script>
+<html>

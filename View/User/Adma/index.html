@@ -1,0 +1,62 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+</block> 
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h3>微信公众号二维码推广页设置</h3>
+		<small>可以发布到QQ群微博、博客、论坛等地方用于推广公众号</small>
+	</div>
+	<form class="form-horizontal" role="form" action="" method="post">
+		<input type="hidden" name="id" value="{$info.id}" />
+		<div class="form-group">
+			<label for="keyword" class="col-sm-2 control-label">推广页地址</label>
+			<div class="col-sm-6">
+				<a href="{:C('site_url')}/Home/Adma/index/token/{$Think.session.token}.html" title="点击查看推广页" class="btn btn-link" target="_blank">{:C('site_url')}/Home/Adma/index/token/{$Think.session.token}.html</a>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="keyword" class="col-sm-2 control-label">宣传页标题名</label>
+			<div class="col-sm-6">
+				<input type="text" name="title" value="{$adma.title}" class="form-control" id="etitle" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="keyword" class="col-sm-2 control-label">公众号二维码</label>
+			<div class="col-sm-6" >
+				<input type="hidden" id="img" name="url" value="{$adma.url}" class="form-control" />
+				<img id="imgHolder" style="width:240px;height:240px;" class="img-rounded" src="{$adma.url|default=RES.'/images/qrcode.jpg'}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',640,640)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="keyword" class="col-sm-2 control-label">功能介绍</label>
+			<div class="col-sm-6">
+				<textarea class="form-control" id="info" name="info" style="height:120px">{$adma.info}</textarea> 
+			</div>
+			<small class="col-md-3">请简单描述您的微信公众号可以给粉丝带来什么好处,尽量控制在<span class="text-warning">150文字以内</span></small>
+		</div>
+		<div class="form-group">
+			<label for="keyword" class="col-sm-2 control-label">版权信息</label>
+			<div class="col-sm-6">
+				<input type="text" name="copyright" value="{$adma.copyright}" class="form-control" />
+			</div>
+			<small class="col-md-3">例如：Copyright© 2013-2014 微市场 版权所有</small>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

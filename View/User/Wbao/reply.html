@@ -1,0 +1,208 @@
+<extend name="Public:innerbase" />
+<block name="css"></block>
+<block name="js">
+<script type="text/javascript">
+//弹出层start
+$(function(){
+	$(".but").click(function(){
+        var messageid = $(this).attr("messageid");
+		//var str = "这里是信息内容，这里是信息内容！";
+		$(".form").html(messageid);
+		$("#faqbg").css({display:"block",height:$(document).height()});
+		var yscroll =document.documentElement.scrollTop;
+		$("#faqdiv").css("top","100px");
+		$("#faqdiv").css("display","block");
+		document.documentElement.scrollTop=0;
+	});
+	$(".close").click(function(){
+		$("#faqbg").css("display","none");
+		$("#faqdiv").css("display","none");
+	});
+})
+//弹出层end
+
+//校验提交是否为空
+function check(){
+   if( document.getElementById("addcontent").value.length < 1){
+	   alert("请输入回复内容");
+	   return false;
+   }
+}
+
+$(document).ready(function(){
+    $("#selected").click(function () {
+       $("input[name='items']").each(function(){
+			if (this.checked) {
+				this.checked = false;
+			}
+			else {
+				this.checked = true;
+			}
+		});
+    });
+	
+    $("#addbtn").click(function(){//显示/隐藏添加回复框
+        $("#showmsg").toggle();
+    });
+
+    $("#checked").click(function(){//选中全部审核
+        var chk_value =[];
+        var token = $("#tokened").val();
+        $('input[name="items"]:checked').each(function(){
+            chk_value.push($(this).val());
+        });
+        if(chk_value.length==0){
+            alert("你还未选择要操作的项！");
+            return;
+        }
+        $.ajax({
+            type:"get",
+            url:"/index.php?m=User&c=Reply&a=replyChk&token="+token+"&chk_value="+chk_value,
+            success:function(result){
+                $("input[name='items']").each(function(){
+					if (this.checked) {
+						this.checked = false;
+					}
+				});
+                window.location.reload();
+                alert(result);
+            }
+        });
+    });
+})
+
+$(document).on("click","#del",function(){  
+    var chk_value =[]; 
+    var token = $("#tokened").val();
+    $('input[name="items"]:checked').each(function(){    
+        chk_value.push($(this).val());    
+    }); 
+    if(chk_value.length==0){
+        alert("你还未选择要操作的项！");
+        return;
+    } 
+    $.ajax({
+        type:"get",
+        url:"/index.php?m=User&c=Reply&a=replyDel&token="+token+"&chk_value="+chk_value,
+        success:function(result){
+            $("input[name='items']").each(function(){
+	            if (this.checked) {
+	                this.checked = false;
+	            }
+            });
+            window.location.reload();
+            alert(result);
+        }
+    });
+});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>留言回复</h3>
+		<a href="{:U('Reply/index')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+			返回
+		</a>
+	</div>
+	<p style="padding:4px;" id="content" >{$message}</p>
+	<form class="form-horizontal" method="post" onsubmit="return check();" action="{:U('User/Reply/addreply',array('message_id'=>$message_id))}">
+		<div class="form-group">
+			<div class="col-md-4">
+				<textarea  id="addcontent" name="content"  rows="5" class="form-control"></textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4">
+				<input type="submit" value="回复" class="btn btn-success" />
+			</div>
+		</div>
+	</form>
+	<hr/>
+	<h4 class="left">回复列表 </h4>
+	<if condition="$res">
+	<!--<div style="margin:10px 0;">    
+		<a href="#" title="选中审核" class="btn btn-sm btn-info" id="checked">选中审核</a>
+		<a href="#" title="选中删除" class="btn btn-sm btn-info" id="del">选中删除</a>
+	</div>-->
+	<form method="post" action="" id="info">
+		<input name="checked" type="hidden" id="needCheck" value="{$needCheck}">
+		<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th style="width:32px;"><input type="checkbox" value="反选" name="button" id="selected" ></th>
+		<th>回复内容</th>
+		<th>回复时间</th>
+		<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="res" id="item"> 
+		<tr>
+			<td><input type="checkbox" name="items" value="{$item.id}" class="checkitem"  ></td>
+			<td><if condition="$item['differ'] neq 1"><font style="color:#94D38A;">(网友回复)</font><else/><font style="color:#94D38A;">(管理员回复)</font></if><if condition="$item['checked'] neq 1"><font color="red">(未审核)</font><else/><font ></font></if>{$item.reply|htmlspecialchars}</td>
+			<td>{$item.time|date="Y-m-d H:i:s",###}</td>
+			<td>
+				
+				<if condition="$item['checked'] neq 1">
+					<a href="{:U('Reply/replyChked',array('msgid'=>$_GET['msgid'],'id'=>$item['id']))}">审核&nbsp;&nbsp;</a>
+				<else/>
+					<span class="text-success">已审核</span>
+				</if>
+				
+				<a class="btn btn-xs btn-danger" href="{:U('User/Reply/replyDeled',array('pid'=>$_GET['msgid'],'id'=>$item['id'],'token'=>$token))}">删除</a>
+			</td>
+		</tr>
+		</volist>
+		</tbody>
+		</table>
+	</form>
+	<else/> 
+	<h4 align="center" style="color:red; font-weight:normal"><br>还没有回复内容</h4>
+	</if>
+	<div class="pages">{$page}</div>
+</block>
+<style type="text/css">
+body,h2{margin:0;padding:0;}
+#faqbg{background-color:#666666;position:absolute;z-index:99;left:0;top:0;display:none;width:100%;height:1000px;opacity:0.5;filter:alpha(opacity=50);-moz-opacity:0.5;}
+#faqdiv{position:absolute;width:600px;left:50%;top:50%;margin-left:-300px;height:auto;z-index:100;background-color:#fff;border:1px #8FA4F5 solid;padding:1px;}
+#faqdiv h2{height:25px;font-size:14px;background-color:#BABABA;position:relative;padding-left:10px;line-height:25px;}
+#faqdiv h2 a{position:absolute;right:5px;font-size:12px;color:#FF0000;}
+#faqdiv .form{padding:10px;}
+</style>
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript" src="{:RES}/js/formCheck/formcheck.js"> </script>
+
+<link rel="stylesheet" type="text/css" href="{:RES}/css/cymain.css" />
+<script src="{:STATICS}/jquery.min.js"></script>
+
+
+
+<div class="content">
+    
+    
+<div class="cLineB">
+	<a href="{:U('Reply/index',array('token'=>$token))}" class="right  btnGreen" >返回</a> 
+</div>
+<h4 id="addbtn" style="margin:10px 0">添加回复  </h4>
+<p style="padding:4px;" id="content" >{$message}</p>
+<div  id="showmsg" >
+    <form method="post" onsubmit="return check();" action="{:U('User/Reply/addreply',array('message_id'=>$message_id))}">
+		<div style="margin-top:0px;">
+			<textarea  id="addcontent" name="content"  rows="5" style="width:592px;height:100px;border:1px solid #D7DDE6;" ></textarea>
+		</div>
+		<div style="margin:10px 0">
+			<input type="submit" value="回复" class="btnGrayS vm smallbtn" />
+		</div>
+	</form>
+<div style="bordre-buttom:1px solid #EEEEEE;margin-top:5px;"></div>
+</div>
+
+
+</div>
+<div class="clr"></div>
+</div>
+</div>
+</body>
+</html>

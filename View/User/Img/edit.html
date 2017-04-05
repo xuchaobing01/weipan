@@ -1,0 +1,96 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>{$title}</h3>
+		<a class="btn btn-sm btn-default" href="{:U('Img/index')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form class="form-horizontal" role="form" action="<if condition="$info">{:U('Img/upsave')}<else/>{:U('Img/insert')}</if>" method="post">
+		<input type="hidden" name="id" value="{$info.id}" />
+		<div class="form-group">
+			<label for="keyword" class="col-sm-2 control-label">关键词</label>
+			<div class="col-sm-3">
+				<input type="text" class="form-control" id="keyword" value="{$info.keyword}"  name="keyword" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >匹配模式</label>
+			<div class="col-md-4">
+				<label style="cursor:pointer;">
+					<input type="radio" name="type" id="type1" value="1" <if condition="($info eq null) OR ($info['type'] eq 1)">checked</if>>精准匹配
+				</label>
+				&nbsp;&nbsp;
+				<label style="cursor:pointer;">
+					<input type="radio" name="type" id="type0" value="0" <if condition="$info AND ($info['type'] eq 0)">checked</if>>模糊匹配
+				</label>
+			</div>
+			<div class="col-md-4" style="padding-top:5px;">
+				<span class="label label-info"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="keyword" class="col-sm-2 control-label">标题</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="title" value="{$info.title}" name="title" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="info" class="col-sm-2 control-label">简介</label>
+			<div class="col-sm-6">
+				<textarea  class="form-control" id="text" name="text" style="height:100px">{$info.text}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">封面图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$info.pic}" id="pic" name="pic" />
+				<img id="picHolder" style="width:216px;height:120px;" class="img-rounded" <if condition="$info['pic'] eq ''">data-src="$holder.js/216x120/gray/text:720*400"</if> src="{$info.pic}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('pic',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('pic')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		
+		<div id="classify-addr" class="form-group">
+			<label for="url" class="col-sm-2 control-label">图文外链地址</label>
+			<div class="col-sm-6">
+				<div class="input-group">
+				<input type="text" class="form-control" id="url" value="{$info.url}" name="url" />
+				<span class="input-group-btn">
+					<button class="btn btn-primary" onclick="selectLink('url')" type="button">选择</button>
+				</span>
+				</div><!-- /input-group -->
+				<span class="help-block">如果填写了图文详细内容，请留空！</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sorts" class="col-sm-2 control-label">图文详细页内容</label>
+			<div class="col-sm-6">
+				<textarea class="form-control" name="info" id="content" rows="18">{$info.info}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

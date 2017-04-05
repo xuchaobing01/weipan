@@ -1,0 +1,61 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+    <div class="page-header">
+        <h4>拆礼包SN码发放管理</h4>
+       	<a href="{:U('Chaibao2/index')}" class="btn btn-default btn-sm">
+			<span class="fa fa-angle-left"></span>&nbsp;返回
+		</a>
+    </div>
+	<div class="alert alert-info">
+        <h4>本次活动奖品总数：<span class="redamount">{$datacount}</span>个</h4>
+		中奖人数：<span class="text-danger">{$recordcount} </span>个，已领取奖品数：<span class="text-danger">{$applyCount}</span>个，已经发放奖品数：<span class="text-danger">{$sendCount}</span>个
+	</div>
+   	<TABLE class="table wm-table-bordered">
+      <THEAD>
+        <TR style="text-align: center;">
+			<TH style="width:50px;">序号</TH>
+			<TH style="width:100px;">微信名</TH>
+			<TH>SN码(中奖号)</TH>
+			<TH style="width:50px;">奖项</TH>
+			
+			<TH style="width:120px;">小票号</TH>
+			
+			<TH style="width:80px;">中奖时间</TH>
+			<TH style="width:100px;">已发奖品</TH>
+			<TH style="width:100px;">发奖时间</TH>
+			<TH style="width:100px;">操作</TH>
+        </TR>
+      </THEAD>
+      <TBODY>
+		<volist name="record" id="record">
+			<TR style="line-height:30px;height: 43px;line-height: 59px;">
+				<td class="select">{$i}</td>
+				<td>{$record.wechat_name}</td>
+				<td>{$record.sncode}</td>
+				<td>{$record.prize_name}</td>
+				
+				<td>{$record.mobile}</td>
+			
+				<td>{$record.time|date='Y-m-d H:i:s',###}</td>
+				<td>
+				<if condition="$record['status'] eq 3">是<else/>否</if>
+				</td>
+				<td><if condition="$record['sendtime'] eq 0"> <else/>{$record.sendtime|date='Y-m-d H:i:s',###}</if>
+				</td>
+				<td>
+				<if condition="$record['status'] neq 3"> 
+				<a href="{:U('Chaibao2/sendprize?id='.$record['id'])}">发奖</a>
+				<else/>
+				<a href="{:U('Chaibao2/sendnull?id='.$record['id'])}">取消发奖</a>
+				</if>
+				</td>
+			</TR>
+		</volist>
+	  </TBODY>
+    </TABLE>
+    <div class="page">
+    {$page}
+  	</div>
+ </div>
+</block>

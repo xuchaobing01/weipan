@@ -1,0 +1,42 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>商品包间</h4>
+	</div>
+	<a style="margin:10px 0;" href="{:U('Ktv/add')}" title="添加" class="btn btn-primary">添加包间</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="20">选择</th>
+		<th width="160">包间名称</th>
+		<th width="160">介绍</th>
+		
+		<th width="60">房间数量</th>
+		<th width="130">修改时间</th>
+		<th width="200" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="hostlist"> 
+		<tr>
+		<td><input type="checkbox" name="del_id[{$i}]" value="285" class="checkitem"></td>
+		<td>{$hostlist.name}</td>
+		<td>{$hostlist.des}</td>
+	
+		<td>{$hostlist.num}</td>
+		<td>{$hostlist.time|date="Y-m-d H:i",###}</td> 
+		<td>
+		<a class="btn btn-xs btn-default" href="{:U('Ktv/edit',array('id'=>$hostlist['id']))}">修改</a>
+		<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Ktv/del',array('id'=>$hostlist['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>

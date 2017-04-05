@@ -1,0 +1,48 @@
+<extend name="Public:innerbase" />
+<block name="js"></block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h3>{$title}</h3>
+		<a class="btn btn-info" href="{:U('Voiceresponse/index')}">返回</a>
+	</div>
+	<form class="form-horizontal" role="form" action="<if condition="$info">{:U('Voiceresponse/upsave')}<else/>{:U('Voiceresponse/insert')}</if>" method="post">
+		<input type="hidden" name="id" value="{$info.id}" />
+		<div class="form-group">
+			<label for="keyword" class="col-sm-2 control-label">关键词</label>
+			<div class="col-sm-3">
+				<input type="text" class="form-control" id="keyword" value="{$info.keyword}"  name="keyword" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="title" class="col-sm-2 control-label">音乐标题</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="title" value="{$info.title}" name="title" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="musicurl" class="col-sm-2 control-label">音乐链接</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="musicurl" value="{$info.musicurl}" name="musicurl" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="hqmusicurl" class="col-sm-2 control-label">高品质音乐链接</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="hqmusicurl" value="{$info.hqmusicurl}" name="hqmusicurl" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="description" class="col-sm-2 control-label">音乐描述</label>
+			<div class="col-sm-6">
+				<textarea  class="form-control" id="description" name="description" style="height:100px">{$info.description}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

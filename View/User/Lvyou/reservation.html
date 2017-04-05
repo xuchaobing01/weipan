@@ -1,0 +1,60 @@
+<extend name="Public:innerbase" />
+<block name="css">
+    <link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+    <link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+    <link href="{:RES}/css/ss.css" rel="stylesheet" type="text/css"  />
+    <link href="{:RES}/css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{:RES}/css/cymain.css" />
+</block>
+<block name="content">
+    <div class="tab">
+        <ul>
+            <li class="<if condition="ACTION_NAME EQ 'index'">current</if> tabli" id="tab0"><a href="{:U('Lvyou/index',array('token'=>$token))}">旅游区简介</a></li>
+            <li class="<if condition="ACTION_NAME EQ 'son' ">current</if> tabli" id="tab2"><a href="{:U('Lvyou/son',array('token'=>$token))}">景区</a></li>
+            <li class="<if condition="ACTION_NAME EQ 'housetype' ">current</if> tabli" id="tab2"><a href="{:U('Lvyou/housetype',array('token'=>$token))}">景点</a></li>
+            <li class="<if condition="ACTION_NAME EQ 'album' or ACTION_NAME EQ 'album_add'">current</if> tabli" id="tab5"><a href="{:U('Lvyou/album',array('token'=>$token))}">风景相册</a></li>
+            <li class="<if condition="ACTION_NAME EQ 'expert'">current</if> tabli" id="tab5"><a href="{:U('Lvyou/expert',array('token'=>$token))}">游客点评</a></li>
+            <li class="<if condition="ACTION_NAME EQ 'Reservation'">current</if> tabli" id="tab6"><a href="{:U('lvyou/reservation',array('token'=>$token,'thetype'=>'estate'))}">预定门票</a></li>
+        </ul>
+    </div>
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4 class="left">预约管理</h4>
+	</div>
+	<table class="table wm-table-bordered">
+	  <thead>
+		<tr> 
+		  <th>预约名称</th>
+		  <th>关键字</th>
+		  <th>预约电话</th>
+		  <th>外链地址</th>
+		  <th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+			<if condition="empty($reslist)">
+			<tr>
+				<td colspan="5" style="text-align:center; height:30px;"><strong>尚未添加楼盘预约.</strong></td>
+			</tr>
+			</if>
+			<volist name="reslist" id="vo">
+			  <tr>
+				<td>{$vo['name']}</td>
+				<td>{$vo['keyword']}</td>
+				<td>{$vo['tel']}</td>
+				<!--td><if condition="$vo['type'] eq 1">时间限制<elseif condition="$vo['type'] eq 2"/>限定每日量<else/>限定全部总量</if></td>
+				 <td></td>
+				<td>{$vo['date']}</td-->
+				<td>外链地址 {$vo['id']}</td>
+				<td >
+					<a href="{:U('Estate/reservation_manage',array('id'=>$vo['id'],'addtype'=>$vo['addtype']))}" class="btn btn-xs btn-default" title="订单管理">订单管理</a>
+					<a class="btn btn-xs btn-default" href="{:U('Estate/reservation_edit',array('id'=>$vo['id'],'addtype'=>$vo['addtype']))}" title="编辑">编辑</a> 
+					<a class="btn btn-xs btn-danger" href="{:U('Estate/reservation_del',array('id'=>$vo['id'],'addtype'=>$vo['addtype']))}" onclick="return(confirm('确定要删除吗？'))"  title="删除">删除</a></td>
+			 </tr>
+			</volist>
+
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

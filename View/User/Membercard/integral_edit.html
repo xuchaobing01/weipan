@@ -1,0 +1,68 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<block name="js">
+<include file="Public:editor" />
+<include file="Public:upload" />
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+    <div class="page-header">
+		<h4>发布礼品券 <small>发布积分兑换礼品信息</span></h4>
+		<a href="{:U('integral',['cid'=>$_GET['cid']])}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+    <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$vip.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label">礼品名称</label>
+			<div class="col-md-4">
+				<input type="input" class="form-control" id="title" value="{$vip.title}" name="title" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">兑换积分</label>
+			<div class="col-md-4">
+				<input type="input" class="form-control" id="title" value="{$vip.integral}" name="integral" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">有效期</label>
+			<div class="col-md-4">
+				<input type="input" style="width:120px;display:inline;" class="form-control" id="startdate" value="{$vip.startdate|default=time()|date='Y-m-d',###}" onClick="WdatePicker()" name="startdate" />&nbsp;到&nbsp; 
+				<input type="input" style="width:120px;display:inline;"  class="form-control" id="enddate" name="enddate" value="{$vip.enddate|default=time()+3600*24*30|date='Y-m-d',###}" onClick="WdatePicker()" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">礼品图片</label>
+			<div class="col-md-6">
+				<input type="hidden" name="img" id="img" class="form-control" value="{$vip.img}" />
+				<img id="imgHolder" style="width:162px;height:96px;" src="{$vip.img|default=RES.'/images/photo/noneimg.jpg'}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',620,400,'membercard')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">礼品说明</label>
+			<div class="col-md-6">
+				<textarea name="info" id="content" style="height:240px;"  rows="6" class="form-control">{$vip.info}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-md-4">
+				<button type="submit" name="button" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

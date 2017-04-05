@@ -1,0 +1,74 @@
+<extend name="Public:innerbase"/> 
+<block name="css">
+<style type="text/css">
+	.wm-row{
+		margin: 20px 0;
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+    <script>
+        function drop_confirm(msg, url){
+            if(confirm(msg)){
+                window.location = url;
+            }
+        }
+    </script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>订单管理</h4>
+		<div class="alert alert-info">
+			<a href="{:U('Ktv/order',array('status'=>0))}">未支付订单<span style="color:#f00">{$pay['nopay']}</span>个</a>
+			
+			<a href="{:U('Ktv/order',array('status'=>1))}">支付订单<span style="color:#f00">{$pay['pay']}</span>个</a>
+			
+			<a href="{:U('Ktv/order',array('status'=>2))}">已使用订单<span style="color:#f00">{$pay['ypay']}</span>个</a>
+		</div>
+	</div>
+	<div class="wm-row">
+		<div class="btn-group">
+			<form class="form-inline" method="post" action="{:U('order')}" id="form1">	
+                <input type="text" class="form-control" placeholder="订单号" value="{$_GET['orderid']}" name="searchkey">
+				<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i>&nbsp;查找</button>
+			</form>
+		</div>
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="60"><input type="checkbox" value="" id="check_box" onclick="selectall('id[]');"></th>
+		<th width="70">订单号</th>
+		<th width="70">微信号</th>
+		<th width="100">总价（元）</th>
+		<th class="160">状态</th>
+		<th width="160">创建时间</th>
+		<th width="150" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="o"> 
+		<tr>
+		<td><input type="checkbox" value="{$o.id}" class="cbitem" name="id_{$i}"></td>
+		<td>{$o.orderid}</td>
+		<td>{$o.wechat_name}</td>
+		<td>{$o.price}</td>
+		<td><if condition="$o.status eq 1"><span style="color:green">已支付</span><elseif condition="$o.status eq 2" /><span style="color:green">已使用</span> <else/><span style="color:red">未支付</span></if></td>
+		
+		<td>{$o.createtime|date="Y-m-d H:i:s",###}</td> 
+		<td>
+		<if condition="$o.status eq 1">
+		<a href="javascript:spark.confirm_jump('确认该订单为使用', '{:U('Ktv/saveOrder',array('id'=>$o['id']))}');" >确认使用</a>
+		</if>
+		<!-- <a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Ktv/deleteOrder',array('id'=>$o['id']))}');">删除</a> -->
+		
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

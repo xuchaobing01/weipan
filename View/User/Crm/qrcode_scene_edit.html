@@ -1,0 +1,35 @@
+<form class="form" id="editForm" method="post" action="__SELF__">
+	<div class="form-group">
+		<label class="control-label">场景名称</label>
+		<input type="text" class="form-control" id="train_number" name="scene_name" value="{$set.scene_name}" />
+	</div>
+	<div class="form-group">
+		<label class="control-label">场景描述</label>
+		<input type="text" class="form-control" name="scene_desc" value="{$set.scene_desc}" />
+	</div>
+	<button class="btn btn-success" type="submit">保存</button>
+</form>
+<script>
+	function clear_form(){
+		$('#editForm input[name="scene_name"]').val('');
+		$('#editForm input[name="scene_desc"]').val('');
+	}
+	$('#editForm').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+				$('#editModal').modal('toggle')
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		},
+		dataType:'json'
+	});
+</script>

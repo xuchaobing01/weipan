@@ -1,0 +1,83 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<style type="text/css">
+	.tab-pane{
+		padding-top: 10px;
+	}
+	
+	.tab-pane button{
+		margin:8px 10px;
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript">
+	var $modules=$(".tab-pane button");
+	$modules.click(function(e){
+		$(this).toggleClass('btn-success');
+		$modules.filter('.btn-success').not(this).removeClass('btn-success');
+	});
+	
+	$("#select").click(function(){
+		set($modules.filter(".btn-success").attr("url"));
+		art.dialog.close();
+	});
+	
+	function set(url){
+		var target=art.dialog.data('target');
+		var origin = artDialog.open.origin.document;
+		var dom = $("#"+target,origin);
+		dom.val(url);
+	}
+</script>
+</block>
+<block name="content">
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+		<div class="page-header" style="margin-top:20px;">
+			<button type="button" id="select" class="btn btn-success">选择</button>&nbsp;
+			<!--<button type="button" class="btn btn-danger">删除</button>-->
+		</div>
+		</div>
+	</div>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#system" data-toggle="tab">系统功能</a></li>
+		<li><a href="#category" data-toggle="tab">分类</a></li>
+		<li><a href="#article" data-toggle="tab">文章</a></li>
+	</ul>
+	
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div class="tab-pane active" id="system">
+			<div class="row">
+				<div class="col-md-12">
+					<volist id="vo1" name="sysModules">
+						<button url="{$vo1.url}" class="btn btn-default">{$vo1.name}</button>
+					</volist>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="category">
+			<div class="row">
+				<div class="col-md-12">
+					<volist id="vo2" name="catModules">
+						<button url="{$vo2.url}" class="btn btn-default">{$vo2.name}</button>
+					</volist>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="article">
+			<div class="row">
+				<div class="col-md-12">
+					<volist id="vo3" name="artModules">
+						<button url="{$vo3.url}" class="btn btn-default">{$vo3.name}</button>
+					</volist>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</block>

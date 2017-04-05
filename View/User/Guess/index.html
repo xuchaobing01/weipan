@@ -1,0 +1,37 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+	<div class="container-fluid">
+		<div style="margin:10px 0;">
+			<a href="{:U('Guess/addguess')}"  title="添加活动" class="btn btn-success">添加活动</a>
+		</div>
+		<table class="table table-striped wm-table-bordered">
+			<thead>
+				<tr>
+					<th>标题</th>
+					<th class="time">开始时间</th>
+					<th class="time">结束时间</th>
+					<th>参加人数</th>				
+					<th class="norightborder">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist id="list" name="list">
+				<tr>
+					<td>{$list.title}</td>
+					<td>{$list.starttime|date='Y-m-d H:i',###}</td>
+					<td>{$list.endtime|date='Y-m-d H:i',###}</td>
+					<td>{$list.score}</td>
+
+					<td class="norightborder">
+						<a href="{:U('Guess/message',array('id'=>$list['id']))}" title="题目">题目管理</a> |
+						<a href="{:U('Guess/coupons',array('id'=>$list['id']))}" title="优惠券">优惠券</a> |
+						<a href="{:U('Guess/tongji',array('id'=>$list['id']))}" title="编辑">数据统计</a> |		
+						<a href="{:U('Guess/edit',array('id'=>$list['id']))}" title="编辑">编辑</a> |
+						<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Guess/del',array('id'=>$list['id']))}');">删除</a> 
+					</td>
+				</tr>
+				</volist>
+			</tbody>
+        </table>
+	</div>
+</block>

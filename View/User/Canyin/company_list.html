@@ -1,0 +1,70 @@
+<extend name="Public:innerbase" />
+<block name="css"></block> 
+<block name="js">
+<script src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script src="{:STATICS}/spark/spark.util.js"></script>
+<script type="text/javascript">
+function selectall(name) {
+	var checkItems=$('.cbitem');
+	if ($("#check_box").attr('checked')==false) {
+		$.each(checkItems, function(i,val){
+			val.checked=false;
+		});
+	}else {
+		$.each(checkItems, function(i,val){
+			val.checked=true;
+		});
+	}
+}
+
+function showIntroDetail(id){
+	art.dialog.open('{:U('Product/orderInfo',array('token'=>$token,'dining'=>$isDining))}&id='+id,{lock:false,title:'订单详情',width:700,height:420,yesText:'关闭',background: '#000',opacity: 0.87});
+}
+function drop_confirm(msg, url){
+    if(confirm(msg)){
+        window.location = url;
+    }
+}
+
+</script>
+</block> 
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>门店管理</h4>
+		<code><?php echo rtrim(C('wap_domain'),'/').'/index.php?m=Wap&c=Canyin&a=company_list&wechat_id={wechat_id}&token='.session('token')?></code>
+	</div>
+	<div class="alert alert-info">
+		提示：请根据你的线下实体门店新增你的门店信息；
+	</div>
+	<div style="margin:10px 0;">
+		<a href="{:U('company_edit')}" class="btn btn-primary">新增门店</a>
+	</div>
+	<table class="table wm-table-bordered table-striped table-hover">
+		<thead>
+		<tr>
+		<th width="70">名称</th>
+		<th width="80">电话</th>
+		<th width="160">地址</th>
+		<th width="150" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr></tr>
+		<volist name="branches" id="c"> 
+		<tr>
+		<td>{$c.name}</td>
+		<td>{$c.tel}</td>
+		<td>{$c.address}</td>
+		<td>
+			<a class="btn btn-xs btn-primary" href="{:U('Canyin/company_edit',array('id'=>$c['id']))}">编辑</a>
+			<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Canyin/company_delete',array('token'=>$token,'id'=>$c['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>

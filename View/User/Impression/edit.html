@@ -1,0 +1,115 @@
+<extend name="Public:innerbase" />
+<block name="css">
+	<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#editForm").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+	$('input:submit').click(function(){
+		return $("#regForm").validationEngine("validate");
+	});
+});
+</script>
+</block>
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h4>{$title}</h4>
+		<a href="{:U('index')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" method="post">
+		<input type="hidden" value="{$impress['id']}" name="id" />
+		<div class="form-group">
+			<label class="control-label col-sm-2 col-sm-2">标题</label>
+			<div class="col-md-6">
+				<input type="text" class="form-control validate[required,minSize[2],maxSize[4]]" name="title" value="{$impress['title']}" />
+				<span class="help-block">标题最少2个字，最长4个字！</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">显示顺序</label>
+			<div class="col-md-6">
+				<input type="text" class="form-control" name="sort" value="{$impress['sort']|default=1}" />
+				<span class="help-block">数值越大越靠前</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">印象数</label>
+			<div class="col-md-6">
+				<input type="text" class="form-control validate[required,number]" name="comment" value="{$impress['comment']|default=1}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">是否显示</label>
+			<div class="col-md-6">
+				<label class="radio-inline">
+					<input type="radio" name="is_show" value="1" <if condition="$impress['is_show'] eq 1"> checked="checked"</if>>显示
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="is_show" value="0" <if condition="$impress['is_show'] eq 0"> checked="checked"</if>>不显示
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-6 col-sm-offset-2">
+				<button type="submit" name="button" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+    <div class="msgWrap bgfc">
+	  <form class="form" method="post" action="" target="_top" >	 
+		<table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
+			<tbody>
+				<tr>
+				  <th valign="top"><span class="red">*</span>标题：</th>
+				  <td>
+					<input type="text" id="title" name="title" value="{$impress['title']}" class="input-large px" data-rule-required="true" data-rule-maxlength="4" maxlength="4">
+                                        <span class="maroon">*</span>
+                                        <span class="help-inline">请填写4个中文印象！</span>
+					</td>
+				</tr>
+				<tr>
+					<th width="120">显示顺序：</th>
+					<td> <input type="text" id="sort" name="sort" value="{$impress['sort']|default=1}" class="input-mini px" data-rule-required="true" data-rule-number="true">
+                                        <span class="maroon">*</span>
+                                        <span class="help-inline">数值越大越靠前</span></td>
+				</tr>
+				<tr>
+					<th width="120">印象数：</th>
+					<td> <input type="text" id="comment" name="comment" value="{$impress['comment']}" class="input-large px" data-rule-required="true" data-rule-number="true">
+                                        <span class="maroon">*</span></td>
+				</tr>
+				<tr>
+					<th>是否显示：</th>
+					<td><label class="radio inline">
+                                            <input type="radio" name="is_show" value="1" <if condition="$impress['is_show'] eq 1"> checked="checked"</if>>显示此印象
+                                        </label>
+                                        <label class="radio inline">
+                                            <input type="radio" name="is_show" value="0" <if condition="$impress['is_show'] eq 0"> checked="checked"</if>>不显示此印象
+                                        </label></td>
+				</tr>
+				<th>&nbsp;</th>
+				  <if condition="$impress['id'] neq ''">
+                                    <input type="hidden" name="id" value="{$impress['id']}" />
+                                    </if>
+                                    <input type="hidden" name="pid" value="{$pid}">
+					<td>
+						<button type="submit" name="button" class="btnGreen">保存</button>
+						<a href="javascript:history.go(-1);" class="btnGray vm">取消</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+  </div> 

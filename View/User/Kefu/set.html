@@ -1,0 +1,50 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="{:STATICS}/cxselect/js/jquery.cxselect.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<include file="Public:upload" />
+
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>智能客服</h4>
+	</div>
+	<div class="alert alert-info">提示：<br/>您的智能机器人需要您的调教才能进行正常的应答，在专属客服调教菜单进行调教
+单一回复客服：可选择回复欢迎文字或者微官网</div>
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="javascript:void(0)">客服设置</a></li>
+		<li><a href="{:U('answers')}" target="_self">客服回答库</a></li>
+	</ul>
+	<form class="form-horizontal" method="post" style="padding-top:20px;">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="control-label col-xs-2">客服机器人名称</label>
+			<div class="col-md-4">
+				<input class="form-control" type="text" name="kefu_name" value="{$set.kefu_name|default='客服小微'}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">智能客服状态</label>
+			<div class="col-md-4">
+				<label class="radio-inline">
+					<input type="radio" name="status" value="1" <eq name='set["status"]' value="1">checked</eq>/>启用
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="status" value="0" <eq name='set["status"]' value="0">checked</eq>/>停用
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-xs-offset-2 col-md-4">
+				<button type="submit" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

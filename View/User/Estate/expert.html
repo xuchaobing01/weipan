@@ -1,0 +1,41 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>专家点评管理</h3>
+	</div>
+	<a style="margin:10px 0;" href="{:U('Estate/expert_add')}" class="btn btn-success">
+		添加点评
+	</a>
+	<table class="table wm-table-bordered">
+		<thead>
+			<tr> 
+			  <th class="span3">点评标题</th>
+				<th class="span3">专家</th>
+				<th class="span1">显示顺序</th>
+				<th class="span2">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<if condition="$expert eq ''">
+			<tr>
+			<td colspan="5" style="text-align:center; height:30px;"><strong>请添加专家点评.</strong></td>
+			</tr>
+		<else/>
+			<volist name="expert" id="list">
+			<tr>
+			<td>{$list['title']}</td>
+			<td>{$list['name']}</td> 
+			<td>{$list['sort']}</td>
+			<td>
+			<a href="{:U('Estate/expert_add',array('id'=>$list['id']))}" class="btn btn-xs btn-default">编辑</a>
+			<a class="btn btn-xs btn-danger" href="{:U('Estate/expert_del',array('id'=>$list['id']))}" onclick="return(confirm('确定要删除吗？'))"  class="btn">删除</a></a>
+			</td>
+			</tr>
+			</volist> 
+			</if>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

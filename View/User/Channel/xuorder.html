@@ -1,0 +1,116 @@
+<extend name="Public:innerbase" />
+
+<block name="js">
+
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+	<script type="text/javascript" src="{:STATICS}/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="{:STATICS}/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script>
+        $(function(){
+            $(".datetime-picker").datetimepicker({format: 'yyyy-mm-dd',language:'zh-CN',minView:2,autoclose:true});
+        });
+
+	</script>
+</block>
+
+<block name="content">
+
+<div class="container-fluid">
+
+	<ul class="nav nav-tabs wm-tabs">
+
+		<li ><a href="{:U('Channel/order')}">实盘流水记录</a></li>
+
+		<li class="active"><a href="javascript:void(0)">虚拟盘流水记录</a></li>
+
+	</ul>
+
+	<div class="page-header wm-page-header">
+
+	<form method="get" action="__SELF__" class="form-inline">
+	 			<label>姓名</label>
+	 			<input name="wechat_name" type="text" value="{$_GET['wechat_name']}" class="form-control" />
+	 			<label>手机号</label>
+	 			<input name="phone" type="text" value="{$_GET['phone']}" class="form-control" />
+		<label>时间</label>
+		<input name="starttime" type="text" value="{$_GET['starttime']}" class="form-control datetime-picker" />
+		~
+		<input name="endtime" type="text" value="{$_GET['endtime']}" class="form-control datetime-picker" />
+	 			<button class="btn btn-primary" type="submit">
+	 				<span class="glyphicon glyphicon-search"></span>
+	 				查询
+	 			</button>
+	 			</form> 
+
+	</div>
+
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+
+		<THEAD>
+
+		<TR>
+
+			<TH>ID</TH>	
+
+			<TH>姓名</TH>
+
+			<TH>电话</TH>
+
+			<TH>提交时间</TH>
+			
+			<TH>流水状态</TH> 
+
+			<TH>金额</TH>
+
+			<TH>状态</TH> 
+
+
+		</TR>
+
+		</THEAD>
+
+		<TBODY>
+
+		<volist id="list" name="list">
+
+		<TR>
+
+			<TD>{$list.id}</TD>
+
+			<TD>{$list.wechat_name}</TD>
+
+			<TD>{$list.phone}</TD>
+
+			<TD>	{$list.createtime|date='Y-m-d H:i',###}</TD>
+
+
+			<TD><if condition="$list.dircetion eq 1"><span style="color:red">买涨</span> <else /><span style="color:green">买跌</span></if></TD>
+
+			<TD>
+
+			{$list.amount}
+
+			</TD>
+
+
+
+
+			<TD><if condition="$list.is_win eq 1"><span style="color:red">赢</span> <else /><span style="color:green">亏</span></if></TD>
+
+			
+
+		</form>
+
+		</TR>
+
+		</volist>
+
+	  </TBODY>
+
+	</TABLE>
+
+	<div>{$page}</div>
+
+</div>
+
+</block>

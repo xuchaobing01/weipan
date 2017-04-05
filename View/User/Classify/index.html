@@ -1,0 +1,57 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style type="text/css">
+	.cateimg img{
+		background-color:#ace;
+		padding:0;
+	}
+</style>
+</block>
+<block name="content">
+	<div class="container-fluid">
+		<div class="page-header wm-page-header">
+			<h4>分类管理</h4>
+			<p>
+			<small>设置好分类，在图文编辑或文章编辑的时候就可以选择分类，系统会自动生成一个微网站。</small>
+			</p>
+			<a class="btn btn-success" href="{:U('Classify/edit')}">
+			<span class="glyphicon glyphicon-plus"></span>添加分类</a>
+		</div>
+		<table class="table wm-table-bordered table-stripped">
+			<thead>
+				<tr>
+					<th>分类名称</th>
+					<th>分类描述</th>
+					<th>分类图片</th>
+					<th>显示顺序</th>
+					<th>在首页显示</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="info" id="vo">
+				<tr>
+				<td>{$vo.name}</td>
+				<td>{$vo.info}</td>
+				<td>
+					<if condition="$vo['img'] neq ''">
+					<div class="cateimg">
+						<img src="{$vo.img}" alt="" class="img-thumbnail" style="width:72px;height:40px" />
+					</div>
+					</if>
+				</td>
+				<td>{$vo.sorts}</td>
+				<td><eq name="vo.status" value="1">显示<else/>不显示</eq></td>
+				<td>
+					<a class="btn btn-primary btn-xs" href="{:U('Classify/edit',array('id'=>$vo['id']))}">编辑</a>
+					<a class="btn btn-danger btn-xs" href="{:U('Classify/del',array('id'=>$vo['id']))}">删除</a>
+				</td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+		<div style="">
+			<div class="pages">{$page}</div>
+		</div>
+	</div>
+</block>

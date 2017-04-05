@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>会员中心 - 查看订单</title>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Shop/css/default.css" />
+<style type="text/css">
+.list-block{
+	overflow:hidden;
+	margin: 0;
+	padding: 10px 8px;
+}
+.list-block-title{
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 16px;
+	color: inherit;
+	border-left: 2px solid rgb(128, 128, 128);
+	padding-left: 8px;
+}
+.list-block li {
+	overflow:hidden;
+	border-bottom: 1px solid rgb(234, 234, 234);
+	padding:5px 0;
+	margin: 5px 0;
+}
+.list-block li:last-child{
+	border-bottom:0;
+}
+.list-block li dt{
+	min-width: 70px;
+	float: left;
+	padding-top: 5px;
+	height: auto;
+}
+.list-block li dd{
+	min-width: 70px;
+	float: left;
+	padding-top: 5px;
+	height: auto;
+}
+.panel{
+	border:0;
+}
+.panel-heading{
+	padding-left: 2px;
+}
+.block-title{
+	border-left: 3px solid rgb(119, 118, 118);
+	padding-left: 8px;
+}
+.media{
+	border-top: 1px solid rgb(209, 209, 209);
+	padding-top: 10px;
+}
+.media-object{
+	max-width:100px;
+}
+
+</style>
+</head>
+<body class="ui-app">
+<div class="container">
+	<div class="panel panel-default" style="margin-top:20px;">
+		<div class="panel-heading">
+			<h4 class="block-title">订单详情</h4>
+		</div>
+		<div class="panel">
+			<ul class="list-block">
+				<li>
+                <dt>订单状态</dt>
+                <dd>
+                <switch name="order.status" >
+                    <case value="1"><span class="text-warning">待付款</span></case>
+                    <case value="2"><span class="text-warning">待发货</span></case>
+                    <case value="3"><span class="text-warning">待收货</span></case>
+                    <default /><span class="text-success">完成</span>
+                </switch>
+                </dd>
+				</li>
+				<li>
+                <dt>订单号</dt>
+                <dd>{$order.orderId}</dd>
+				</li>
+				<li>
+                <dt>下单时间</dt>
+                <dd>{$order.add_time|date='Y-m-d H:i:s',###}</dd>
+				</li>
+				<li>
+					<dt>订单总价</dt>
+					<dd><b class="text-success" style="font-size:16px">¥{$order.order_sumPrice}</b></dd>
+				</li>
+				<if condition="$order.discount neq 0">
+				<li>
+					<dt>已优惠</dt>
+					<dd><b class="text-success" style="font-size:16px">¥{$order.discount}</b></dd>
+				</li>
+				</if>
+				<li>
+					<dt>运费</dt>
+					<dd>
+					<if condition='$order.freetype eq 0' >
+					卖家包邮 
+					<else />
+					<span>¥{$order.freeprice}
+					<strong>(<switch name="order.freetype" >
+					<case value="1">平邮</case>
+					<case value="2">快递</case>
+					<default />EMS
+					</switch>)</strong>
+					</span>
+					</if>
+					</dd>
+				</li>
+				<notempty name="order.supportmetho">
+				<li>
+				<dt>支付方式</dt>
+                <dd>
+					<switch name="order.supportmetho" >
+                        <case value="1">货到付款</case>
+                        <case value="2">微信支付</case>
+						<case value="3">支付宝</case>
+                    </switch>
+				</dd>
+				</li>
+                <li>
+                    <dt>配送时间</dt>
+                    <dd>{$order.deliver_day}</dd>
+                </li>
+				<if condition="$order.supportmetho neq 2">
+				<li>
+				<dt>支付时间</dd>
+                <dd>{$order.support_time|date='Y-m-d H:i:s',###}</dd>
+				</li>
+				</if>
+				</notempty>
+            </ul>
+		</div>
+	</div>
+	
+	<div class="panel panel-default" style="margin-top:20px;">
+		<div class="panel-heading">
+			<h4 class="block-title">物流信息</h4>
+		</div>
+		<div class="panel">
+			<ul class="list-block">
+				<li>
+                <dt>收货地址</dt>
+                <dd>
+				{$order.address_name}({$order.mobile})<br/>{$order.address}
+                </dd>
+				</li>
+				<li>
+                <dt>配送方式</dt>
+                <dd>
+					<switch name="order.freetype" >
+                        <case value="1">平邮</case>
+                        <case value="2">快递</case>
+                        <case value="3">EMS</case>
+                        <default />卖家包邮
+                    </switch>
+				</dd>
+				</li>
+				<li>
+					<dt>配送快递</dt>
+					<dd>
+					<if condition="$order.userfree eq '0'">无需快递<elseif condition="$order.userfree neq '' and $order.userfree neq '0' " />{$order.userfree}<else />--</if>
+					</dd>
+				</li>
+				<li>
+					<dt>快递编号</dt>
+					<dd><if condition="$order.freecode eq ''">--<else />{$order.freecode}&nbsp;<a href="{:U('checkDelivery?oid='.$order['freecode'].'&token='.$token)}">查询物流</a></if></dd>
+				</li>
+				<li>
+					<dt>发货时间</dt>
+					<dd><if condition="$order.fahuo_time eq ''">--<else />{$order.fahuo_time|date='Y-m-d H:i:s',###}</if></dd>
+				</li>
+            </ul>
+		</div>
+	</div>
+	<!-- 订单商品-->
+	<h4 class="block-title" style="margin-bottom:10px;">订单商品</h4>
+	<ul class="media-list">
+		<volist name='item_detail' id='item' >
+		<li class="media">
+			<div class="pull-left">
+				<img class="media-object" src="{$item.img}" />
+			</div>
+			<div class="media-body">
+				<a href="{:U('Item/index',['id'=>$item['itemId'],'token'=>$token])}">
+					<h4 class="media-heading">{$item.title}</h4>
+				</a>
+				<notempty name="item.spec"><p>规格：{$item.spec}</p></notempty>
+				<p style="font-size:18px;">
+					<span>数量:<strong class="text-success">{$item.quantity}</strong></span>
+				
+                    <span>价格:<strong class="text-danger">¥{$item.oprice}</strong></span>
+				</p>
+			</div>
+		</li>
+		</volist>
+	</ul>
+	<if condition='$order.status eq 1' >
+	<div class="row" style="margin:15px 0;">
+		<div class="col-xs-6">
+		<a class="btn btn-block btn-warning" href="{:U('Order/cancelOrder',array('orderId'=>$order['orderId'],'token'=>$token))}" id="order118_action_cancel"> 取消订单</a>
+		</div>
+		<div class="col-xs-6">
+		<a class="btn btn-block btn-success" href="{:U('Order/pay',array('orderId'=>$order['orderId'],'token'=>$token))}" id="order118_action_pay">付款</a>
+		</div>
+	</div>
+	</if>
+</div>
+<include file="public:footer" />
+</body>
+</html>

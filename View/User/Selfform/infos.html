@@ -1,0 +1,86 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<style>
+.wm-table-bordered th{
+
+}
+    .table.wm-table-bordered  tr > th:nth-child(2),  .table.wm-table-bordered tr > td:nth-child(2){
+        max-width: 100px;
+    }
+    .table.wm-table-bordered  tr > th:nth-child(3),  .table.wm-table-bordered tr > td:nth-child(3){
+        width: 100px;
+    }
+    .table.wm-table-bordered  tr > th:nth-child(6),  .table.wm-table-bordered tr > td:nth-child(6){
+         min-width: 70px;
+        padding: 8px 0 8px 5px;
+     }
+</style>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+	$(".start_date,.end_date").datetimepicker({format: 'yyyy-mm-dd',language:'zh-CN',minView:2,autoclose:true});
+	function export2excel(){
+		var url = "{:U('export',['id'=>$_GET['id']])}"
+		var start_date = $('.start_date').val();
+		var end_date = $('.end_date').val();
+		url = url+'?start_date='+start_date+'&end_date='+end_date;
+		$('<iframe style="display:none;" src="'+url+'"></iframe>').appendTo('body');
+	}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<a href="{:U('Selfform/index')}" class="btn btn-sm btn-default">
+		<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+	</a>
+	<div class="page-header wm-page-header">
+		<h4>【{$thisForm['name']}】-订单列表</h4>
+		<form class="form-inline" action="__SELF__">
+			<label>预约时间</label>
+			<input type="text" class="form-control start_date" value="{$_GET['start_date']}" name="start_date" />&nbsp;~&nbsp;<input type="text" class="form-control end_date" value="{$_GET['end_date']}" name="end_date" />
+			<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>查找</button>
+			<a target="" href="#" onclick="export2excel();" class="btn btn-default"><i class="glyphicon glyphicon-save"></i>导出</a>
+		</form>
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th style="width:100px;">订单号</th>
+		<th style="">订单时间</th>
+		<volist name="fields" id="item">
+		<th>{$item.displayname}</th>
+		</volist>
+        <th style="width:160px;">订单状态</th>
+		<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="item"> 
+		<tr>
+		<td>{$item['order_id']}</td>
+		<td>{$item['time']}</td>
+		<volist name="item['input']" id="citem">
+		<td>{$citem}</td>
+		</volist>
+        <td><if condition="$item.status eq 0">未处理<else/>已处理</if></td>
+		<td class="norightborder">
+            <a class="btn btn-xs btn-danger" href="{:U('Selfform/infoDealwith',array('id'=>$item['id']))}">处理</a>
+            <a class="btn btn-xs btn-danger" onclick="if(window.confirm('您确定删除吗？')){location.href=$(this).attr('url');}"
+               url="{:U('Selfform/infoDelete',array('id'=>$item['id']))}">删除</a></td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+
+    <script src="/Public/Common/js/jquery-1.10.2.min.js"></script>
+    <script>
+        function orderDelete(t){
+            if(window.confirm("您确定删除吗？")){location.href=$(this).attr("url");}
+        }
+    </script>
+</block>

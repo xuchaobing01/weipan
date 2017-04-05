@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="{:RES}/css/default.css" />
+<style>
+.item-wrapper{
+	padding:5px 10px;
+	box-shadow:0 0 5px #ccc;
+	-webkit-box-shadow:0 0 5px #ccc;
+	background:#fff;
+}
+</style>
+</head>
+<body>
+<div id="content">
+    <div class="module_special tbr">
+        <div class="wrap">
+            <div class="wrap_child">
+                <div class="major">
+					<empty name="list">
+					<p style="text-align:center;font-size: 20px;color: #999;margin: 20px 0;">没有搜索到您找的产品</p>
+					<else/>
+                    <ul class="list">
+                    <volist name="list" id="item">
+                    <li>
+						<a href="{:U('Item/index',array('id'=>$item['id'],'token'=>$token))}">
+							<div class="item-wrapper">
+								<div class="pic">
+									<img src="{:$item['img']}" />
+								</div>
+								<div class="good_content">
+									<h3>{$item.title}</h3>
+									<p>¥{$item.oprice}</p>
+								</div>
+							</div>
+						</a>
+                    </li>
+                    </volist>
+					</empty>
+					</ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<include file="Public:footer" />
+</body>
+</html>

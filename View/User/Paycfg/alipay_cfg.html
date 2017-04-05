@@ -1,0 +1,93 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>支付接口配置</h4>
+	</div>
+	<div role="tabpanel" class="tabbable tabbable-custom">
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation"><a href="{:U('index')}" aria-controls="home">微信支付</a></li>
+			<li role="presentation" class="active"><a href="#" aria-controls="profile">支付宝支付</a></li>
+		</ul>
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<form class="form form-horizontal" id="editForm" method="post" action="__SELF__">
+				<input type="hidden" name="id" value="{$set.id}" />
+				<div class="form-group">
+					<label class="control-label col-xs-2">账号</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" name="account" value="{$set.config.account}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">PID</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" name="pid" value="{$set.config.pid}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">KEY</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" name="key" value="{$set.config.key}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">&nbsp;</label>
+					<div class="col-md-6">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="status" value="1" <if condition="$set['config']['status'] eq 1">checked</if>>启用
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-4 col-xs-offset-2">
+						<button class="btn btn-success" type="submit">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="editModal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">支付配置</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</block>
+<block name="js">
+<script>
+	$('#editForm').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		},
+		dataType:'json'
+	});
+</script>
+</block>

@@ -1,0 +1,16 @@
+//定义全局变量
+window.param={
+		//所有资产的列表
+		CapitalList:[],
+	    //要显示的资产的数组
+	    CapitalArray:[],
+	    //定时任务
+	    KlineTimer:'',
+	    KlineTimerTwo:'',
+	    MlineTimer:'',
+	    MlineTimerTwo:'',
+	    Kline:'',
+	    Mline:'',
+	    KlineTwo:'',
+	    MlineTwo:''
+	 };

@@ -1,0 +1,133 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>在线预订管理</h4>
+		<a href="{:U('Host/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<div class="alert alert-info">
+        本次收集订单总数：<span class="text-danger">{$count}</span>个　　预订成功：<span class="text-danger">{$ok_count}</span>个　　预订失败：<span class="text-danger">{$lost_count}</span>个　　未处理订单：<span class="text-danger">{$no_count}</span>个 <span class="text-danger">入住时间填写格式:2013-08-25 19:30</span>
+    </div>
+	<table class="table wm-table-bordered">
+		<thead>
+			<tr>
+				<th width="60">序号</th>
+				<th>预订人</th>
+				<th width="100">电话</th>
+				<th width="120">入住时间</th>
+				<th>房间类型</th>
+				<th width="120">预订时间</th>
+				<th>预订数量</th>
+				<th width="60">价格</th>
+				<th width="80">订单状态</th>
+				<th width="80">操作</th>
+			</tr>
+		</thead>
+        <tbody>
+			<volist name="li" id="list"> 
+			<form action="{:U('Host/admin')}" method="post">  
+			<tr>
+			<td>{$i}</td>
+			<td>{$list.book_people}</td>
+			<td>{$list.tel}</td>
+			<td>
+			<input type="text" style="border:1px solid" name="check_in" value="<if condition="$list['check_in'] neq false">{$list.check_in|date="Y-m-d H:i",###}<else/></if>"   placeholder="请手动输入入住时间"  />                 
+			</td>
+			<td>{$list.room_type}</td>
+			<td>{$list.book_time|date="Y-m-d H:i:s",###}</td>
+			<td>{$list.book_num}</td>
+			<td>{$list.price}</td>
+			<td>
+			<input type="hidden" name="id" value="{$list.id}" />
+			<input type="hidden" name="hid" value="{$Think.get.id}" />
+			<if condition="$list.order_status eq 1"> 成功 
+			<elseif condition="$list.order_status eq 2"/> 失败 
+			<else /> 
+			<select name="status" >    
+				<option value="1">成功</option>
+				<option value="2">失败</option>    
+			</select>
+			</if>
+			</td>
+			<td colspan="10" class="norightborder">  
+			<!--
+			<a href="javascript:drop_confirm('您确定要删除吗?', '{:U('Host/list_del',array('id'=>$hostlist['id'],'token'=>$token))}');">删除</a>
+			-->
+			<if condition="$list.order_status eq 1">
+			不可修改
+			<else />
+			<button type="submit" style="cursor:pointer" ><font color="red">修改</font></button>
+			</if>
+			</td>
+			</tr>
+			</form>
+			</volist> 
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>	
+<script src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+       <div class="content">
+			<div class="cLineB">
+              <h4 class="left"> 在线预订管理</h4>
+                  <div class="searchbar right" style="display:none">
+				  <form method="get" action="index.php">
+                  <input type="text" id="msgSearchInput" class="txt left" placeholder="输入关键词搜索" name="keyz" value="">
+                  <input type="hidden" name="ac" value="hotels-sncode">
+                  <input type="hidden" name="id" value="9878">
+ 
+                  <input type="hidden" name="tid" value="285">
+                  <input type="submit" value="搜索" id="msgSearchBtn" href="" class="btnGrayS" title="搜索">
+                  </form>
+                  </div>
+				<div class="clr"></div> 
+			</div>
+         
+          <div class="msgWrap">
+          <form method="post" action="" id="info">
+          <input name="delall" type="hidden" value="">
+           <input name="wxid" type="hidden" value="">
+            
+</form> 
+	<div class="cLineB">
+	<span class="redamount">{$page}</span>
+	<a href="{:U('Host/lists',array('token'=>$token,'id'=>$_GET['id']))}" class="right btnGreen vm">返回</a>
+  </div>
+<script>
+function checkvotethis() {
+	var aa=document.getElementsByName('del_id[]');
+	var mnum = aa.length;
+	j=0;
+	for(i=0;i<mnum;i++){
+		if(aa[i].checked){
+			j++;
+		}
+	}
+	if(j>0) {
+		document.getElementById('info').submit();
+	}
+	else {
+		alert('未选中任何文章或回复！')
+	}
+}
+</script>
+          </div>
+            
+ 
+          <div class="cLine">
+            <div class="pageNavigator right">
+                 <div class="pages"></div>
+              </div>
+            <div class="clr"></div>
+          </div>
+        </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script>
+function selectall(name) {
+	var checkItems=$('.cbitem');
+	if ($("#check_box").attr('checked')==false) {
+		$.each(checkItems, function(i,val){
+			val.checked=false;
+		});
+	}else {
+		$.each(checkItems, function(i,val){
+			val.checked=true;
+		});
+	}
+}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>创建会员卡号</h4>
+		<strong>已经领取 <span style="color:red">{$usecount}</span> 张，剩余<span style="color:red">{$ucount}</span>张未领取，一共 <span style="color:red">{$count}</span>张</strong><br/>
+		<a href="{:U('Membercard/card')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+    <div class="cLine">
+		<div class="pageNavigator left">
+			<a class="btn btn-success" href="{:U('Membercard/create_add',array('cid'=>$_GET['cid']))}" title="创建会员卡号">创建会员卡号
+			</a>
+			<!--<a class="btn btn-danger" disabled href="###">删除</a>-->
+		</div>
+    </div>
+	<hr/>
+    <table class="table wm-table-bordered table-striped">
+		<thead>
+			<tr>
+				<th width="40"><input type="checkbox" value="" id="check_box" onclick="selectall('id[]');"></th>
+				<th>会员卡号</th>					
+				<th>状态</th>
+				<th>会员资料</th>
+			</tr>
+		</thead>
+		<tbody>
+		<volist name="data_vip" id="data_vip">
+		<tr>
+			<td><input type="checkbox" value="{$data_vip.id}" name="id[]" /></td>
+			<td><div>{$data_vip.number}</div></td>
+			<td>
+			<if condition="$data_vip['wechat_id'] eq false">空闲卡<else/><strong>使用中</strong></if>
+			</td>
+			<td>
+			<if condition="$data_vip['wechat_id'] neq false">
+			<a href="{:U('User/Member/detail',['openid'=>$data_vip['wechat_id']])}">查看详情</a>
+			</if>
+			</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+    <div class="pages">{$page}</div>
+</div>
+</block>

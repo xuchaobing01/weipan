@@ -1,0 +1,90 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+</block>
+<block name="js">
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script src="{:STATICS}/spark/spark.util.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script>
+$(function(){
+	$("#form").validationEngine("attach",{ 
+		promptPosition:"bottomRight",
+		scroll:true,
+		showOneMessage:true
+	});
+});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4 class="left">会员编辑</h4>
+		<a href="{:U('member/index')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<ul class="nav nav-tabs wm-tabs">
+		<li><a href="{:U('Member/detail',['id'=>$_GET['id']])}">会员信息</a></li>
+		<li><a href="{:U('Member/money',['id'=>$_GET['id']])}">余额记录</a></li>
+		<li class="active"><a href="javascript:void(0)">积分记录</a></li>
+		<li><a href="{:U('Member/expense',['id'=>$_GET['id']])}">商品购买记录</a></li>
+	</ul>
+	<button style="margin:20px 0;" class="btn btn-success" type="button"  data-toggle="modal" data-target="#dialog">添加积分记录</button>
+	<TABLE class="table wm-table-bordered table-hover table-striped">
+		<THEAD>
+		<TR>
+			<TH>积分</TH>
+			<TH>说明</TH>
+			<TH>时间</TH>
+			<TH style="text-align:center;"></TH>
+		</TR>
+		</THEAD>
+		<TBODY>
+		<volist id="list" name="list">
+		<TR>
+			<TD>
+			<if condition="$list['score'] egt 0">
+			<span class="text-success">+{$list.score}</span>
+			<else/>
+			<span class="text-danger">{$list.score}</span>
+			</if>
+			</TD>
+			<TD>{$list.remark}</TD>
+			<TD>{$list.time|date='Y-m-d H:i',###}</TD>
+			<TD style="text-align:center;">
+				<span class="btn btn-xs btn-danger" onclick='spark.confirm_jump("您确定要删除吗?", "{:U('User/Member/score_del',['id'=>$list['id'],'uid'=>$_GET['id']])}")'>
+				删除</span> 
+			</TD>
+		</TR>
+		</volist>
+	  </TBODY>
+	</TABLE>
+	<div class="modal fade" id="dialog">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title">添加积分记录</h4>
+		  </div>
+		  <div class="modal-body">
+			<form id="form" class="form" method="post">
+				<div class="form-group">
+					<label for="score">积分</label>
+					<input type="text" value="0" name="score" class="validate[required,custom[integer]] form-control" id="score" />
+					<span class="help-block">为负数时表示减少积分</span>
+				</div>
+				<div class="form-group">
+					<label for="remark">说明</label>
+					<input type="text" value="" name="remark" class="form-control" id="remark" />
+					<span class="help-block">积分变更说明</span>
+				</div>
+				<button type="submit" class="btn btn-primary">保存</button>
+			</form>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</div>
+</block>

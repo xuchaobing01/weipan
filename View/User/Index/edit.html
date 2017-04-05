@@ -1,0 +1,173 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css" />
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="{:STATICS}/cxselect/js/jquery.cxselect.js"></script>
+<include file="Public:upload" />
+<script type="text/javascript">
+	$("#btnBack").click(function(e){
+		location.href="{:U('Index/home')}";
+	});
+	$(function(){
+		$("#editForm").validationEngine("attach",{ 
+			promptPosition:"centerRight",
+			scroll:true,
+			showOneMessage:true
+		});
+		$('#wxtype').change(function(){
+			toggle_app_el();
+		});
+		$('#is_certified').click(function(){
+			toggle_app_el();
+		});
+		toggle_app_el();
+	});
+	
+	// selectes 为数组形式，请注意顺序 
+	$("#cityWrapper").cxSelect({ 
+		selects:["province","city"], 
+		nodata:"hidden",
+		url:"{:STATICS}/cxselect/js/city.min.js"
+	});
+	
+	function toggle_app_el(){
+		var type = $('#wxtype').val();
+		if(type == '服务号'){
+			show();
+		}
+		else if($('#is_certified').is(':checked')){
+			show();
+		}
+		else hide();
+	}
+	
+	function show(){
+		$('#appId').show();
+		$('#appSecret').show();
+	}
+	
+	function hide(){
+		$('#appId').hide();
+		$('#appSecret').hide();
+	}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+<div class="page-topbar">
+	<ol class="breadcrumb">
+		<li><a href="/User/Index/home.html">控制台</a></li>
+		<li class="active">{$title}</li>
+	</ol>
+</div>
+<div class="alert alert-info">
+	<i class="fa fa-info-circle"></i>&nbsp;请按照微信公众平台的信息如实填写，否则会导致某些功能无法正常使用！
+</div>
+<form id="editForm" method="post" class="form-horizontal wx-form" role="form" action="">
+	<input type="hidden" name="id" value="{$info.id}" />
+	<div class="form-group">
+		<label for="accountId" class="col-sm-2 control-label">头像</label>
+		<div class="col-sm-4" >
+			<?php if(empty($info['headerpic'])) $info['headerpic'] = rtrim(C('site_url'),'/').'/Public/User/images/thumbnail.png';?>
+			<input type="hidden" class="form-control" value="{$info.headerpic}" id="headerpic" name="headerpic" />
+			<img id="headerpicHolder" style="width:80px;height:80px;" class="img-rounded" src="{$info.headerpic}"/>
+			<div class="btn-group" style="vertical-align:bottom;">
+				<span class="btn btn-xs btn-primary" onclick="selectAsset('headerpic',120,120)">
+					<span class="glyphicon glyphicon-cloud-upload"></span>选择
+				</span>
+				<span class="btn btn-primary btn-xs" onclick="previewImg('headerpic')">
+					<span class="glyphicon glyphicon-picture"></span>预览
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+	<label for="wxname" class="col-sm-2 control-label">公众号名称</label>
+	<div class="col-sm-4">
+		<input type="text" class="form-control validate[required,minSize[2]]" id="wxname" name="wxname" value="{$info.wxname}" />
+	</div>
+	</div>
+	<div class="form-group">
+		<label for="wxid" class="col-sm-2 control-label">公众号原始ID</label>
+		<div class="col-sm-4">
+		  <input id="wxid" type="text" class="form-control validate[required]" name="wxid" value="{$info.wxid}" />
+		  <span class="help-block">请按照公众平台正确填写</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="weixin" class="col-sm-2 control-label">微信号</label>
+		<div class="col-sm-4">
+			<input class="form-control validate[required]" id="weixin" type="text" name="weixin" value="{$info.weixin}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="wxtype" class="col-sm-2 control-label">公众号类型</label>
+		<div class="col-xs-2">
+			<select name="wxtype" id="wxtype" class="form-control">
+				<option value="订阅号" <eq name="info.wxtype" value="订阅号">selected</eq> >订阅号</option>
+				<option value="服务号" <eq name="info.wxtype" value="服务号">selected</eq> >服务号</option>
+			</select> 
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<div class="checkbox">
+				<label>
+				  <input type="checkbox" id="is_certified" <notempty name="info.is_certified">checked</notempty> name="is_certified" value="1" /> 已认证
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" id="appId">
+		<label for="weixin" class="col-sm-2 control-label">APPID</label>
+		<div class="col-sm-4">
+			<input class="form-control" type="text" name="appid" value="{$info.appid}" />
+		</div>
+	</div>
+	<div class="form-group" id="appSecret">
+		<label for="weixin" class="col-sm-2 control-label">APPSecret</label>
+		<div class="col-sm-4">
+			<input class="form-control" type="text" name="appsecret" value="{$info.appsecret}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<div class="checkbox">
+				<label>
+				  <input type="checkbox" <notempty name="info.encript_mode">checked</notempty> name="encript_mode" value="1" /> 加密模式
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">EncodingAESKey</label>
+		<div class="col-sm-4">
+			<input class="form-control" type="text" name="encript_key" value="{$info.encript_key}" />
+			<span class="help-block">加密模式时需要填写</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="province" class="col-sm-2 control-label">运营地区</label>
+		<div id="cityWrapper" class="col-xs-4">
+			<select name="province" class="form-control input-auto province validate[required]" data-val="{$info.province}"></select> 
+			<select name="city" class="form-control input-auto city validate[required]" data-val="{$info.city}"></select>
+		</div>
+	</div>
+	
+	<div class="form-group">
+	<label for="wxfans" class="col-sm-2 control-label">粉丝数</label>
+	<div class="col-sm-2">
+		<input name="wxfans" id="wxfans" value="{$info.wxfans|default=0}" type="text"  class="form-control validate[required,custom[integer]]" />
+	</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-2">
+			<button id="saveSetting" type="submit" class="btn btn-primary" >保存</button>
+		</div>
+	</div>
+</form>
+</div>
+</block>

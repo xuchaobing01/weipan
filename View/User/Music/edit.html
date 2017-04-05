@@ -1,0 +1,68 @@
+<form class="form form-horizontal" id="editForm" method="post" action="__SELF__">
+	<div class="form-group">
+		<label class="control-label col-xs-2">音乐标题</label>
+		<div class="col-md-8">
+			<input type="text" class="form-control" name="title" value="{$set.title}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-2">音乐链接</label>
+		<div class="col-md-8">
+			<div class="input-group">
+				<input type="text" class="form-control"  id="src" name="src" value="{$set.src}" />
+				<span class="input-group-btn upload-button">
+					<button class="btn btn-default" type="button"><i id="uploadIcon" class="glyphicon glyphicon-cloud-upload"></i>&nbsp;<i class="fa fa-spin fa-spinner" style="display:none;" id="indicator"></i></button>
+					<input class="upload" type="file" id="uploadBtn" name="file" id="img" />
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-4 col-xs-offset-2">
+			<button class="btn btn-success" type="submit">保存</button>
+		</div>
+	</div>
+</form>
+<script>
+	$('#editForm').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+				$('#editModal').modal('toggle')
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		},
+		dataType:'json'
+	});
+	
+	$("#uploadBtn").AjaxFileUpload({
+		action: "/User/Qiniu/Upload.html",
+		onSubmit: function(filename) {
+			$('#indicator').show();
+			$('#uploadIcon').hide();
+			return true;
+		},
+		onComplete: function(filename, response) {
+			console.log(response);
+			$('#indicator').hide();
+			$('#uploadIcon').show();
+			if(response.error == 0){
+				$('#src').val(response.url);
+			}
+			else{
+				alert(response.message);
+			}
+		},
+		onError: function(ret){
+			console.log(ret);
+		}
+	});
+</script>

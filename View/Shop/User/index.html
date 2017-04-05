@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>用户中心</title>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="/Public/Shop/css/default.css" />
+</head>
+<body menu-active="MENU_USER" class="ui-app">
+	<div class="ui-caption">我的订单</div>
+	<ul class="ui-list arrow-right">
+		<li class="ui-item"><a href="{:U('order_list',['token'=>$token,'status'=>1])}">待付款<span class="ui-right"><span class="ui-gray">{$order_count[0]}</span></span></a></li>
+		<li class="ui-item"><a href="{:U('order_list',['token'=>$token,'status'=>2])}">待发货<span class="ui-right"><span class="ui-gray">{$order_count[1]}</span></span></a></li>
+		<li class="ui-item"><a href="{:U('order_list',['token'=>$token,'status'=>3])}">待收货<span class="ui-right"><span class="ui-gray">{$order_count[2]}</span></span></a></li>
+		<li class="ui-item"><a href="{:U('order_list',['token'=>$token,'status'=>4])}">已完成<span class="ui-right">待评价<span class="ui-red">{$order_count[3]}</span></span></a></li>
+		<li class="ui-item"><a href="{:U('order_list',['token'=>$token,'status'=>5])}">已取消<span class="ui-right"><span class="ui-gray">{$order_count[4]}</span></span></a></li>
+	</ul>
+	<ul class="ui-list arrow-right">
+		<li class="ui-item"><a href="{:U('User/collect_list',['token'=>$token])}">我的收藏<span class="ui-right"></span></a></li>
+		<li class="ui-item"><a href="{:U('User/address',['token'=>$token])}">收货地址<span class="ui-right"><span class="ui-gray">{$addr_count}</span></span></a></li>
+	</ul>
+	<include file="Public:footer" />
+</body>
+</html>

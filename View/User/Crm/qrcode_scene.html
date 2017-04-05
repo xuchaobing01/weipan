@@ -1,0 +1,100 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/pnotify/pnotify.custom.min.css" />
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+	<div class="container-fluid">
+		<div class="page-header wm-page-header">
+			<h3>场景二维码列表</h3>
+		</div>
+		<div class="table-toolbar">
+			<button src="{:U('qrcode_scene_edit')}" class="btn btn-success" data-toggle="modal" data-target="#editModal" data-backdrop="static">添加</button>
+		</div>
+		<table class="table wm-table-bordered table-striped table-hover">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>场景名称</th>
+					<th>场景描述</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<tr data-link-bind="{$vo.id}">
+					<td>{$i}</td>
+					<td>{$vo.scene_name}</td>
+					<td>{$vo.scene_desc}</td>
+					<td>
+						<a target="_blank" href="{:U('qrcode_scene_img',array('id'=>$vo['id']))}" class="btn btn-primary btn-xs">查看二维码</a>
+						<a src="{:U('qrcode_scene_edit',array('id'=>$vo['id']))}" href="#" data-toggle="modal" data-backdrop="false" data-target="#editModal"class="btn btn-primary btn-xs">编辑</a>
+						<a ajax-href="{:U('qrcode_scene_delete',array('id'=>$vo['id']))}" class="btn btn-danger btn-xs">删除</a>
+					</td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+		<div>{$page}</div>
+	</div>
+	<div class="modal fade" id="editModal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title">场景信息</h4>
+				</div>
+				<div class="modal-body">
+					
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/js/jquery.form.js"></script>
+<script src="{:STATICS}/pnotify/pnotify.custom.min.js"></script>
+<script>
+	$(function(){
+		$('#editModal').on('show.bs.modal', function (e) {
+			var url = $(e.relatedTarget).attr('src');
+			$(this).find('.modal-body').load(url);
+		})
+		$('a[ajax-href]').click(function(){
+			var href = $(this).attr('ajax-href');
+			var tr = $(this).parents('tr');
+			if(href !=''&& href != '#'){
+				$.ajax({
+					url: href,
+					success:function(data){
+						if(data.status==1){
+							new PNotify({
+								text: data.info,
+								type: 'success'
+							});
+							tr.remove();
+						}
+						else{
+							new PNotify({
+								text: data.info,
+								type: 'error'
+							});
+						}
+					},
+					dataType:'json',
+					type:'get'
+				});
+			}
+		});
+		PNotify.prototype.options.delay = 4000;
+	})
+	$('#editModal').on('hidden.bs.modal', function (e) {
+		location.reload();
+	})
+	
+</script>
+</block>

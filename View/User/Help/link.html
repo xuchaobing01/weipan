@@ -1,0 +1,97 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<style type="text/css">
+	.tab-pane{
+		padding-top: 10px;
+	}
+	
+	.tab-pane button{
+		margin:8px 10px;
+	}
+</style>
+</block>
+<block name="js">
+<script src="/Public/Common/zero-clipboard/ZeroClipboard.js"></script>
+<script type="text/javascript">
+	var $modules=$(".tab-pane button");
+	$modules.click(function(e){
+		$(this).toggleClass('btn-success');
+		$modules.filter('.btn-success').not(this).removeClass('btn-success');
+		if($(this).hasClass('btn-success')){
+			$('#copy-button').attr('data-clipboard-text',$(this).attr('url'));
+		}
+	});
+
+	var client = new ZeroClipboard( document.getElementById("copy-button") );
+	client.on( "ready", function( readyEvent ) {
+		// alert( "ZeroClipboard SWF is ready!" );
+		client.on( "aftercopy", function( event ) {
+			// `this` === `client`
+			// `event.target` === the element that was clicked
+			//event.target.style.display = "none";
+			console.log(event.data["text/plain"]);
+			notify('复制成功！');
+		} );
+	} );
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="">
+		<h3>链接选择</h3>
+		<p class="text-success">选择相应模块，并点击复制链接！</p>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+		<div class="page-header" style="margin-top:20px;">
+			<button type="button" id="copy-button" data-clipboard-text="" class="btn btn-success">复制链接</button>&nbsp;
+		</div>
+		</div>
+	</div>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#system" data-toggle="tab">功能模块</a></li>
+		<li><a href="#category" data-toggle="tab">分类</a></li>
+		<li><a href="#article" data-toggle="tab">文章</a></li>
+		<li><a href="#game" data-toggle="tab">游戏</a></li>
+	</ul>
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div class="tab-pane active" id="system">
+			<div class="row">
+				<div class="col-md-12">
+					<volist id="vo1" name="sysModules">
+						<button url="{$vo1.url}" class="btn btn-default">{$vo1.name}</button>
+					</volist>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="category">
+			<div class="row">
+				<div class="col-md-12">
+					<volist id="vo2" name="catModules">
+						<button url="{$vo2.url}" class="btn btn-default">{$vo2.name}</button>
+					</volist>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="article">
+			<div class="row">
+				<div class="col-md-12">
+					<volist id="vo3" name="artModules">
+						<button url="{$vo3.url}" class="btn btn-default">{$vo3.name}</button>
+					</volist>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="game">
+			<div class="row">
+				<div class="col-md-12">
+					<volist id="vo4" name="gameModules">
+						<button url="{$vo4.url}" class="btn btn-default">{$vo4.name}</button>
+					</volist>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</block>

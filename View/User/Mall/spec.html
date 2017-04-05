@@ -1,0 +1,48 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>规格类别管理</h4>
+	</div>
+	<a class="btn btn-primary" href="#" id="addSpec">添加规格类别</a>
+	<hr/>
+	<div class="table-responsive">
+		<table class="table table-bordered wm-table-bordered table-striped">
+			<thead>
+				<tr>
+				<th>规格类别</th>
+				<th>所属分类</th>
+				<th width="200">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<tr>
+					<td>{$vo.name}</td>
+					<td>{$vo.cate_name}</td>
+					<td><span class="btn btn-xs btn-default dialog-iframe" href="{:U('spec_edit?id='.$vo['id'])}">编辑</span>&nbsp;&nbsp;<span data-toggle="ajax-link" class="btn btn-xs btn-danger" data-reload="true" data-href="{:U('spec_del?id='.$vo['id'])}">删除</span></td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+</div>
+</block>
+<block name="js">
+<script>
+	$('#addSpec').click(function(){
+		BootDialog.showFrame('添加规格类别',"{:U('spec_edit')}",280,
+			{
+				onhidden:function(){location.reload();}
+			}
+		);
+	});
+	$('.dialog-iframe').click(function(){
+		BootDialog.showFrame('添加规格类别',$(this).attr('href'),280,
+			{
+				onhidden:function(){location.reload();}
+			}
+		);
+	});
+</script>
+</block>

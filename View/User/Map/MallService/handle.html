@@ -1,0 +1,103 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css" />
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript">
+	
+</script>
+</block>
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h4></h4>
+		<a class="btn btn-sm btn-default" href="{:U('index')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" role="form" action="" method="post">
+		<input type="hidden" name="id" value="{$set.id}"/>
+		<div class="form-group">
+			<label for="title" class="col-sm-2 control-label">申诉状态</label>
+			<div class="col-sm-4">
+				<p class="form-control-static"><?php echo $set['status'] == 0?'正在处理':'已处理';?></p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="title" class="col-sm-2 control-label">订单号</label>
+			<div class="col-sm-4">
+				<a href="/mall/admin-item_order-edit.html?order_id={$set.orderId}">
+				<p class="form-control-static"><?php echo $set['orderId'];?></p>
+				</a>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="title" class="col-sm-2 control-label">联系人</label>
+			<div class="col-sm-4">
+				<p class="form-control-static"><?php echo $set['linkman'];?></p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="title" class="col-sm-2 control-label">联系电话</label>
+			<div class="col-sm-4">
+				<p class="form-control-static"><?php echo $set['mobile'];?></p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="author" class="col-sm-2 control-label">申诉类型</label>
+			<div class="col-sm-4">
+			<p class="form-control-static"><?php echo $set['type'] == 1?'换货':'退货';?></p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="category" class="col-sm-2 control-label">申诉时间</label>
+			<div class="col-sm-4">
+			<p class="form-control-static">{$set.create_time|date='Y/m/d H:i:s',###}</p>
+			</div>
+		</div>
+		<notempty name="set['img']">
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">图片</label>
+			<div class="col-sm-6" >
+				<a href="{$set.img}" target="_blank">
+				<img id="imgsHolder" style="width:240px;" src="{$set.img}" />
+				</a>
+			</div>
+		</div>
+		</notempty>
+		
+		<if condition="$set['status'] eq 0">
+		<div class="form-group">
+			<label for="summary" class="col-sm-2 control-label">处理说明</label>
+			<div class="col-sm-5">
+				<textarea class="form-control"  rows="4" name="remark" >{$set['remark']}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">处理</button>
+			</div>
+		</div>
+		<else/>
+		<div class="form-group">
+			<label for="summary" class="col-sm-2 control-label">处理说明</label>
+			<div class="col-sm-5">
+				<p class="form-control-static" name="remark" >{$set['process_remark']}</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="category" class="col-sm-2 control-label">处理时间</label>
+			<div class="col-sm-4">
+			<p class="form-control-static">{$set.process_time|date='Y/m/d H:i:s',###}</p>
+			</div>
+		</div>
+		</if>
+	</form>
+</div>
+</block>

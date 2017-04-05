@@ -1,0 +1,91 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script>
+
+$(function(){
+	$("#editForm").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>首页幻灯片设置</h4>
+		<a href="{:U('Dining/slideImg')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" method="post">
+		<input type="hidden" name="id" value="{$set.id}" id="id" />
+		<input type="hidden" name="discount" id="discount" value="{$set.discount}" />
+		<div class="form-group">
+			<label class="col-sm-2">名称</label>
+			<div class="col-md-3">
+				<input type="text" name="name" value="{$set.name}" class="form-control validate[required,maxSize[16]]" />
+				<span class="help-block">幻灯片名称，不要超过6个字符</span>
+			</div>
+		</div>
+        <style>
+            .d_sec{
+                display: inline-block;
+            }
+            .d_sec>span{
+                display: inline-block;
+                padding: 5px;
+            }
+            .d_sec>span>span.x{
+                cursor: pointer;
+                color: #428bca;
+                font-size: 12px;
+            }
+        </style>
+		<div class="form-group">
+			<label class="col-sm-2">大图</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.big}" id="bigImg" name="big" />
+				<img id="bigImgHolder" style="width:216px;height:120px;" class="img-rounded"
+                <if condition="$set['big'] eq ''">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$set.big}"/>
+                <div class="btn-group" style="vertical-align:bottom;">
+                    <div style="margin: 10px 0;">
+                        图片像素要求：770 * 321
+                    </div>
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('bigImg',770,321)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('bigImg')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+        <div class="form-group">
+            <label class="col-sm-2">链接</label>
+            <div class="col-md-2">
+                <div class="input-group">
+                    <input type="text" id="href" name="oprice" value="{$set.href}"
+                           class="form-control " />
+                    <span class="input-group-addon">元</span>
+                </div>
+            </div>
+        </div>
+		<div class="form-group">
+			<div class="col-md-5 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+    <script>
+    </script>
+</div>
+</block>

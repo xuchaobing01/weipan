@@ -1,0 +1,87 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+<link type="text/css" rel="stylesheet" href="{:STATICS}/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+</block>
+<block name="js">
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<include file="Public:upload" />
+<script>
+$("#expire_date").datetimepicker({format: 'yyyy-mm-dd',language:'zh-CN',minView:2,autoclose:true});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+    <div class="page-header">
+		<h4>发布优惠券 <small>发布现金抵用券和打折优惠券信息</span></h4>
+		<a href="{:U('coupon',['cid'=>$_GET['cid']])}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+    <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$vip.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label">优惠券名称</label>
+			<div class="col-md-3">
+				<input type="input" class="form-control" id="title" value="{$vip.title}" name="title" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">优惠金额</label>
+			<div class="col-md-3">
+				<input type="input" class="form-control" id="discount_money" value="{$vip.discount_money}" name="discount_money" />
+				<span>该优惠券能抵扣的金额，最小为0.01</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">兑换积分</label>
+			<div class="col-md-3">
+				<input type="input" class="form-control" id="exchange_points" value="{$vip.exchange_points}" name="exchange_points" />
+				<span class="help-block">兑换该优惠券所需的会员积分，为0时则所有会员都可领取</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">订单最低金额</label>
+			<div class="col-md-3">
+				<input type="input" class="form-control" id="order_base_price" value="{$vip.order_base_price}" name="order_base_price" />
+				<span class="help-block">填写允许使用该优惠券的最低订单金额，为0时不作要求</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">有效期至</label>
+			<div class="col-md-3">
+				<input type="input" class="form-control" id="expire_date" value="{$vip.expire_date|default=time()|date='Y-m-d',###}" name="expire_date" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">优惠券图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$vip.picture}" id="picture" name="picture" />
+				<img id="pictureHolder" style="width:288px;height:160px;" class="img" src="{$vip.picture}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('picture',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('picture')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">优惠券说明</label>
+			<div class="col-md-6">
+				<textarea name="info" id="content" style="height:240px;" rows="6" class="form-control">{$vip.info}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-md-4">
+				<button type="submit" name="button" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

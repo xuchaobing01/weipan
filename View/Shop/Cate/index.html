@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="{:RES}/css/default.css" />
+<style>
+.ui-list .ui-item{
+line-height: 30px;
+}
+.ui-list.icon-left .ui-icon {
+	width: 60px;
+	height: 60px;
+	top: 8px;
+}
+.ui-list.icon-left > .ui-item {
+    padding-left: 78px;
+}
+.ui-list .ui-item {
+    /* line-height: 50px; */
+    height: 80px;
+}
+</style>
+</head>
+<body class="ui-app" menu-active="MENU_CATE">
+<p class="ui-caption">&nbsp;</p>
+<ul class="ui-list arrow-right icon-left">
+	<volist name="cates" id="vo">
+	<li class="ui-item">
+		<img class="ui-icon" src="{$vo.img}" /><a href="{:U('Cate/cate?cid='.$vo['id'].'&token='.$token)}">{$vo.name}</a>
+	</li>
+	</volist>
+</ul>
+<include file="Public:footer" />
+</body>
+</html>

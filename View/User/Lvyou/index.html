@@ -1,0 +1,418 @@
+﻿<extend name="Public:innerbase" />
+<block name="css">
+    <link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+    <link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+    <link href="{:RES}/css/ss.css" rel="stylesheet" type="text/css"  />
+    <link href="{:RES}/css/style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="{:RES}/css/cymain.css" />
+</block>
+<block name="js">
+
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script>
+    KindEditor.ready(function(K) {
+        var editor1 = K.create('#estate_desc', {
+            resizeType : 1,
+            allowPreviewEmoticons : false,
+            allowImageUpload : true,
+            uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+            items : [
+                'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+        });
+        var editor2 = K.create('#project_brief', {
+            resizeType : 1,
+            allowPreviewEmoticons : false,
+            allowImageUpload : true,
+            uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+            items : [
+                'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+        });
+
+        var editor3 = K.create('#traffic_desc', {
+            resizeType : 1,
+            allowPreviewEmoticons : false,
+            allowImageUpload : true,
+            uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+            items : [
+                'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+        });
+    });
+</script>
+<include file="Public:upload" />
+</block>
+
+<block name="content">
+<div class="content" >
+<span>手机页面地址：<?php echo rtrim(C('wap_domain'),'/').U('/Wap/lvyou/index',['token'=>$_SESSION['token'],'wechat_id'=>"{wechat_id}"]);?></span>
+<div class="tab">
+<ul>
+<li class="<if condition="ACTION_NAME EQ 'index'">current</if> tabli" id="tab0"><a href="{:U('Lvyou/index',array('token'=>$token))}">旅游区简介</a></li>
+<li class="<if condition="ACTION_NAME EQ 'son' ">current</if> tabli" id="tab2"><a href="{:U('Lvyou/son',array('token'=>$token))}">景区</a></li>
+<li class="<if condition="ACTION_NAME EQ 'housetype' ">current</if> tabli" id="tab2"><a href="{:U('Lvyou/housetype',array('token'=>$token))}">景点</a></li>
+<li class="<if condition="ACTION_NAME EQ 'album' or ACTION_NAME EQ 'album_add'">current</if> tabli" id="tab5"><a href="{:U('Lvyou/album',array('token'=>$token))}">风景相册</a></li>
+<li class="<if condition="ACTION_NAME EQ 'expert'">current</if> tabli" id="tab5"><a href="{:U('Lvyou/expert',array('token'=>$token))}">游客点评</a></li>
+<li class="<if condition="ACTION_NAME EQ 'Reservation'">current</if> tabli" id="tab6"><a href="{:U('lvyou/reservation',array('token'=>$token,'thetype'=>'estate'))}">预定门票</a></li>
+</ul>
+</div>
+<link rel="stylesheet" type="text/css" href="{:STATICS}/css/default_user_com.css" media="all">
+<div class="cLineB">
+
+ </div> 
+  <div class="msgWrap bgfc">
+  <form action="" method="post" class="form-horizontal form-validate" novalidate="novalidate">
+  <input type="hidden" name="token" value="{$token}" />
+  <input type="hidden" name="thetype" value="Lvyou">
+<if condition="$es_data['id'] neq ''">
+<input type="hidden" name="id" value="{$es_data['id']}" />
+</if>
+	<div class="control-group">
+		<label for="title" class="control-label">图文消息标题：</label>
+		<div class="controls">
+			<input type="text" name="title" id="title" maxlength="10" class="span4" value="{$es_data['title']}" data-rule-required="true"><span class="maroon">*</span><span class="help-inline">触发关键词后返回图文消息标题</span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="keyword" class="control-label">触发关键词：</label>
+		<div class="controls">
+			<input type="text" name="keyword" id="keyword" class="span4" data-rule-required="true" value="{$es_data['keyword']}"><span class="maroon">*</span><span class="help-inline">只能设置一个关键字</span>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label for="coverurl" class="control-label">图文消息封面：</label>
+		<div class="controls">
+      <img class="thumb_img" id="coverHolder" src="{$es_data['cover']|default='/Public/User/images/lvyou/1.jpg'}" style="max-height:100px;">
+     	<input type="hidden" name="cover" value="{$es_data['cover']|default='/Public/User/images/lvyou/1.jpg'}" id="cover" class="px" style="width:150px;"  readonly="readonly"/>
+            <span>建议尺寸：宽720像素，高400像素</span>
+            <div class="btn-group" style="vertical-align:bottom;">
+                <span class="btn btn-xs btn-primary" onclick="selectAsset('cover',720,400)">
+                    <span class="glyphicon glyphicon-cloud-upload"></span>选择
+                </span>
+                <span class="btn btn-primary btn-xs" onclick="previewImg('cover')">
+                    <span class="glyphicon glyphicon-picture"></span>预览
+                </span>
+            </div>
+       </div>
+	</div>
+	<div class="control-group">
+         <label class="control-label">旅游区头部图片：</label>
+            <div class="controls">
+                <img class="thumb_img" id="bannerHolder" src="{$es_data['banner']|default='/Public/User/images/ly2.png'}" style="max-height:100px;">
+                    <input type="hidden" id="banner" name="banner" class="px" value="{$es_data['banner']|default='/Public/User/images/ly2.png'}">
+                <span>建议尺寸：宽720像素，高350像素</span>
+                <div class="btn-group" style="vertical-align:bottom;">
+                <span class="btn btn-xs btn-primary" onclick="selectAsset('banner',720,400)">
+                    <span class="glyphicon glyphicon-cloud-upload"></span>选择
+                </span>
+                <span class="btn btn-primary btn-xs" onclick="previewImg('banner')">
+                    <span class="glyphicon glyphicon-picture"></span>预览
+                </span>
+                </div>
+            </div>
+    </div>
+<div class="control-group">
+<div class="control-group">
+<label class="control-label">景点头部图片：</label>
+<div class="controls">
+    <img class="thumb_img" id="house_bannerHolder" src="{$es_data['house_banner']|default='/Public/User/images/ly4.png'}" style="max-height:100px;">
+    <input type="hidden" name="house_banner" id="house_banner" class="px" value="{$es_data['house_banner']|default='/Public/User/images/ly4.png'}">
+    <span>建议尺寸：宽720像素，高350像素</span>
+    <div class="btn-group" style="vertical-align:bottom;">
+    <span class="btn btn-xs btn-primary" onclick="selectAsset('house_banner',720,400)">
+        <span class="glyphicon glyphicon-cloud-upload"></span>选择
+    </span>
+    <span class="btn btn-primary btn-xs" onclick="previewImg('house_banner')">
+        <span class="glyphicon glyphicon-picture"></span>预览
+    </span>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="control-group">
+<label for="album_title" class="control-label">全景相册名称：</label>
+<div class="controls">
+<select id="panorama_id" name="panorama_id" class="input-medium" data-rule-required="true">
+      <option value="0">请选择360全景相册</option>
+        <volist name="panorama" id="vo">
+           <option value="{$vo['pid']}" <if condition="$vo['pid'] eq $es_data['panorama_id']">selected="selected"</if>>{$vo['name']}</option>
+        </volist>
+    </select>
+    <span class="maroon">*</span>
+    <span class="help-inline">如果没有，请先到 <a href="{:U('Panorama/add',array('token'=>$token))}" class="btn"><strong><font color='red'>360°全景</strong></font></a>添加</span>
+
+</div>
+</div>
+<div class="control-group">
+<label class="control-label">新闻信息：</label>
+<div class="controls">
+ <select id="classify_id" name="classify_id" class="input-medium" data-rule-required="true">
+      <option value="0">请选择公开政务信息</option>
+        <volist name="classify" id="vo">
+           <option value="{$vo['cid']}" <if condition="$vo['cid'] eq $es_data['classify_id']">selected="selected"</if>>{$vo['name']}</option>
+        </volist>
+    </select>
+    <span class="maroon">*</span>
+    <span class="help-inline">如果没有，请先到<a href="{:U('Classify/add',array('token'=>$token))}" class="btn"> <strong><font color='red'>文章分类管理</strong></font></a>添加</span> <span class="maroon">注意：只能添加［图文回复］的［新增图文自定义回复］！</span>
+</div>
+</div>
+<div class="control-group">
+<label class="control-label">预约服务：</label>
+<div class="controls">
+ <select id="res_id" name="res_id" class="input-medium" data-rule-required="true">
+      <option value="0">请选择预约服务版面</option>
+        <volist name="reslist" id="vo">
+           <option value="{$vo['rid']}" <if condition="$vo['rid'] eq $es_data['res_id']">selected="selected"</if>>{$vo['title']}</option>
+        </volist>
+    </select>
+    <span class="maroon">*</span>
+    <span class="help-inline">如果没有，请先到<a href="{:U('Reservation/index',array('token'=>$token))}" class="btn"><strong><font color='red'>预约管理</strong></font></a>添加</span>
+</div>
+</div>
+<div class="control-group">
+		<label for="place" class="control-label">旅游区地址：</label>
+		<div class="controls"> 
+			<div class="input-prepend">
+				 <input type="text" id="suggestId" class="span4 px"  name="place" value="{$es_data['place']}" class="input-xlarge" data-rule-required="true"> <span class="maroon">*</span> 
+			</div>
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="place" class="control-label">联系电话：</label>
+		<div class="controls"> 
+			<div class="input-prepend">
+				 <input type="text" id="suggestId" class="span4 px"  name="tel" value="{$es_data['tel']}" class="input-xlarge" data-rule-required="true"> <span class="maroon">*</span> 
+			</div>
+		</div>
+	</div>
+    <div class="control-group">
+    <label for="suggestId" class="control-label">地图标识：</label>
+         <div class="controls">
+          <span class="maroon">注意：这个只是模糊定位，准确位置请地图上标注！</span>
+           <div id="l-map"  style="width:605px; height:320px;"></div>
+            <div id="r-result">
+                 <input type="input" class="px" id="lng" value="{$es_data['lng']}"  name="lng" style="width:80px;">
+                 <input type="input" class="px" id="lat" value="{$es_data['lat']}"  name="lat" style="width:80px;">
+                 <input  type="hidden"  name="city" class="px" id="city" size="20" value="" /> 
+             </div>
+             <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:350px;height:auto;"></div>
+         </div>
+    </div>
+<div class="control-group">
+         <label for="estate_desc" class="control-label">服务理念简介：</label>
+         <div class="controls">
+             <textarea class="form-control" id="estate_desc" name="estate_desc" style="width: 605px; height: 150px;">{$es_data['estate_desc']}</textarea>
+
+         </div>
+     </div>
+     <div class="control-group">
+         <label for="project_brief" class="control-label">旅游区简介：</label>
+         <div class="controls">
+             <textarea class="form-control" id="project_brief" name="project_brief" style="width: 605px; height: 150px; ">{$es_data['project_brief']}</textarea>
+         </div>
+     </div>
+     <div class="control-group">
+        <label for="traffic_desc" class="control-label">服务配套：</label>
+        <div class="controls">
+            <textarea class="form-control" id="traffic_desc" name="traffic_desc" style="width: 605px; height: 150px; ">{$es_data['traffic_desc']}</textarea>
+        </div>
+    </div>
+ <if condition="$es_data['id'] neq ''">
+<input type="hidden" name="id" value="{$es_data['id']}" />
+</if>
+   <div class="form-actions">
+			<button id="bsubmit" type="submit" data-loading-text="提交中..." class="btnGreen">保存</button>　<button type="button" class="btnGray vm">取消</button>
+		</div>
+</form>
+  </div>
+        </div>
+ </block>
+
+<block name="js">
+<script src="http://api.map.baidu.com/api?key=a258befb5804cb80bed5338c74dd1fd1&amp;v=1.1&amp;services=true" type="text/javascript"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=1.1&amp;ak=&amp;services=true&amp;t=20130716024057"></script>
+<link rel="stylesheet" type="text/css" href="http://api.map.baidu.com/res/11/bmap.css"><script type="text/javascript">
+var map = new BMap.Map("l-map");
+var myGeo = new BMap.Geocoder();  
+//map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]}));     //2D图，卫星图
+
+//map.addControl(new BMap.MapTypeControl({anchor: BMAP_ANCHOR_TOP_LEFT}));    //左上角，默认地图控件
+
+//alert(city);
+var currentPoint ;
+var marker1;
+var marker2;
+map.enableScrollWheelZoom(); 
+//var point = new BMap.Point(116.331398,39.897445);  
+
+map.enableDragging();   
+map.enableContinuousZoom();
+map.addControl(new BMap.NavigationControl());  
+map.addControl(new BMap.ScaleControl());  
+map.addControl(new BMap.OverviewMapControl());
+var point = new BMap.Point(<php>if($es_data['lng']!="") echo $es_data['lng'];else echo "120.265912"</php>,<php>if($es_data['lat']!="") echo $es_data['lat'];else echo "30.316553"</php>);
+doit(point);
+window.setTimeout(function(){
+auto();
+},100);
+
+ function auto(){
+ var geolocation = new BMap.Geolocation();  
+geolocation.getCurrentPosition(function(r){  
+if(this.getStatus() == BMAP_STATUS_SUCCESS){  
+//var mk = new BMap.Marker(r.point);  
+//map.addOverlay(mk);  
+ // point = r.point;  
+//map.panTo(r.point); 
+
+var point = new BMap.Point(r.point.lng,r.point.lat);  
+marker1 = new BMap.Marker(point);        // 创建标注
+map.addOverlay(marker1);
+var opts = {
+width : 220,     // 信息窗口宽度 220-730
+height: 60,     // 信息窗口高度 60-650
+title : ""  // 信息窗口标题
+}
+var infoWindow = new BMap.InfoWindow("定位成功这是你当前的位置!,移动红点标注目标位置，你也可以直接修改上方位置,系统自动定位!", opts);  // 创建信息窗口对象
+marker1.openInfoWindow(infoWindow);      // 打开信息窗口
+doit(point);
+
+}else {  
+ 
+}  
+})
+ }
+function  doit(point){
+
+//map.centerAndZoom(point,12);  
+ 
+
+//myGeo.getPoint(city, function(point){ 
+if (point) {
+//window.external.setlngandlat(point.lng,point.lat);
+//alert(point.lng + "  ddd " + point.lat);
+
+ document.getElementById('lat').value = point.lat;
+ document.getElementById('lng').value =point.lng;
+
+ 
+map.setCenter(point);
+map.centerAndZoom(point, 15);
+map.panTo(point);
+
+var cp = map.getCenter();		
+myGeo.getLocation(point, function(result){  
+/*if (result){
+ document.getElementById('suggestId').value = result.address;
+}	*/		
+});	
+
+
+
+
+
+
+marker2 = new BMap.Marker(point);        // 创建标注  
+var opts = {
+width : 220,     // 信息窗口宽度 220-730
+height: 60,     // 信息窗口高度 60-650
+title : ""  // 信息窗口标题
+}
+var infoWindow = new BMap.InfoWindow("拖拽地图或红点，在地图上用红点标注您的店铺位置。", opts);  // 创建信息窗口对象
+marker2.openInfoWindow(infoWindow);      // 打开信息窗口
+
+map.addOverlay(marker2);                     // 将标注添加到地图中
+
+marker2.enableDragging();
+marker2.addEventListener("dragend", function(e){
+ document.getElementById('lat').value =e.point.lat;
+   document.getElementById('lng').value =e.point.lng;
+myGeo.getLocation(new BMap.Point(e.point.lng,e.point.lat), function(result){  
+if (result){
+//$('suggestId').value = result.address;
+//$('city').value = result.city;
+//			alert(result.address)				
+//	window.external.setaddress(result.address);//setarrea(result.address);//
+//marker1.setPoint(new BMap.Point(e.point.lng,e.point.lat));        // 移动标注
+marker2.setPoint(new BMap.Point(e.point.lng,e.point.lat));     
+map.panTo(new BMap.Point(e.point.lng,e.point.lat));
+//window.external.setlngandlat(e.point.lng,e.point.lat);
+}			
+});	
+});	
+
+map.addEventListener("dragend", function showInfo(){
+var cp = map.getCenter();		
+myGeo.getLocation(new BMap.Point(cp.lng,cp.lat), function(result){  
+if (result){
+ //document.getElementById('suggestId').value = result.address;
+ document.getElementById('lat').value =cp.lat;
+   document.getElementById('lng').value =cp.lng;
+//	window.external.setaddress(result.address);//setarrea(result.address);//
+//alert(point.lng + "  ddd " + point.lat);
+//marker1.setPoint(new BMap.Point(cp.lng,cp.lat));        // 移动标注
+marker2.setPoint(new BMap.Point(cp.lng,cp.lat));     
+map.panTo(new BMap.Point(cp.lng,cp.lat));
+//window.external.setlngandlat(cp.lng,cp.lat);
+}			
+});	
+});	
+
+map.addEventListener("dragging", function showInfo(){
+var cp = map.getCenter();
+//marker1.setPoint(new BMap.Point(cp.lng,cp.lat));        // 移动标注
+marker2.setPoint(new BMap.Point(cp.lng,cp.lat)); 
+map.panTo(new BMap.Point(cp.lng,cp.lat));
+map.centerAndZoom(marker2.getPoint(), map.getZoom());
+});	
+
+
+}
+
+
+//}, province);
+
+
+}
+
+
+function loadmap() {
+var province =  document.getElementById('city').value;
+var city =   document.getElementById('suggestId').value ;
+// 将结果显示在地图上，并调整地图视野  
+myGeo.getPoint(city, function(point){  
+if (point) {
+//marker1.setPoint(new BMap.Point(point.lng,point.lat));        // 移动标注
+marker2.setPoint(new BMap.Point(point.lng,point.lat));  
+//window.external.setlngandlat(marker2.getPoint().lng,marker2.getPoint().lat);
+//alert(point.lng + "  ddd " + point.lat);
+ document.getElementById('lat').value =point.lat;
+   document.getElementById('lng').value =point.lng;
+map.panTo(new BMap.Point(marker2.getPoint().lng,marker2.getPoint().lat));
+map.centerAndZoom(marker2.getPoint(), map.getZoom());
+}}, province);
+} 
+
+function setarrea(address,city) {
+//$('suggestId').value = address;
+//$('city').value=city;
+window.setTimeout(function(){
+loadmap();
+},2000);
+}
+
+function initarreawithpoint(lng,lat){
+window.setTimeout(function(){
+//marker1.setPoint(new BMap.Point(lng,lat));        // 移动标注
+marker2.setPoint(new BMap.Point(lng,lat));  
+//window.external.setlngandlat(lng,lat);
+map.panTo(new BMap.Point(lng,lat));
+map.centerAndZoom(marker2.getPoint(), map.getZoom());
+}, 2000);	
+}
+</script>
+</block>
+<include file="Public:footer"/>

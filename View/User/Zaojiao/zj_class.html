@@ -1,0 +1,44 @@
+<extend name="Public:innerbase" />
+<block name="css"></block> 
+<block name="js">
+<script src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script src="{:STATICS}/spark/spark.util.js"></script>
+<script type="text/javascript">
+
+</script>
+</block> 
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>课程管理</h4>
+		<code><?php echo C('WAP_DOMAIN').U('Wap/Zaojiao/zj_class',['token'=>session('token')]);?></code>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="{:U('zj_class_edit')}" class="btn btn-primary">新增课程</a>
+	</div>
+	<table class="table wm-table-bordered table-striped table-hover">
+		<thead>
+		<tr>
+		<th width="70">课程名称</th>
+		<th width="80">截止日期</th>
+		<th width="150" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr></tr>
+		<volist name="list" id="vo"> 
+		<tr>
+		<td>{$vo.title}</td>
+		<td>{$vo.end_time|date="Y-m-d",###}</td>
+		<td>
+			<a class="btn btn-xs btn-primary" href="{:U('zj_class_edit',array('id'=>$vo['id']))}">编辑</a>
+			<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('zj_class_del',array('token'=>$token,'id'=>$vo['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>

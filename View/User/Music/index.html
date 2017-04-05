@@ -1,0 +1,91 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+	.upload-button{
+		position: relative;
+	}
+	.upload{
+		position: absolute;
+		top: 0px;
+		opacity: 0;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		cursor:pointer;
+		width: 100%;
+	}
+	.img-wrapper img{
+		max-width: 120px;
+	}
+	.apply-img{
+		max-width: 120px;
+	}
+	.apply-list li{
+		margin: 10px 0;
+	}
+</style>
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<small class="pull-right">前台链接：<?php echo C('WAP_DOMAIN').U('Wap/Music/player',['token'=>session('token')]);?></small>
+		<h4>音乐管理</h4>
+		<a class="btn btn-success" data-target="#editModal" data-backdrop="static" data-toggle="modal" src="{:U('edit')}"><i class="glyphicon glyphicon-plus"></i>&nbsp;添加</a>
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+			<tr>
+			<th width="60">序号</th>
+			<th>标题</th>
+			<th>链接</th>
+			<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="list" id="vo">
+			<tr>
+				<td>{$i}</td>
+				<td>{$vo.title}</td>
+				<td>{$vo.src}</td>
+				<td>
+					<a class="btn btn-xs btn-default" data-target="#editModal" data-backdrop="static" data-toggle="modal" src="{:U('edit?id='.$vo['id'])}">编辑</a>
+					<a class="btn btn-xs btn-default" href="{:U('delete?id='.$vo['id'])}">删除</a>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+<div class="modal fade" id="editModal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">音乐配置</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</block>
+<block name="js">
+<script src="/Public/Common/js/jquery.ajaxfileupload.js"></script>
+<script>
+	$(function(){
+		$('#editModal').on('show.bs.modal', function (e) {
+			var url = $(e.relatedTarget).attr('src');
+			$(this).find('.modal-body').load(url);
+		})
+	})
+	$('#editModal').on('hidden.bs.modal', function (e) {
+		location.reload();
+	})
+</script>
+</block>

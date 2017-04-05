@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+<meta charset="utf-8" />
+<title>{$tpl.wxname}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link href="{:STATICS}/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="{:STATICS}/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript"></script>
+<style type="text/css">
+	.copyright{
+		color: gray;
+		text-align: center;
+		font-size: 13px;
+	}
+	.top-nav{
+		padding: 12px 5px 8px 5px;
+		margin-left: 0px;
+		margin-right: 0px;
+		margin-bottom: 10px;
+	}
+	.btn-transparent{
+		background-color: transparent;
+	}
+	.dropdown-menu>li>a{
+		padding: 8px 20px;
+		font-size: 14px;
+	}
+    .top-nav a{
+        color: #fff;
+    }
+</style>
+</head>
+<body>
+<nav class="top-nav bg-primary row">
+	<div class="col-xs-4">
+		<if condition="isset($pcate)">
+		<a href="javascript:history.back();"><span class="fa fa-chevron-left fa-lg"></span>&nbsp;返回</a>
+		<else/>
+		<a href="{:U('Index/index',['token'=>$token,'wechat_id'=>$wechat_id])}"><span class="fa fa-chevron-left fa-lg"></span>&nbsp;主页</a>
+		</if>
+	</div>
+	<div class="col-xs-5 text-center">{$thisCate.name}</div>
+	<div class="col-xs-3">
+		<div class="btn-group pull-right" style="margin-top:-5px;">
+			<button type="button" class="btn btn-sm btn-transparent dropdown-toggle" data-toggle="dropdown">
+			<span class="fa fa-bars fa-lg"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+			<volist name="info" id="vo">
+				<li>
+					<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token'],'wechat_id'=>$wechat_id))}<else/>{$vo.url|htmlspecialchars_decode}</if>">
+					{$vo.name}
+					</a>
+				</li>
+			</volist>
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container">
+	<div class="list-group">
+		<!-- 子分类 -->
+		<volist name="subcates" id="vo">
+			<a href="<?php if($vo['url']){echo $vo['url'];}else{echo U('Index/lists',array('classid'=>$vo['id'],'token'=>$token,'wechat_id'=>$wechat_id));}?>" class="list-group-item">
+				<span class="fa fa-chevron-right pull-right text-muted"></span>
+				<h5 class="list-group-item-heading">{$vo.name}</h5>
+			</a>
+		</volist>
+		<volist name="articles" id="vo">
+			<a href="<?php if($vo['url']){echo $vo['url'];}else{echo U('Index/article',array('id'=>$vo['id'],'token'=>$token,'wechat_id'=>$wechat_id));}?>" class="list-group-item">
+				<span class="fa fa-chevron-right pull-right text-muted"></span>
+				<h5 class="list-group-item-heading">{$vo.title}</h5>
+			</a>
+		</volist>
+	</div>
+	<if condition="$page gt 1">
+	<ul class="pager">
+		<li class="previous <?php if($p<=1){echo 'disabled';}?>">
+			<a href="<?php if($p>1){echo WU('lists',['classid'=>$_GET['classid'],'p'=>$p-1,'token'=>$token,'wechat_id'=>$wechat_id]);}else{echo 'javascript:void(0)';}?>">上一页</a>
+		</li>
+		<li class="next <?php if($p>=$page){echo 'disabled';}?>">
+			<a href="<?php if($p<$page){echo WU('lists',['classid'=>$_GET['classid'],'p'=>$p+1,'token'=>$token,'wechat_id'=>$wechat_id]);}else{echo 'javascript:void(0)';}?>">下一页</a>
+		</li>
+	</ul>
+	</if>
+</div>
+<div style="display:none">{$tpl.tongji|htmlspecialchars_decode}</div>
+<include file="menu_style" />
+<div class="copyright">
+	<if condition="$iscopyright eq 1">
+	{$homeInfo.copyright}
+	<else/>
+	{$siteCopyright}
+	</if>
+</div>
+<script type="text/javascript" src="{:STATICS}/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

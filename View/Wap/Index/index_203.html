@@ -1,0 +1,34 @@
+<extend name="index_tpl" />
+<block name="css">
+<link href="{:RES}/site/css/reset.css" rel="stylesheet" type="text/css" />
+<link href="{:RES}/site/css/tpl_203.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	body{
+		background-image: url({$homeInfo.homeurl});
+	}
+</style>
+</block>
+<block name="carousel"></block>
+<block name="cate_menu">
+<div class="html">
+    <div class="stage" id="stage">
+		<section id="sec-index">
+			<div class="body">
+			<div class="mod-logo">{$homeInfo.title}</div>
+			<div class="index" id="index">
+				<a href="javascript:;" onclick="toggleClass('#index','active')"></a>
+				<volist name="info" id="vo" key="i">
+				<if condition="$i lt 9">
+				<a href="{$vo.url}">
+					<p>
+						<i><img alt='{$vo.name}' src='{$vo.img}' /></i><small>{$vo.name}</small>
+					</p>
+				</a>
+				</if>
+				</volist>
+			</div>
+			</div>
+		</section>
+    </div><!--.stage end-->
+</div><!--.html end-->
+</block>

@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+
+
+
+<html lang="zh-CN">
+
+
+
+<head>
+
+
+
+    <meta charset="utf-8">
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+
+    <meta name="format-detection" content="telephone=no">
+
+
+
+    <meta name="format-detection" content="email=no">
+
+
+
+	<title id="apptitle"></title>
+
+
+
+    <!-- CSS ?? -->
+
+
+
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/style.css">
+
+
+
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/common.css">
+
+
+
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/ucenter.css">
+
+
+
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/css_L.css">
+
+
+
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/option_common.css">
+
+
+
+    <link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/option_index.css">
+
+
+
+    
+
+
+
+	<style>
+
+  /*黑色页面样式*/
+
+  body{
+
+    color: #d8d7d7;
+
+  }
+
+  div{
+
+    background: #1f1f1f;
+
+  }
+
+  .loading-wrapper { 
+
+    background: none;
+
+}
+
+  li{
+
+    color:#c1c1c1;
+
+  }
+
+  .account-info{
+
+    background:#1f1f1f;
+
+    border-bottom: 1px solid #000; 
+
+  }
+
+  .pop-text{
+
+    background-color:#fffe41;
+
+  }
+
+  .switch-product{
+
+    background: #000;
+
+  }
+
+  .info-box{
+
+    background: #000;
+
+    border: 1px solid #000;
+
+  }
+
+  .info-nav{
+
+    border-bottom: 1px solid #000;
+
+  }
+
+  .buy-choose{
+
+    background: #1b1a1a
+
+  }
+
+  .a-d{
+
+    color:#fff;
+
+  }
+
+  .price-trend li em{
+
+    color:#5ba09b;
+
+  }
+
+  .price-current span{
+
+    color:#ECECEC;
+
+  }
+
+  .price-trend li{
+
+    color:#ececec;
+
+  }
+
+  .swiper-slide{
+
+    background:#f1bc11; 
+
+  }
+
+  .swiper-slide-active{
+
+    background:#f1bc11; 
+
+  }
+
+  .swiper-slide h3{
+
+    color:#561f1f; 
+
+  }
+
+  .swiper-slide h5{
+
+    color:#561f1f;
+
+  }
+
+  .swiper-slide h4{
+
+    color:#000;
+
+  }
+
+  .switch-product ul li a{
+
+    font-size:1.3rem;
+
+    height:auto;
+
+  }
+
+  .switch-product ul li.sw_active a {
+
+    background: #000;
+
+    color: #fff;
+
+    border-bottom: 2px solid #d09b08;
+
+  }
+
+  .trend-nav li a{
+
+    background: #3d3d3e;
+
+  }
+
+  .trend-nav li a.changed{
+
+    background:#b98705;
+
+  }
+
+  .li-ct-transcation{
+
+    background:rgb(31,31,31);
+
+    border-bottom: 1px solid #0a0a0a;
+
+  }
+
+  .li-ct-transcation:hover {
+
+    background:rgb(31,31,31);
+
+    border-bottom: 1px solid #0a0a0a;
+
+}
+
+  .realtimebox .realtimeleft .solid .box .real-left{
+
+    border:1px solid #0a0a0a;
+
+  }
+
+  .rec-table .rec-th:after, .rec-table .rec-td:after{
+
+    border-bottom:1px solid #000
+
+  }
+
+  .li-tt-transcation{
+
+    color:#c1c1c1;
+
+  }
+
+  #show_bili{
+
+    overflow: hidden;
+
+  }
+
+  .trade-count{
+
+    margin:10px 0 5px;
+
+  }
+
+  .icon{
+
+    vertical-align: middle;
+
+  }
+
+  .l-tt-transcation{
+
+    border-bottom: 1px solid #000;
+
+    background:#000;
+
+  }
+
+.rec-table .rec-th{
+
+    background-color: #131313;
+
+    font-size:11px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+}
+
+.rec-table{
+
+    background-color: #000
+
+}
+
+.rec-table .rec-td{
+
+    color:#999;
+
+}
+
+.active{
+
+    background:#fff;
+
+}
+
+.realtimebox .realtimeleft .solid .box .real-left{
+
+    background:#0a0a0a;
+
+
+
+}
+
+  /*页面黑色样式结尾*/
+
+
+
+	.order_p{
+
+
+
+	text-align: center;
+
+
+
+	}
+
+
+
+	.sec{
+
+
+
+	text-align: center;
+
+
+
+	}
+
+
+
+    .priceClass{
+
+
+
+      height: 51px;
+
+
+    background: transparent;
+      font-size:12px;
+
+    }
+
+
+
+    #klineBottomTimeId span{
+
+
+
+        font-size:12px;
+
+
+
+    }
+
+
+
+    .priceGreenTipClass{
+
+
+
+      background: url(/Public/Wap/jinrong/Mobile/Public/images/green.png) no-repeat;
+
+
+
+      height:21px;
+
+
+
+      padding-left: 5px;
+
+
+
+      font-size: 12px;
+
+
+
+      line-height: 21px;
+
+
+
+      width: 50px;
+
+
+
+      color:white;
+
+
+
+    }
+
+
+
+    .priceRedTipClass{
+
+
+
+      background: url(/Public/Wap/jinrong/Mobile/Public/images/red.png) no-repeat;
+
+
+
+      height:21px;
+
+
+
+      padding-left: 5px;
+
+
+
+      font-size: 12px;
+
+
+
+      line-height: 21px;
+
+
+
+      width: 50px;
+
+
+
+      color:white;
+
+
+
+    }
+
+
+
+	.account-info{
+
+
+
+	min-height: 5rem;
+
+
+
+	}
+
+
+
+	</style>
+
+
+
+    <!--js ??-->
+
+
+
+    <script src="{:RES}/jinrong/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+
+
+
+    <script src="{:RES}/jinrong/Mobile/Public/js/socket.io.min.js"></script>
+
+
+
+	<script>
+
+
+
+    var StockNameSpace;
+
+
+
+	var IMAGES = "/Public/Wap/jinrong/Mobile/Public/images";
+
+
+
+	var ROOT = "";
+
+
+
+	var is_Close = {$is_week};//{$is_week};
+
+    var capital_one = 'BTCCNY';	var accessToken = '6900164f5d55ba2c699b427027109781';
+    var host = 'http://60.205.162.163:8090/';
+    var re_host = 'http://f.fangwuedu.com';
+
+	var MIN_ORDER = 20;        //20151106
+
+
+
+	var FLAG = 0;
+
+
+
+	var WINNERT = 0.80;
+
+
+
+	var wid = '';
+
+
+
+	var apiRoot = ROOT+"/Mobile.php/Trading/";
+
+
+
+	$("#apptitle").html('开始交易');
+
+
+
+function colsePop(selector,cb) {
+
+
+
+	$(selector).hide();
+
+
+
+	$('.mask').hide();
+
+
+
+	$('body').removeClass('body-overflow');
+
+
+
+	if (cb) {
+
+
+
+		cb();
+
+
+
+	}
+
+
+
+}
+
+
+
+var uid = 68329;
+
+
+
+function pop_Open(){
+
+
+
+	$(".mask").show();
+
+
+
+	//$("body").css("overflow","hidden");
+
+
+
+}
+
+
+
+function pop_Close(){
+
+
+
+	$(".mask").hide();
+
+
+
+	//$("body").css("overflow","auto"); 
+
+
+
+}
+
+
+
+var is_close = 0;
+
+
+
+var capital_one = 'BTCCNY';//比特币
+
+
+
+</script>
+
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="wrap">
+
+
+
+    <div class="index">
+
+
+
+    
+
+
+
+         <div class="outlook none" id="today_total"> 
+
+
+
+              <!--今日盈亏-->
+
+
+
+              <div class="outlook-box clearfix">
+
+
+
+                  <h3>今日盈亏(元)</h3>
+
+
+
+                  <p class="clearfix">
+
+
+
+                      <span class="current-p now_plamount"></span>
+
+
+
+                      <a id="trade_btn" class="p-btn">查看交易</a>
+
+
+
+                  </p>
+
+
+
+              </div>
+
+
+
+         </div>
+
+
+
+         <div class="account-info clearfix">
+
+          <div class="info-detail left" id="balance_" style="float: left;background: url({$user['headimgurl']}) left no-repeat;background-size: 4rem 4rem;">
+
+                
+
+                <if condition="$_SESSION['is_sim'] eq 1">
+
+                <span class="a-u">实盘余额(元)</span>
+
+                <em class="a-d" id="money">{$user['money']}</em>  
+
+                <else />
+
+                <span class="a-u">模拟资金</span>
+
+                <em class="a-d" id="minijin">{$user['coin']}</em>
+
+
+
+                </if>
+
+               
+
+
+
+
+
+                
+
+
+
+
+
+               </div>
+
+
+
+
+
+
+
+             <a href="{:U('User/recharge')}" class="charge-btn tocharge"></a>
+
+
+
+             <div class="info-detail <if condition="$_SESSION['is_sim'] eq 1">right<else />shipan</if>" id="mycoupon">
+
+
+
+             </div>         </div>
+
+
+
+         
+
+
+
+         <div class="switch-product" id="tabs">
+
+
+
+         	<ul class="product_switch clearfix"  id="product_switch">
+
+
+
+		         		<!-- <li class="sw_active">
+
+
+
+         			<a>白银</a>
+
+
+
+         		</li>
+
+
+
+         		<li>
+
+
+
+         			<a>粤东油</a>
+
+
+
+         		</li> -->
+
+
+
+         	</ul> 
+
+
+
+         </div>
+
+
+
+		 <div class="trade-box info-box">
+
+
+
+<div class="price-info clearfix"><h3 class="price-current"><span id="optionname">比特币</span><em class="price_now_silver drop" id="now_price">0.00</em></h3><ul class="price-trend clearfix"><li class="">时间<em class="zuoshou_">0.00</em></li><li class="">最高<em class="height_">0.00</em></li><li class="">盘面
+
+   <if condition="$_SESSION['is_sim'] eq 1">
+
+     <em class="panmian_">实盘</em>
+
+  
+
+  <else />
+
+ <em class="panmian_">模拟盘</em>
+
+</if>
+
+</li><li class="">最低<em class="low_">0.00</em></li></ul></div>
+
+
+
+<div class="swiper-container" id="options">
+
+
+
+<div class="swiper-wrapper" style="">
+
+
+
+<div class="swiper-slide swiper-slide-visible" id="43" index="180" style="width: 120px; height: 90px;">
+
+
+
+ <a href="javascript:void(0);"><h3>决胜时间</h3><h4><span>180</span> 秒</h4><h5>收益比例：80%</h5></a> </div><div class="swiper-slide swiper-slide-visible swiper-slide-active" id="44" index="60" style="width: 120px; height: 90px;"> <a href="javascript:void(0);"><h3>决胜时间</h3><h4><span>6 0</span> 秒</h4><h5>收益比例：85%</h5></a> </div><div class="swiper-slide swiper-slide-visible" id="46" index="300" style="width: 120px; height: 90px;"> <a href="javascript:void(0);"><h3>决胜时间</h3><h4><span>300</span> 秒</h4><h5>收益比例：75%</h5></a> </div></div></div>
+
+
+
+<ul class="buy-choose clearfix"><li><a href="javascript:void(0);" class="up" >买涨</a></li><li><a href="javascript:void(0);" class="down" >买跌</a></li></ul>
+
+
+
+	  </div>
+
+
+
+		<div id="trade-box"> <div class="trade-box info-box" style=" padding-bottom: 0;">
+
+
+
+	
+
+
+
+<!-- 	<div class="M_trdiv">
+
+
+
+	<div class="M_zhe"></div>
+
+
+
+    <div id="chartdiv" style="height:180px;min-width:100%;position: relative; float:left;">
+
+
+
+      	<div class='loader loader--audioWave'></div>
+
+
+
+    </div> -->
+
+
+
+    <span id="select_id" style="display:none;position:absolute;">
+
+
+
+          <a class="M_a_1 M_a_2 M_a_4" id="MA_line" href="javascript:;" value="ma"></a>
+
+
+
+         <a class="M_a_1 M_a_display" id="M_candle" href="javascript:;" value="candle"></a>  
+
+
+
+                 <input type="hidden" value="candle" id="chart_type_input"/>
+
+
+
+     </span>
+
+
+
+            <div id="chart">
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svgId" width="415" height="175">
+
+
+
+                    <defs>
+
+
+
+                        <linearGradient id="highcharts" x1="0" y1="0" x2="0" y2="100%">
+
+
+
+                            <stop offset= 0 stop-color="rgb(0,197,205)" stop-opacity="1"/>
+
+
+
+                            <stop offset=1 stop-color="rgb(0,229,238)" stop-opacity="0.1"/>
+
+
+
+                        </linearGradient>
+
+
+
+                    </defs>
+
+
+
+                </svg>
+
+
+
+            </div>
+
+
+
+
+
+
+
+<!--     <div  style="position: absolute;min-width:100%;height: 0px;"> <span id="data_cursor" class="data_cursor"  style="  display:;  position: absolute; left:3%; min-width: 96%; height: 0px; z-index: 3; border-top: 1px #999 dashed;">
+
+
+
+      <div id="move_line_data" style="width: 47px; height: 16px; position: absolute; right:0; top: -8px; font-size: 10px; line-height: 16px; text-align: center; background:#999; color:#FFFFFF;"> </div>
+
+
+
+      </span> </div> -->
+
+
+
+      </div>
+
+
+
+		<ul class="trend-nav echart_ clearfix" id="time_diff"><li class="linechart"><a href="javascript:void(0);" class="changed" type="1">1分钟线</a></li><li class="kchart"><a href="javascript:void(0);" type="3">3分钟线</a></li><li class="kchart"><a href="javascript:void(0);" type="5">5分钟线</a></li><li class="kchart"><a href="javascript:void(0);" type="15">15分钟线</a></li></ul>
+
+
+
+
+
+
+
+ </div>
+
+
+
+    <div>
+
+
+
+	<div id="show_bili">
+
+
+
+     <div class="trade-count">
+
+
+
+        <span class="icon"></span>
+
+
+
+		今日已有<span class="trade-num" id="renshu">0</span>人参与交易，买卖<span class="trade-num" id="trade_count">0</span>次
+
+
+
+		       </div>
+
+
+
+	</div>
+
+
+
+    </div>
+
+
+
+	  </div>
+
+
+
+
+
+
+
+       
+
+
+
+         <!--最新资讯-->
+
+
+
+         <div class="info-box">
+
+
+
+             <ul class="info-nav clearfix">
+
+
+
+                 <li><a class="selected" id="newodrers">最新成交</a></li>
+
+
+
+                 <li id="orders"><a>持仓订单</a></li>
+
+
+
+                 <li id="history"><a>交易记录</a></li>
+
+
+
+             </ul>
+
+
+
+<div class="realtimebox info-d" id="realtimebox">
+
+
+
+<div class="realtimeleft">
+
+
+
+	<div class="solid">
+
+
+
+	    <div class="box">
+
+
+
+	        <div id="marketEntrust" style="min-height:200px;">
+
+
+
+	            <div class="real-left">
+
+
+
+	                <ul class="l-tt-transcation">
+
+
+
+					<li class="li-tt-transcation" style="width:20%;">买入时间</li>
+
+
+
+	                    <li class="li-tt-transcation" style="width:20%;">买入资产</li>
+
+
+
+	                    <li class="li-tt-transcation" style="width:20%;">买入方向</li>
+
+
+
+	                    <li class="li-tt-transcation" style="width:40%;">买入量</li>
+
+
+
+	                </ul>
+
+
+
+<div class="box-ct-transcation">
+
+
+
+  <ul class="l-ct-transcation" id="depth_buy_context">
+
+
+
+  </ul>
+
+
+
+</div>
+
+
+
+	            </div>
+
+
+
+	        </div>
+
+
+
+	    </div>
+
+
+
+	</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+             <div class="info-d none" >
+
+
+
+    <table class="rec-table rec-table6" id="now_list">
+
+
+
+        <tr class="rec-tr">
+
+
+
+            <th class="rec-th">下单时间</th>
+
+
+
+            <th class="rec-th">资产类型</th>
+
+
+
+            <th class="rec-th">买入方向</th> 
+
+
+
+			<th class="rec-th">执行价格</th>
+
+
+
+			<th class="rec-th">当前价格</th> 
+
+
+
+			<th class="rec-th">订单状态</th> 
+
+
+
+        </tr>
+
+
+
+    </table>
+
+
+
+<div class="com-empty hide" style="padding-bottom: 100px;"><div class="come-txt"></div></div> 
+
+
+
+             </div>
+
+
+
+             <div class="info-d none" role="main">
+
+
+
+    <table class="rec-table rec-table6" id="all_list">
+
+
+
+        <tr class="rec-tr">
+
+
+
+            <th class="rec-th">资产类型</th>
+
+
+
+            <th class="rec-th">涨/跌</th>
+
+
+
+            <th class="rec-th">到期时间</th> 
+
+
+
+			<th class="rec-th">买入金额</th>
+
+
+
+			<th class="rec-th">盈利情况</th> 
+
+
+
+			<th class="rec-th">订单状态</th> 
+
+
+
+        </tr>
+
+
+
+    </table>
+
+
+
+<div class="com-empty1" style="padding-bottom: 100px;"><div class="come-txt1">查看更多历史订单</div></div> 
+
+
+
+             </div>
+
+
+
+         </div>
+
+
+
+    </div>
+
+
+
+<!--<div class="floatViewAd">
+
+
+
+  <img class="ad-img" src="{:RES}/jinrong/Mobile/Public/images/floattv.png">
+
+
+
+</div>-->
+
+
+
+<div class="floatVideo none"> 
+
+
+
+<div class="close-btn-video"><img class="gp-ad-video-close" src="{:RES}/jinrong/Mobile/Public/images/gp-video-close.png"></div>
+
+
+
+<video id="myvideo" class="gp-video" width="140" height="78.75" autoplay playsinline="true" webkit-playsinline="" src=""></video>
+
+
+
+</div>
+
+
+
+	
+
+
+
+       <!--直播提醒-->
+
+
+
+
+
+    <!--输入交易密码-->
+
+
+
+    <div class="pop-box none" id="lgbox">
+
+
+
+        <nav class="pop-nav">
+
+
+
+            <h3>输入交易密码</h3>
+
+
+
+        </nav>
+
+
+
+        <form id="pwdForm" class="pwd-form" method="post" action="#">
+
+
+
+            <input type="password" id="Pwd" class="form-input" placeholder="交易密码" maxlength="6">
+
+
+
+            <input type="button" value="确认" class="pwd-btn" id="lgbtn">
+
+
+
+            <a href="javascript:void(0);" class="p-link" id="forgot">忘记交易密码？</a>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <!--参与投票-->
+
+
+
+    
+
+
+
+
+
+
+
+    <!--建仓确认-->
+
+
+
+    <div class="pop-box none" id="buildBox">
+
+
+
+        <nav class="pop-nav">
+
+
+
+            <a href="javascript:void(0);" class="back"></a>
+
+
+
+            <h3>确认购买<span id="now_time"></span></h3> 
+
+
+
+        </nav>
+
+
+
+        <div class="active">
+
+
+
+        	<h1>购买：<b>100</b>元 <i>预期收益：<span>185</span>元</i></h1>
+
+
+
+            <ul>
+
+
+
+            	<li>
+
+
+
+                	<p><i>2000</i>元</p>
+
+
+
+                </li>
+
+
+
+                <li>
+
+
+
+                	<p><i>600</i>元</p>
+
+
+
+                </li>
+
+
+
+                <li>
+
+
+
+                	<p><i>200</i>元</p>
+
+
+
+                </li>
+
+
+
+                <li>
+
+
+
+                
+
+
+
+                	<p><i>100</i>元</p>
+
+
+
+                </li>
+
+
+
+                <li class="slct">
+
+
+
+                	<p><i>50</i>元</p>
+
+
+
+                </li>
+
+
+
+                <li>
+
+
+
+                	<p><i>20</i>元</p>
+
+
+
+                </li>
+
+
+
+                <li>
+
+
+
+                	<p><i>10</i>元</p>
+
+
+
+                </li>
+
+
+
+                <li class="not">
+
+
+
+                	<p>其它金额</p>
+
+
+
+                    <input type="number" value="" id="input_money"/>
+
+
+
+                </li>
+
+
+
+            </ul>
+
+
+
+        </div>
+
+<table class="form-group tradestd_table M_trad_table">
+
+
+
+          <tbody>
+
+
+
+
+
+
+
+            <tr class="tr01">
+
+
+
+              <td class="td">
+
+
+
+
+
+         
+
+               资产类型：<span id="flow_span">USOIL</span> </td>
+
+
+
+              <td>结算周期：<span id="flow_span_time"> 60秒 </span></td>
+
+
+
+            </tr>
+
+
+
+            <tr class="tr01">
+
+
+
+              <td class="td">订单方向：<span id="flow_span_dir" class="td_big ">看涨</span></td>
+
+
+
+              <td class="">当前价格：<span id="flow_span_value" class="td_big ">0.00</span></td>
+
+
+
+            </tr>
+
+
+
+          </tbody>
+
+
+
+        </table>
+
+
+
+              <input type="button" class="pwd-btn change_product" value="确 认" id="buybtn">
+
+
+
+              <!--余额不足，去充值-->
+
+
+
+              <!--<a href="javascript:void(0);" class="pwd-btn chr tocharge none">余额不足，去充值</a>-->
+
+
+
+
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <!--建仓成功-->
+
+
+
+    <div class="pop-box none" id="buildConfirm">
+
+
+
+        <nav class="pop-nav">
+
+
+
+            <a href="javascript:void(0);" class="back"></a>
+
+
+
+            <h3>心跳进行中...</h3>
+
+
+
+        </nav>
+
+
+
+		<p class="order_p big_time" id="fnTimeCountDown"><span class="sec">59</span><span class="hm1"></span></p>  
+
+
+
+		<p class="order_p">执行价格：<i id="buy_price">0.00</i></span>
+
+
+
+		<p class="order_p" id="dangqian">当前价格：<i id="flow_span_value1">0.00</i></span>
+
+
+
+		<p class="order_p none" id="daoqi">到期价格：<i id="flow_span_daoqi">0.00</i></span>
+
+
+
+<table class="form-group tradestd_table M_trad_table">
+
+
+
+          <tbody>
+
+
+
+            <tr class="tr01">
+
+
+
+              <td class="td">订单方向：<span id="flow_span_dir1" class="td_big ">看涨</span></td>
+
+
+
+              <td class="">预测结果：<span id="flow_span_value2" class="td_big ">平局</span><span id="flow_span_value3" class="td_big hide"></span></td>
+
+
+
+            </tr>
+
+
+
+          </tbody>
+
+
+
+        </table>
+
+
+
+            <input type="button" class="pwd-btn" value="继续下单" id="setting">
+
+
+
+
+
+
+
+    </div>
+
+
+
+    <div class="mask none"></div> 
+
+
+
+    <!--确认平仓-->
+
+
+
+    <div class="pop-box none" id="buildClose">
+
+
+
+        <nav class="pop-nav">
+
+
+
+            <a href="javavscript:void(0);" class="back"></a>
+
+
+
+            <h3>确认平仓</h3>
+
+
+
+        </nav>
+
+
+
+        <form id="clForm" class="cl-form" method="post" action="javascript:void(0);">
+
+
+
+             <div class="cl-i-list">
+
+
+
+              	<p class="c-1" id="pcname"></p>
+
+
+
+              	<p class="c-2 price_now_pop"></p>
+
+
+
+              	
+
+
+
+              	<p class="c-1" id="pccount"></p>
+
+
+
+              	<p class="c-3 " id="pcamount"></p>
+
+
+
+              </div>
+
+
+
+              <p class="cl-f clearfix">
+
+
+
+                  <input type="button" class="cl-f-btn f-l" onClick="$('a.back').click();" value="取 消">
+
+
+
+                  <input type="button" class="cl-f-btn f-r" value="确认平仓" id="confirmclose">
+
+
+
+              </p>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+    
+
+
+
+    <!--查看交易--> 
+
+
+
+    <div class="pop-box pop-width none" id="trade-list">
+
+
+
+        <nav class="pop-title">
+
+
+
+            <h3>今日盈亏：<a class="now_plamount"></a></h3>
+
+
+
+            <a href="javascript:void(0);" class="close_list back" style="left: auto;"></a>
+
+
+
+        </nav>
+
+
+
+        <form id="clForm" class="cl-form" method="post" action="javascript:void(0)">
+
+
+
+              <ul class="cl-list" id="myorders">
+
+
+
+        	 </ul>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+	
+
+<script type="text/javascript">
+
+var syzyj = 0;
+
+$("#syzyj").click(function(){
+
+    var deal_amount = $(".slct p i").text();
+
+   // alert(deal_amount);
+
+    jQuery.ajax({
+
+            type: 'post',
+
+            url: ROOT+"/Wap/Trading/deal_zyq",
+
+            data: "amount=" + deal_amount,
+
+            dataType: 'JSON',
+
+            async: true,
+
+            error: function(data) {
+
+                showLoading('下单失败！',2000);
+
+                pop_Close();
+
+                return 0;
+
+            },
+
+            success: function(data_t) {
+
+              if(data_t.stat==1){
+
+                 showLoading(data_t.info,2000);
+
+                  syzyj=1;
+
+              }else{
+
+                showLoading(data_t.info,2000);
+
+              }
+
+            }
+
+        });
+
+
+
+
+
+})
+
+
+
+
+
+</script>
+
+	
+
+
+
+	
+
+
+
+	<!-- <div class="news-detail fudai clearfix none" id="event101">
+
+
+
+		<div class="n-nav">
+
+
+
+			<img src="{:RES}/jinrong/Mobile/Public/images/tree10.png" />
+
+
+
+			<a href="javascript:void(0);" class="n-close"></a>
+
+
+
+		</div>
+
+
+
+		<p class="n-content">恭喜，您已获得<span>8</span>元体验券</p>
+
+
+
+			<input class="notice-sub-4" value="确 认" type="button">
+
+
+
+			<div class="f-c-line notice-jl clearfix">
+
+
+
+                                
+
+
+
+				<p class="c-c-l clearfix">
+
+
+
+					<input id="choose2" value="1" name="flag" type="checkbox">
+
+
+
+					<label for="choose2"></label>
+
+
+
+				</p>
+
+
+
+                                
+
+
+
+				<label class="f-c-label">
+
+
+
+					不再提醒
+
+
+
+				</label> 
+
+
+
+			</div>
+
+
+
+	</div> -->
+
+
+
+	<style>
+
+
+
+.pop-box.trans {
+
+
+
+    top: 2%;
+
+
+
+    left: 0;
+
+
+
+    width: 100%;
+
+
+
+    border-radius: 0;
+
+
+
+    background: transparent;
+
+
+
+    z-index: 9999;
+
+
+
+}
+
+
+
+    </style>
+
+
+
+	<div class="pop-box trans" id="getNow">
+
+
+
+			<img src="{:RES}/jinrong/Mobile/Public/images/apriltrans3.png" class="pop-shadow">
+
+
+
+			<div class="pop-wrap">
+
+
+
+				<div class="pw-img"></div>
+
+
+
+				<div class="pop-nav">
+
+
+
+					<a href="javascript:void(0);" class="p-n-close" id="guanbi_shixi"></a>
+
+
+
+				</div>
+
+
+
+				<div class="pop-text">
+
+
+
+					<p><label>直播送Iphone7，就在今晚20:00</label></p>
+
+
+
+					<p>- - -</p>
+
+
+
+					<p>还有万元现金红包</p>
+
+
+
+					<p>参与既有机会</p>
+
+
+
+					<p><label>公开、公平、公正</label></p>
+
+
+
+					<p>参与方法：</p>
+
+
+
+					<p>返回公众号主页面“<label>点“心跳直播”</label></p>
+
+
+
+					<p>今夜不嗨不休！！！！</p>
+
+
+
+				</div>
+
+
+
+				<a href="javascript:;" class="p-w-btn surePlan_js" id="close_shixi"></a>
+
+
+
+			</div>
+
+
+
+		</div>
+
+
+
+		
+
+
+
+	<div class="loading-wrapper" style="display: none;">
+
+
+
+<div class="loading-area">
+
+
+
+<div id="floatingBarsG1" class="floatingBarsG"></div>
+
+
+
+<p id="msg">登录中...</p> 
+
+
+
+
+
+
+
+</div>
+
+
+
+</div>		
+
+
+
+</div>
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/jq.cookies.js"></script>
+
+
+
+<script type="text/javascript" src="{:RES}/jinrong/Mobile/Public/js/common.js"></script>
+
+
+
+
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/iscroll.js"></script>
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/idangerous.swiper.min.js"></script> 
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/svgKline.js"></script>
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/svgMline.js"></script>
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/globalParameters.js"></script>
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/tools.js?k=1.6"></script>
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/drawSvg.js?k=1.1"></script>
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/weipan/drawdat_new.js?k=1.6"></script>
+
+
+
+<script src="{:RES}/jinrong/Mobile/Public/js/one_user.js"></script>
+
+
+
+
+
+<script type="text/javascript">
+
+$(function(){
+
+    $('.jz-footer ul a').removeClass('active');
+
+    $('.jz-footer ul li').eq(0).find('a').addClass('active');    
+
+})</script>
+
+
+
+<include file="Public:footer"/>
+
+</body>
+
+
+
+</html>

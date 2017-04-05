@@ -1,0 +1,204 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style class="text/css">
+.tab-content{
+	padding: 20px 10px 0;
+}
+</style>
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript">
+	$(function(){
+		toggleShare();
+		function check(el){
+			if($(el).is(':checked')){
+				$('#signEndTime').show();
+			}
+			else $('#signEndTime').hide();
+		}
+		check($('#onlineSign'));
+		$('#onlineSign').change(function(){
+			check(this);
+		});
+	});
+	$('.share_type').click(function(){
+		toggleShare();
+	});
+	
+	function toggleShare(){
+		if($('#defaultShare').is(':checked')){
+			$('.custom-share').hide();
+		}
+		else{
+			$('.custom-share').show();
+		}
+	}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>编辑签到活动</h4>
+		<a href="{:U('Score/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="#start" data-toggle="tab">开始设置</a></li>
+		<li><a href="#end" data-toggle="tab">结束设置</a></li>	
+	</ul>
+	<!-- Tab panes -->
+	<form class="form-horizontal" method="post">
+		<input type="hidden" value="1" name="type" />
+		<div class="tab-content">
+			<div class="tab-pane active" id="start">
+				<div class="form-group">
+					<label class="col-sm-2">关键词</label>
+					<div class="col-md-5">
+						<input type="input" class="form-control" id="keyword" value="{$vo.keyword|default='签到抽奖'}" name="keyword" />
+					</div>
+					<span class="col-md-5 text-info">用户输入此关键词将会触发此活动</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">活动时间</label>
+					<div class="col-md-2">
+						<input type="input" class="form-control" id="startdate" value="{$vo.startdate|default=time()|date="Y-m-d",###}" onClick="WdatePicker()" name="startdate" />  
+					</div>
+					<span class="col-sm-1" style="text-align:center;">至</span>
+					<div class="col-md-2">
+						<input type="input" class="form-control" id="enddate" value="{$vo.enddate|default=(time()+10*86400)|date="Y-m-d",###}" name="enddate"  onClick="WdatePicker()"  /> 
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">每周可签到时间</label>
+					<div class="col-md-5">
+						<input type="input" class="form-control" id="week"  name="week"  value="{$vo.week}"/>
+					</div>
+					<span class="col-md-5 text-info">多天以逗号分隔 示例（1,2,3）-表示周一，周二，周二可以签到!</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">其他时间提醒文字</label>
+					<div class="col-md-5">
+						<textarea  class="form-control" id="elsetxt" name="elsetxt"  style="height:125px" >{$vo.info|default="其他时间提示信息"}</textarea>
+					</div>
+					<span class="col-md-5 text-info">不在可签到时间内签到提醒文字</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">其他时间提醒图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="elsepic" value="{$vo.elsepic}" class="form-control" id="pic3" style="display:inline-block;width:250px;" />
+						<img id="pic3Holder" style="width:216px;" class="img" src="{$vo.elsepic}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('pic3',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('pic3')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+					<span class="col-md-5 text-info">不在可签到时间内签到提醒图片</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">重复签到文字</label>
+					<div class="col-md-5">
+						<textarea  class="form-control" id="retxt" name="retxt"  style="height:125px" ><if condition="$vo['info'] eq ''">今天你已经签到，请明天再来<else/>{$vo.info}</if></textarea>
+					</div>
+					<span class="col-md-5 text-info">{score}当前签到值，{total}总积分值</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">重复签到图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="repic" value="{$vo.repic}" class="form-control" id="pic4" style="display:inline-block;width:250px;" />
+						<img id="pic4Holder" style="width:216px;" class="img" src="{$vo.repic}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('pic4',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('pic4')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+					<span class="col-md-5 text-info">重复签到提醒图片</span>
+				</div>
+				
+				
+				<div class="form-group">
+					<label class="control-label col-xs-2">超出配置不循环：</label>
+					<div class="col-md-4">
+						<label><input id="onlineSign" <?php if($vo['onsign'])echo 'checked';?> type="checkbox" name="onsign" value="1" /></label>
+					</div>
+				</div>
+				<div id="signEndTime">
+					<div class="form-group">
+							<label class="col-sm-2">提醒文字</label>
+							<div class="col-md-5">
+								<textarea  class="form-control" id="defatxt" name="defatxt"  style="height:125px" >{$vo.defatxt|default="默认提示信息"}</textarea>
+							</div>
+							<span class="col-md-5 text-info">超出配置产品默认签到提醒文字</span>
+						</div>
+					<div class="form-group">
+						<label class="col-sm-2">提醒图片：</label>
+						<div class="col-md-4">
+							<img id="sign_bannerHolder" style="width:216px;" class="img" src="{$vo.defapic}"/>
+							<input type="hidden" name="defapic" value="{$vo.defapic}" class="from-control" id="sign_banner" />
+							<div class="btn-group" style="vertical-align:bottom;">
+								<span class="btn btn-xs btn-primary" onclick="selectAsset('sign_banner',720,400)">
+									<span class="glyphicon glyphicon-cloud-upload"></span>选择
+								</span>
+								<span class="btn btn-primary btn-xs" onclick="previewImg('sign_banner')">
+									<span class="glyphicon glyphicon-picture"></span>预览
+								</span>
+							</div>
+						</div>
+					</div>	
+			</div>		
+			</div>
+			<!--活动结束设置 -->
+			<div class="tab-pane" id="end">
+				<div class="form-group">
+					<label class="col-sm-2">活动结束公告</label>
+					<div class="col-md-5">
+						<input type="input" class="form-control" id="endtite" value="<if condition="$vo['endtite'] eq ''">积分活动已经结束<else/>{$vo.endtite}</if>" name="endtite" />
+					</div>
+					<span class="col-md-5 text-info">请不要多于100字! 积分活动结束提醒信息!</span>
+				</div>
+				<div class="form-group">
+			<label class="control-label col-xs-2">背景图片</label>
+			<div class="col-md-4">
+				<input type="hidden" name="endpicurl" value="{$vo.endpicurl}" class="form-control" id="pic2" style="display:inline-block;width:250px;" />
+				<img id="pic2Holder" style="width:216px;" class="img" src="{$vo.endpicurl}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('pic2',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('pic2')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+				<div class="form-group">
+					<label class="col-sm-2">活动结束说明</label>
+					<div class="col-md-5">
+						<textarea  class="form-control" id="endinfo" name="endinfo"  style="height:125px" ><if condition="$vo['endinfo'] eq ''">亲，活动已经结束，请继续关注我们的后续活动哦。<else/>{$vo.endinfo}</if></textarea>
+					</div>
+					<span class="col-md-5 text-info">换行请输入&lt;br&gt;</span>
+				</div>
+			</div>
+			<!-- 奖项设置-->
+			
+			
+		</div>
+		<div class="form-group">
+			<div class="col-md-5 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

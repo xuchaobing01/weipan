@@ -1,0 +1,41 @@
+<extend name="index_tpl" />
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:RES}/css/index/tpl_7_{$tpl.color_id}.css"  />
+<style type="text/css">
+	body{
+		background-color: #151515;overflow-x: hidden;
+	}
+	.mainmenu li .menubtn .menumesg {
+		padding: 0;
+	}
+	.mainmenu li {
+		width: 33.3%;/*每个分类所占比例：一排2个就是50%*/
+	}
+	.mainmenu li .menubtn {
+		margin: 8px 8px 0 0;/*外边距：可根据需求调整大小；4个数字，分别是上右下左*/
+	}
+	.mainmenu {
+		padding: 0 0 8px 8px;/*内边距：可根据需求调整大小；4个数字，分别是上右下左*/
+	}
+	.mainmenu li .menubtn {
+		border-radius: 6px;/*图片圆角，越大越圆*/
+	}
+</style>
+</block>
+<block name="cate_menu">
+	<ul class="mainmenu">
+		<volist name="info" id="vo">
+		<li>
+			<div class="menubtn">
+				<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">
+					<div class="menumesg">
+						<div class="menuimg"><img src="{$vo.img}" /></div>
+						<div class="menutitle">{$vo.name}</div>
+					</div>
+				</a>
+			</div>
+		</li>
+		</volist>
+		<div class="clr"></div>
+	</ul>
+</block>

@@ -1,0 +1,78 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>
+		<b>{$diaoyan.title}</b> -- 参与人数 <span style="font-size:18px; text-align:inherit; color:#666">{$count}</span>人</h4>
+		<a class="btn btn-sm btn-default" href="{:U('Diaoyan/index')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<table class="table wm-table-bordered">
+		<volist name="timu" id="item">
+			<thead>
+				<tr>
+					<th width="100">{$item.title}</th>
+					<th width="100">选项票数</th>
+				</tr>
+			</thead>
+			<tbody>
+				<php>
+					if($item['optia'] != ''){
+				</php>
+					<tr>
+						<td>{$item.optia}</td>
+						<td>{$item.perca}</td>
+					</tr>
+				<php>
+					}
+				</php>
+				
+				<php>
+					if($item['optib'] != ''){
+				</php>
+					<tr>
+						<td>{$item.optib}</td>
+						<td>{$item.percb}</td>
+					</tr>
+				<php>
+					}
+				</php>
+				
+				<php>
+					if($item['optic'] != ''){
+				</php>
+					<tr>
+						<td>{$item.optic}</td>
+						<td>{$item.percc}</td>
+					</tr>
+				<php>
+					}
+				</php>
+				
+				<php>
+					if($item['optid'] != ''){
+				</php>
+					<tr>
+						<td>{$item.optid}</td>
+						<td>{$item.percd}</td>
+					</tr>
+				<php>
+					}
+				</php>
+				
+				<php>
+					if($item['optie'] != ''){
+				</php>
+					<tr>
+						<td>{$item.optie}</td>
+						<td>{$item.perce}</td>
+					</tr>
+				<php>
+					}
+				</php>
+			</tbody>
+		</volist>
+	</table>
+</div>
+</block>

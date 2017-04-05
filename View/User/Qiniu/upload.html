@@ -1,0 +1,39 @@
+<extend name="Public:innerbase" />
+<block name="title"><title>七牛表单上传</title></block>
+<block name="css">
+<link rel="stylesheet" type="text/css" href="/public/common/uploadify/uploadify.css" />
+</block>
+<block name="content">
+<input id="fileUpload" name="file" type="file" />
+</block>
+<block name="js">
+<script type="text/javascript" src="/public/common/uploadify/jquery.uploadify.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#fileUpload').uploadify({
+			'fileObjName' : 'file',
+			'swf'      : '{:STATICS}/uploadify/uploadify.swf',
+			'uploader' : '__SELF__',
+			'buttonText' : '上传图片',
+			'multi' : false,
+			'onUploadSuccess' : function(file, data, response) {
+				data=$.parseJSON(data);
+				//notify(data['data']);
+			},
+			'onUploadError' : function(file, errorCode, errorMsg, errorString) {
+				//alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
+				//alert('errorCode:'+errorCode+',errorMsg:'+errorMsg);
+			}
+		});
+	});
+	
+	function notify(url){
+		if(window.parent&&window.parent['success']){
+			window.parent['success'](url);
+		}
+	}
+</script>
+
+<script type="text/javascript" src="/public/common/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="/public/common/artDialog/plugins/iframeTools.js"></script>
+</block>

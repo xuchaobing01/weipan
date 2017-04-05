@@ -1,0 +1,65 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>微商城配置</h4>
+	</div>
+	<form class="form-horizontal" method="post" action="">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >首页标题</label>
+			<div class="col-md-4">
+				<input type="text" name="title" value="{$set.title|default='商城'}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >商品列表标题</label>
+			<div class="col-md-4">
+				<input type="text" name="ptitle" value="{$set.ptitle|default='商品列表'}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >我的订单标题</label>
+			<div class="col-md-4">
+				<input type="text" name="otitle" value="{$set.otitle|default='订单详情'}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >分享标题</label>
+			<div class="col-md-4">
+				<input type="text" name="share_title" value="{$set.share_title|default='微信购物'}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="picurl" class="col-sm-2 control-label wm-control-label">分享图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" name="share_img" id="picurl" value="{$set.share_img|default=RES.'/images/photo/noneimg.jpg'}" class="form-control" />
+				<img id="picurlHolder" style="width:216px;height:120px;" class="img-rounded" <if condition="($set eq null) OR($set['share_img'] eq '')">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$set.share_img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('picurl',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('picurl')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+					&nbsp;&nbsp;建议尺寸:720*400
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label wm-control-label" >分享内容</label>
+			<div class="col-md-4">
+				<textarea style="height:75px" name="share_detail" id="share_detail" class="form-control">{$set.share_detail}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<button type="submit" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

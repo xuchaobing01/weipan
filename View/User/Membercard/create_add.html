@@ -1,0 +1,70 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+<div class="container-fluid">
+    <div class="page-header">
+		<h4>商家开卡配置</h4>
+		<strong>本月可创建 <span style="color:red">{$count}</span> 张，剩余<span style="color:red">{$cancrnum}</span>张</strong><br/>
+		<a href="{:U('card')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+    <form  class="form-horizontal" method="post" action="">
+        <div class="form-group">
+			<label class="col-sm-2 control-label">卡号英文编号</label>
+			<div class="col-md-6">
+				<input type="input" class="form-control" id="title" value="" name="title"/>
+				<span class="help-block">
+					例：<span class="text-danger">MC</span>10535，<span class="text-danger">MC</span>就是英文编号
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">起始卡号</label>
+			<div class="col-md-6">
+				<input type="input" class="form-control" id="start" value="" name="start" />
+				<span class="help-block">最小值为1</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">结束卡号</label>
+			<div class="col-md-6">
+				<input type="input" class="form-control" id="end" value="" name="end" />
+				<span class="help-block">最大值为65535</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-6 col-sm-offset-2">
+				<span class="help-block">
+				注意：每次最多生成100张，请及时关注，会员卡是否被领取完了,全部被发放后请再次生成。
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-6 col-sm-offset-2">
+				<button type="submit" id="button" name="button" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<script  type="text/javascript" charset="utf-8">
+  function inputchek(obj){
+    var reg = new RegExp("^[0-9]*[1-9]*$");
+    if(!reg.test(obj.value)){
+        alert("请输入大于零的整数!");
+    }
+   
+    if(obj.value > 65535){
+        alert("请不要输入大于 65535 的整数!");
+    }
+  }
+
+  $("#stat").focusout(function(event) {
+      inputchek(this);
+  });
+  $("#enddate").focusout(function(event) {
+      inputchek(this);
+  });
+</script>
+</block>

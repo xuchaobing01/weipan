@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>申请退换货</title>
+<link type="text/css" rel="stylesheet" href="/Public/Shop/css/shop.css" />
+<link href="/Public/Common/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/font-awesome/css/font-awesome.min.css" />
+<script charset="utf-8" src="/Public/Common/js/jquery-2.1.0.min.js" type="text/javascript"></script>
+<style>
+	.upload-button{
+		position: relative;
+	}
+	.upload{
+		position: absolute;
+		top: 1px;
+		opacity: 0;
+	}
+	.img-wrapper img{
+		max-width: 120px;
+	}
+	.apply-img{
+		max-width: 120px;
+	}
+	.apply-list li{
+		margin: 10px 0;
+	}
+</style>
+</head>
+<body>
+<include file="public:head" />
+<div class="container" style="padding-top:20px;">
+	<div class="alert alert-warning">
+		订单号:<span><a href="{:U('checkOrder',['token'=>$token,'orderId'=>$orderId])}">{$orderId}</a></span>
+	</div>
+	<if condition="$apply eq 0">
+	<p>{$set.after_sale_tip}</p>
+    <form method="post" class="ajax-form form" action="{:U('Order/back?token='.$token)}">
+		<input type="hidden" name="orderId" value="{$orderId}" />
+		<div class="form-group">
+			<input type="text" class="form-control" name="linkman" placeholder="联系人" value="{$order.address_name}" />
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control" name="mobile" placeholder="联系方式" value="{$order.mobile}" />
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="type" value="1" checked>
+				申请换货
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="type" value="2">
+				申请退货
+			</label>
+		</div>
+		<div class="form-group">
+			<textarea class="form-control" rows="4" id="reason" name="message" placeholder="申请原因"></textarea>
+		</div>
+		<div class="form-group">
+			<span id="indicator" style="display:none;"><i class="fa fa-spin fa-circle-o-notch"></i>&nbsp;正在上传图片...</span>
+			<div class="img-wrapper"></div>
+		</div>
+		<div class="form-group">
+			<input type="hidden" name="img" id="inputImg" />
+			<div class="upload-button">
+				<i class="fa fa-image fa-2x"></i><input class="upload" type="file" name="file" id="img" />
+			</div>
+		</div>
+		<button type="submit" id="submit" data-loading-text="正在提交..." class="btn btn-block btn-warning">确认</button>
+    </form>
+	<else/>
+	<p>
+		<ul class="apply-list">
+			<li>申请状态：<?php echo $apply['status'] == 0?'正在处理':'已处理';?></li>
+			<li>申请类型：<?php echo $apply['type'] == 1?'换货':'退货';?></li>
+			<li>申请原因：<?php echo $apply['message'];?></li>
+			<notempty name="apply['img']">
+			<li><img class="apply-img" src="{$apply.img}" /></li>
+			</notempty>
+			<li>申请时间：<?php echo date('Y/m/d H:i:s',$apply['create_time']);?></li>
+			<if condition="$apply['status'] eq 1">
+			<li>处理时间：<?php echo date('Y/m/d H:i:s',$apply['process_time']);?></li>
+			<li>处理说明：<?php echo $apply['process_remark'];?></li>
+			</if>
+		</ul>
+	</p>
+	</if>
+</div>
+<include file="public:footer_new" />
+<script src="/Public/Common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/Public/Common/js/jquery.form.js"></script>
+<script src="/Public/Common/js/jquery.ajaxfileupload.js"></script>
+<script>
+	$('.ajax-form').ajaxForm({
+		beforeSubmit:function(){
+			var txt = $('#reason').val();
+			if(txt==''){
+				alert('申请原因不能为空！');
+				return false;
+			}
+			if(txt.length <5){
+				alert('申请原因至少要5个字哦！');
+				return false;
+			}
+			$('#submit').button('loading');
+		},
+		success:function(data){
+			data = JSON.parse(data);
+			if(data.status==0){
+				alert(data.message);
+				location.href = data.url;
+			}
+			else $('#submit').button('reset');
+			
+		},
+		error:function(data){
+			alert('申请失败！');
+			$('#submit').button('reset');
+		}
+	});
+	
+	$("#img").AjaxFileUpload({
+		action: "/User/Qiniu/Upload.html",
+		onSubmit: function(filename) {
+			$('#indicator').show();
+			$('.upload-button').hide();
+			return true;
+		},
+		onComplete: function(filename, response) {
+			$('#indicator').hide();
+			if(response.error == 0){
+				$('#inputImg').val(response.url);
+				$('.img-wrapper').append('<img src="'+response.url+'" />');
+			}
+			else{
+				alert(response.message);
+				$('.upload-button').show();
+			}
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>中奖名单管理</h4>
+		<a class="btn btn-default btn-sm" href="{:U('User/AdChaibao/index')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+		<a style="margin:10px 0;" href="{:U('User/AdChaibao/addsn',array('id'=>$_GET['id']))}" title='添加中奖名单' class='btn btn-success'>添加中奖名单</a>
+	</div>
+	<div class="alert alert-info">
+        本次活动奖品总数：<span class="redamount">{$datacount}</span>个　　　中奖人数：<span class="redamount">{$recordcount} </span>个　          
+	</div>
+	<TABLE class="table wm-table-bordered">
+	  <THEAD>
+		<TR style="text-align: center;">
+			<TH class="select">序号</TH>
+			<TH>奖项</TH>
+			<TH>中奖时间</TH>
+			<TH>手机号</TH>
+			<TH>姓名</TH>
+			<TH>小票号</TH>
+			<!-- <TH>操作</TH> -->
+		</TR>
+	  </THEAD>
+	  <TBODY>
+		<volist name="record" id="record">
+			 <TR style="line-height:30px;height: 43px;line-height: 59px;">
+				<td class="select">{$i}</td>
+				<td>{$record.prize_name}<if condition="$record['status'] eq 2"> 
+					（虚拟）</if></td>
+				<td>{$record.time|date='Y-m-d H:i:s',###}</td>
+				<td>{$record.mobile}</td>
+				<td>{$record.name}</td>
+				<td>{$record.cardnum}</td>
+				<!-- <td>
+					<if condition="$record['status'] eq 2"> 
+					<a href="{:U('sendnull?id='.$record['id'])}">取消发奖</a>
+					<else/>
+					<a href="{:U('sendprize?id='.$record['id'])}">发奖</a>
+					</if>
+				</td> -->
+			</TR>
+		</volist>
+	  </TBODY>
+	</TABLE>
+</div>
+</block>

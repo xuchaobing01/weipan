@@ -1,0 +1,60 @@
+<extend name="Public:innerbase" />
+
+
+
+<block name="js">
+
+
+
+    <script src="{:RES}/js/date/WdatePicker.js"></script>
+
+
+
+    <script src="{:RES}/js/date/WdatePicker.js"></script>
+
+    <script type="text/javascript" src="{:STATICS}/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script>
+        $(function(){
+            $(".datetime-picker").datetimepicker({format: 'yyyy-mm-dd',language:'zh-CN',minView:2,autoclose:true});
+        });
+
+    </script>
+</block>
+
+
+
+<block name="content">
+
+    <div style="margin-right: auto;margin-left: auto;padding-left: 15px;padding-right: 15px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">更改用户所属经纪人</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form1" class="form" method="post" action="{:U('Channel/changeAgent')}">
+                        <input type="hidden" name="id" value="{$id}" />
+                        <input type="hidden" name="agent_id" value="{$agent_ids}" />
+
+                        <div class="form-group">
+                            <label for="score">请选择代理商</label>
+                                <select  name="phone" id='phone' class="form-control">
+                                    <option  value="0">--请选择--</option>
+                                    <volist id="list" name="list">
+                                    <option  value="{$list.phone}" <if condition="$agent_id eq $list['phone']" >selected="selected"</if> >{$list.username}</option>
+                                    </volist>
+                                </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">确定</button>
+                        <a href="{:U('Channel/custom')}" class="btn btn-primary">返回</a>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+
+    </div>
+
+
+
+</block>

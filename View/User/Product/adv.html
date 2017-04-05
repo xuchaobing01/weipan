@@ -1,0 +1,38 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>商品幻灯片管理</h4>
+	</div>
+	<a style="margin:10px 0;" href="{:U('Product/advadd')}" title="添加" class="btn btn-primary">添加幻灯片</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="50">排序</th>
+		<th width="150">显示位置</th>
+		<th width="250">图片</th>  
+		<th width="120">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="hostlist"> 
+		<tr>
+		<td>{$hostlist.displayorder}</td>
+		<td>{$hostlist.place}<if condition="$hostlist.place eq 1">首页显示<elseif condition="$hostlist.place eq 2" />列表页面 </if></td>
+        <td><img src="{$hostlist.pic}" width="100px" height="100px" ></td>
+		
+		<td>
+		<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Product/advDel',array('id'=>$hostlist['id'],'token'=>$token))}');">删除</a>
+		<!-- <a href="{:U('Product/advSet',array('id'=>$hostlist['id']))}">修改</a>
+		<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Product/advDel',array('id'=>$hostlist['id'],'token'=>$token))}');">删除</a> -->
+		
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+</div>
+</block>

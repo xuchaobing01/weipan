@@ -1,0 +1,550 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+<style class="text/css">
+.tab-content{
+	padding: 20px 10px 0;
+}
+.award-img{
+	width:80px;height:80px;
+}
+.btn-upload input[type="file"]{
+	position: absolute;
+	opacity: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	margin:0;
+	padding:0;
+	cursor: pointer;
+	z-index: 10000;
+}
+.award-img-wrapper{position:relative;display: inline-block;margin-right:10px;}
+.award-img-warpper img{}
+.img-remove{position:absolute;right:0;top:0;width:30px;height:30px;color:rgb(155, 155, 155);cursor:pointer;background:url(/Public/Common/images/triangle-close.png) center no-repeat}
+.img-remove:hover{color:red;}
+</style>
+</block>
+<!--link rel="stylesheet" href="{:STATICS}/vote/style.css" /-->
+<block name="js">
+<include file="Public:upload" />
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{:RES}/js/date/WdatePicker.js" type="text/javascript"></script>
+<script src="{:STATICS}/vote/common.js" type="text/javascript"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="{:STATICS}/ueditor/lang/zh-cn/zh-cn.js"> </script>
+<script type="text/javascript">
+$(function(){
+	$("#editForm").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+	var ue = UE.getEditor('UEContent');
+});
+
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('#info', {
+	resizeType : 1,
+	allowPreviewEmoticons : false,
+	allowImageUpload : true,
+	uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+	items : [
+	'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+	});
+});
+
+$(function(){
+	function check(el){
+		if($(el).is(':checked')){
+			$('#signEndTime').show();
+		}
+		else $('#signEndTime').hide();
+	}
+	check($('#onlineSign'));
+	$('#onlineSign').change(function(){
+		check(this);
+	});
+})
+</script>
+
+<script type="text/javascript">
+	$("[data-toggle='upload-reward-img']>.upload-file").AjaxFileUpload({
+		action: "{:U('Qiniu/upload')}",
+		onComplete: function(filename, resp) {
+			if(resp.error !=0){
+				alert(resp.message);
+			}
+			else{
+				var wrapper = $(sprintf(TPL,resp.url,targetName,resp.url));
+				wrapper.appendTo('#'+target);
+				wrapper.find('.img-remove').click(function(){
+					$(this).parent().remove();
+				});
+			}
+		}
+	});
+	
+	$(function(){
+		$('[data-toggle="upload-reward-img"]').click(function(){
+			window.target = $(this).attr('data-target');
+			window.targetName = $(this).attr('data-target-name');
+		});
+		$('.img-remove').click(function(){
+			$(this).parent().remove();
+		});
+		$('.upload-music').click(function(){
+			window.targetMusic = $(this).attr('data-target');
+		});
+	})
+	
+	$(".upload-music").AjaxFileUpload({
+		action: "/User/Qiniu/Upload.html",
+		onSubmit:function(){
+			spark.showIndicator();
+		},
+		onComplete: function(filename, response) {
+			spark.hideIndicator();
+			if(response.error == 0){
+				$('#'+targetMusic).val(response.url);
+			}
+			else{
+				alert(response.message);
+			}
+		},
+		onError: function(ret){
+			spark.hideIndicator();
+			alert(ret);
+		}
+	});
+</script>
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript">
+	$(function(){
+		toggleShare();
+	});
+	$('.share_type').click(function(){
+		toggleShare();
+	});
+	
+	function toggleShare(){
+		if($('#defaultShare').is(':checked')){
+			$('.custom-share').hide();
+		}
+		else{
+			$('.custom-share').show();
+		}
+	}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>编辑幸运大转盘活动</h4>
+		<notempty name="vo.id"><code><php>echo C('WAP_DOMAIN').U('Wap/Turn/index?token='.session('token'))</php></code><br/></notempty>	
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="#start" data-toggle="tab">活动开始设置</a></li>
+		
+		<li><a href="#prize" data-toggle="tab">奖项设置</a></li>
+	
+	</ul>
+	<!-- Tab panes -->
+	<form class="form-horizontal" method="post">
+		<if condition="$vo['id'] neq ''">
+		  <input type="hidden" name="id" value="{$vo['id']}">
+		</if>
+		
+		<input type="hidden" value="1" name="type" />
+		<div class="tab-content">
+			<div class="tab-pane active" id="start">	
+				<div class="form-group">
+				<label class="col-sm-2">每次抽奖金额</label>
+				<div class="col-md-2">
+					<div class="input-group">
+						<input type="text" id="price" name="price" value="{$vo.price}" class="form-control" />
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+			<label class="col-sm-2">底部奖项图片</label>
+			<div class="col-md-4">
+				<input type="hidden" name="ppicurl" value="{$vo.ppicurl}" class="form-control" id="imgi4" style="display:inline-block;width:250px;" />
+				<img id="imgi4Holder" style="width:216px;" class="img" src="{$vo.ppicurl}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('imgi4',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('imgi4')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+					<label class="control-label col-xs-2">背景音乐</label>
+					<div class="col-md-5">
+						<div class="input-group">
+							<input type="text" class="form-control" id="music1" name="musicurl" value="{$vo.musicurl}" />
+							<span class="input-group-btn btn-upload">
+								<button class="btn btn-default" type="button"><i id="uploadIcon" class="glyphicon glyphicon-cloud-upload"></i></button>
+								<input class="upload upload-music" type="file" name="file" data-target="music1" />
+							</span>
+						</div>
+					</div>
+		</div>
+		
+		<div class="form-group">
+					<label class="control-label col-xs-2">转动的音乐</label>
+					<div class="col-md-5">
+						<div class="input-group">
+							<input type="text" class="form-control" id="music2" name="musicurl2" value="{$vo.musicurl2}" />
+							<span class="input-group-btn btn-upload">
+								<button class="btn btn-default" type="button"><i id="uploadIcon" class="glyphicon glyphicon-cloud-upload"></i></button>
+								<input class="upload upload-music" type="file" name="file" data-target="music2" />
+							</span>
+						</div>
+					</div>
+		</div>
+		
+		<div class="form-group">
+					<label class="control-label col-xs-2">中奖音乐</label>
+					<div class="col-md-5">
+						<div class="input-group">
+							<input type="text" class="form-control" id="music3" name="musicurl3" value="{$vo.musicurl3}" />
+							<span class="input-group-btn btn-upload">
+								<button class="btn btn-default" type="button"><i id="uploadIcon" class="glyphicon glyphicon-cloud-upload"></i></button>
+								<input class="upload upload-music" type="file" name="file" data-target="music3" />
+							</span>
+						</div>
+					</div>
+		</div>
+		<div class="form-group">
+					<label class="control-label col-xs-2">未中奖音乐</label>
+					<div class="col-md-5">
+						<div class="input-group">
+							<input type="text" class="form-control" id="music4" name="musicurl4" value="{$vo.musicurl4}" />
+							<span class="input-group-btn btn-upload">
+								<button class="btn btn-default" type="button"><i id="uploadIcon" class="glyphicon glyphicon-cloud-upload"></i></button>
+								<input class="upload upload-music" type="file" name="file" data-target="music4" />
+							</span>
+						</div>
+					</div>
+		</div>
+	
+				<div class="form-group">
+					<label class="col-sm-2">活动说明</label>
+					<div class="col-md-5">
+						<textarea  class="form-control" id="info" name="info"  style="height:125px" ><if condition="$vo['info'] eq ''">亲，请点击进入大转盘抽奖活动页面，祝您好运哦！<else/>{$vo.info}</if></textarea>
+					</div>
+					<span class="col-md-5 text-info"></span>
+				</div>
+			</div>
+			<!--活动结束设置 -->
+			
+			<!-- 奖项设置-->
+			<div class="tab-pane" id="prize">
+				<div class="form-group">
+					<label class="col-sm-2">一等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="fist"  name="fist" value="{$vo.fist}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="fistnums" name="fistnums" value="{$vo.fistnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">一等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic1" value="{$vo.ppic1}" class="form-control" id="img1" style="display:inline-block;width:250px;" />
+						<img id="img1Holder" style="width:216px;" class="img" src="{$vo.ppic1}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img1',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img1')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+		
+				<div class="form-group">
+					<label class="col-sm-2">二等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="second"  name="second" value="{$vo.second}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="secondnums" name="secondnums" value="{$vo.secondnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">二等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic2" value="{$vo.ppic2}" class="form-control" id="img2" style="display:inline-block;width:250px;" />
+						<img id="img2Holder" style="width:216px;" class="img" src="{$vo.ppic2}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img2',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img2')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">三等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="third"  name="third" value="{$vo.third}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="thirdnums" name="thirdnums" value="{$vo.thirdnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">三等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic3" value="{$vo.ppic3}" class="form-control" id="img3" style="display:inline-block;width:250px;" />
+						<img id="img3Holder" style="width:216px;" class="img" src="{$vo.ppic3}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img3',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img3')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">四等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="four"  name="four" value="{$vo.four}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="fournums" name="fournums" value="{$vo.fournums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">四等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic4" value="{$vo.ppic4}" class="form-control" id="img4" style="display:inline-block;width:250px;" />
+						<img id="img4Holder" style="width:216px;" class="img" src="{$vo.ppic4}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img4',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img4')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">五等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="five"  name="five" value="{$vo.five}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="fivenums" name="fivenums" value="{$vo.fivenums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">五等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic5" value="{$vo.ppic5}" class="form-control" id="img5" style="display:inline-block;width:250px;" />
+						<img id="img5Holder" style="width:216px;" class="img" src="{$vo.ppic5}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img5',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img5')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">六等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="six"  name="six" value="{$vo.six}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="fistnums" name="sixnums" value="{$vo.sixnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">六等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic6" value="{$vo.ppic6}" class="form-control" id="img6" style="display:inline-block;width:250px;" />
+						<img id="img6Holder" style="width:216px;" class="img" src="{$vo.ppic6}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img6',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img6')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">七等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="seven"  name="seven" value="{$vo.seven}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="sevennums" name="sevennums" value="{$vo.sevennums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">七等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic7" value="{$vo.ppic7}" class="form-control" id="img7" style="display:inline-block;width:250px;" />
+						<img id="img7Holder" style="width:216px;" class="img" src="{$vo.ppic7}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img7',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img7')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-sm-2">八等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="eight"  name="eight" value="{$vo.eight}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="eightnums" name="eightnums" value="{$vo.eightnums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">八等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic8" value="{$vo.ppic8}" class="form-control" id="img8" style="display:inline-block;width:250px;" />
+						<img id="img8Holder" style="width:216px;" class="img" src="{$vo.ppic8}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img8',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img8')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">九等奖设置</label>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">奖品</span>
+							<input type="input" class="form-control" id="nine"  name="nine" value="{$vo.nine}" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon">数量</span>
+							<input type="text" class="form-control" id="ninenums" name="ninenums" value="{$vo.ninenums}" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2">九等奖图片</label>
+					<div class="col-md-4">
+						<input type="hidden" name="ppic9" value="{$vo.ppic9}" class="form-control" id="img9" style="display:inline-block;width:250px;" />
+						<img id="img9Holder" style="width:216px;" class="img" src="{$vo.ppic9}"/>
+						<div class="btn-group" style="vertical-align:bottom;">
+							<span class="btn btn-xs btn-primary" onclick="selectAsset('img9',720,400)">
+								<span class="glyphicon glyphicon-cloud-upload"></span>选择
+							</span>
+							<span class="btn btn-primary btn-xs" onclick="previewImg('img9')">
+								<span class="glyphicon glyphicon-picture"></span>预览
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2">奖券发布数量</label>
+					<div class="col-md-4">
+						<input type="input" class="form-control" id="allpeople" name="allpeople"  value="{$vo.allpeople}" />
+						<span class="help-block">注意：中奖概率 = 奖品总数/(奖券数量)</span>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="form-group">
+			<div class="col-md-5 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

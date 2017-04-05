@@ -1,0 +1,86 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:RES}/css/cymain.css" />
+<style type="text/css">
+body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
+#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+#l-map{height:100%;width:100%;}
+</style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=eXXe9yiLQspb3AEkKYc4PBFD"></script>
+</block>
+<block name="js">
+<script src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+
+<script type="text/javascript">
+// 关闭并返回数据到主页面
+$('#ok').click(function () {
+	var origin = artDialog.open.origin;
+	var longitudeinput = origin.document.getElementById('longitude');
+	var latitudeinput = origin.document.getElementById('latitude');
+	longitudeinput.value = $('#longitude').attr('value');
+	latitudeinput.value = $('#latitude').attr('value');
+	art.dialog.close();
+});
+
+$(function(){
+	var _lng = parseFloat(art.dialog.data('longitude'));
+	var _lat = parseFloat(art.dialog.data('latitude'));
+	var _addr = art.dialog.data('address');
+	window.map = new BMap.Map("l-map");
+	window.zoom = 13;
+	console.log(art.dialog.data('longitude'));
+	console.log(art.dialog.data('latitude'));
+	console.log(_lat);
+	console.log(_lng);
+	if (!isNaN(_lat) && !isNaN(_lng)&& _lat&&_lng) {
+		var point = new BMap.Point(_lng, _lat); // 创建点坐标
+		map.centerAndZoom(point,zoom);
+		setMap(point);
+	}
+	else if(_addr){ //如果坐标非法则通过填写的地址定位
+		var myGeo = new BMap.Geocoder();
+		myGeo.getPoint(_addr, function (point) {
+			map.centerAndZoom(point,zoom);
+			setMap(point);
+		});
+	}
+	else { //如果地址也非法则通过地图自动定到当前城市
+		var myCity = new BMap.LocalCity();
+		myCity.get(locate);
+	}
+});
+
+function locate(result) {
+	var p = new BMap.Point(result.center.lng,result.center.lat);
+	map.centerAndZoom(p,zoom);
+	setMap(p);
+}
+
+//设置地图功能
+function setMap(point){
+	setLocation(point.lng, point.lat);
+	map.enableScrollWheelZoom();
+	//设置标注
+	var marker = new BMap.Marker(point);
+	marker.enableDragging();
+	map.addOverlay(marker);
+	marker.addEventListener("dragend", function(e){
+		setLocation(e.point.lng, e.point.lat);
+	})
+}
+
+function setLocation(lng, lat){
+	$('#longitude').attr('value',lng);
+	$('#latitude').attr('value',lat);
+}
+</script>
+</block>
+<block name="content">
+<input type="hidden" id="longitude" value="0" />
+<input type="hidden" id="latitude" value="0" />
+<div class="ftip" style="margin:0">
+请拖动红色图标到公司位置，使用鼠标滚轮可缩放地图<a id="ok" href="###">已经设定好，关闭该页面</a>
+</div>
+<div id="l-map"></div>
+</block>

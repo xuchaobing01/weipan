@@ -1,0 +1,66 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>调研管理</h4>
+		<!--<a class="btn btn-sm btn-default" href="{:U('')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp
+		</a>-->
+	</div>
+	<a href="{:U('add')}" class="btn btn-success" style="margin:10px 0;">添加调研</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="160">调研名称</th>
+		<th width="120">关键词</th>
+		<th width="260">调研时间</th>
+		<th width="90">状态</th> 
+		<th width="200">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="data" id="item"> 
+			<tr>
+			<td>{$item.title}</td>
+			<td>{$item.keyword}</td>
+			<td>{$item.stime} - {$item.etime}</td>
+			<?php
+				$where = array(
+					'id'=> $item['id']
+				);
+				$db = M("diaoyan"); 
+				$date = $item['etime'];
+				$arr = explode('-', $date);
+				$date = mktime(0,0,0,$arr[1], $arr[2], $arr[0]);
+				$now = time();
+				if($now>=$date){
+					//'过期
+					$db-> where($where)->setField('state',1);
+				}else{
+					$db-> where($where)->setField('state',0);
+				}
+			?>
+			<php>
+				if($item['state']==0){
+			</php>
+				<td>进行中</td>
+			<php>
+				}elseif($item['state']==1){
+			</php>
+				<td>已结束</td>
+			<php>
+				}
+			</php>
+			<td class="norightborder">
+				<a class="btn btn-xs btn-default" href="{:U('Diaoyan/timu',array('id'=>$item['id']))}">题目</a>
+				<a class="btn btn-xs btn-default" href="{:U('Diaoyan/set',array('id'=>$item['id']))}">修改</a>
+				<a class="btn btn-xs btn-default" href="{:U('Diaoyan/survey',array('id'=>$item['id']))}">统计</a>
+				<a class="btn btn-xs btn-danger" href="{:U('Diaoyan/del',array('id'=>$item['id']))}">删除</a>
+			</td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

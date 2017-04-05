@@ -1,0 +1,116 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+</block>
+
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4 class="left">{$thisForm['name']}-输入项设置</h4>
+		<a href="{:U('Selfform/inputs',array('id'=>$thisForm['id']))}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" method="post">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<input type="hidden" name="formid" value="{$thisForm['id']}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label">显示名称</label>
+			<div class="col-md-4">
+				<input type="text" id="displayname" name="displayname" value="{$set.displayname}" class="validate[required] form-control" />
+				<span class="help-block"></span>
+			</div>
+			<div class="col-xs-1 tip-error">*</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">字段名称</label>
+			<div class="col-md-4">
+				<input type="text" id="fieldname" name="fieldname" value="{$set.fieldname}" class="validate[required,custom[onlyLetterNumber]] form-control" />
+			</div>
+			<div class="col-xs-1 tip-error">*</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">输入类型</label>
+			<div class="col-md-4">
+				<select name="inputtype" class="form-control" id="inputtype" onchange="inputtypeChange()">{$inputTypeOptions}</select>
+			</div>
+		</div>
+		<div id="troptions" class="form-group" <if condition="$set['inputtype'] neq select"> style="display:none"</if>>
+			<label class="col-sm-2 control-label">选项</label>
+			<div class="col-md-4">
+				<input type="text" id="options" name="options" value="{$set.options}" class="form-control" />
+				<div class="help-block">下拉列表的各个选项，多个选项用"|"隔开</div>
+			</div>
+			
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">是否必填</label>
+			<div class="col-md-4">
+				<select name="require" id="require" class="form-control">{$requireOptions}</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">输入规则</label>
+			<div class="col-md-4">
+				<select name="regexSelect" id="regexSelect" class="form-control" onchange="regexChange()">{$regexOptions}</select>
+			</div>
+		</div>
+		<div class="form-group" id="regxWrapper" <if condition="$set['regex'] neq '0'"> style="display:none"</if>>
+			<label class="col-sm-2 control-label">自定义规则</label>
+			<div class="col-md-4">
+				<input type="text" name="regex" id="regex" value="{$set.regex}" class="form-control" />
+			</div>
+			<div class="col-md-2">
+				填写正则表达式
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">排序</label>
+			<div class="col-md-4">
+				<input type="text" name="taxis" id="taxis" value="{$set.taxis|default=1}" class="validate[required,custom[integer]] form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">错误提示</label>
+			<div class="col-md-4">
+				<input type="text" name="errortip" id="errortip" value="{$set.errortip}" class="form-control" />
+				<div class="help-block">输入错误时的提示内容</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#editForm").validationEngine("attach",{ 
+			promptPosition:"centerRight",
+			scroll:true,
+			showOneMessage:true
+		});
+	});
+function inputtypeChange(){
+	if($('#inputtype').val()=='select'){
+		$('#troptions').css("display","block");
+	}else{
+		$('#troptions').css("display","none");
+	}
+}
+
+function regexChange(){
+	if($('#regexSelect').val()=='0'){
+		$('#regxWrapper').show();
+	}else{
+		$('#regxWrapper').hide();
+		$('#regex').val($('#regexSelect').val());
+	}
+}
+</script>
+</block>

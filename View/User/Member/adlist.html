@@ -1,0 +1,73 @@
+<extend name="Public:innerbase" />
+
+
+
+<block name="js">
+
+
+
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+
+
+
+</block>
+
+
+
+<block name="content">
+
+
+
+<div class="container-fluid">
+
+
+
+	<ul class="nav nav-tabs wm-tabs">
+
+
+
+		<li class="active"><a href="javascript:void(0)">幻灯片管理</a></li>
+	 	<li><a href="{:U('Member/addad')}">添加幻灯片</a></li>
+	</ul>
+
+
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+		<THEAD>
+		<TR>
+			<TH>ID</TH>
+			<TH>图片</TH>
+
+			<TH>顺序</TH>
+			<TH>操作</TH>
+
+		</TR>
+
+		</THEAD>
+
+		<TBODY>
+
+		<volist id="list" name="list">
+
+		<TR>
+			<TD>{$list.id}</TD>
+			<TD><img src="{$list.imgUrl}" style="width:80px;height:80px;"></TD>
+
+			<TD>{$list.sort}</TD>
+			<TD>
+				<a class="btn btn-xs" onclick="javascript:spark.confirm_jump('确定删除此幻灯片，是否确定','/User/Member/delad/id/{$list.id}.html')">删除</a>
+			</TD>
+
+		</form>
+
+		</TR>
+
+		</volist>
+
+	  </TBODY>
+
+	</TABLE>
+
+
+</div>
+
+</block>

@@ -1,0 +1,219 @@
+<extend name="Public:innerbase" />
+
+
+
+<block name="js">
+
+
+
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+
+
+
+</block>
+
+
+
+<block name="content">
+
+
+
+<div class="container-fluid">
+
+
+
+	<ul class="nav nav-tabs wm-tabs">
+
+
+
+		<li class="active"><a href="javascript:void(0)">流水排行榜</a></li>
+
+
+
+		<!-- <li><a href="{:U('Member/check',['id'=>$_GET['id']])}">会员审核</a></li> -->
+
+
+
+	</ul>
+
+
+
+	<div class="page-header wm-page-header">
+
+
+
+	<!-- 	<form method="get" action="__SELF__" class="form-inline">
+
+
+
+		
+
+
+
+		<label>姓名</label>
+
+
+
+		<input name="truename" type="text" value="{$_GET['truename']}" class="form-control" />
+
+
+
+		<label>手机号</label>
+
+
+
+		<input name="mobile" type="text" value="{$_GET['mobile']}" class="form-control" />
+
+
+
+		<button class="btn btn-primary" type="submit">
+
+
+
+			<span class="glyphicon glyphicon-search"></span>
+
+
+
+			查询
+
+
+
+		</button>
+
+
+
+		</form> -->
+
+
+
+	</div>
+
+
+
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+
+
+
+		<THEAD>
+
+
+
+		<TR>
+
+
+
+			<TH>排名</TH>	
+
+
+
+			<TH>姓名</TH>
+
+
+
+			<TH>电话</TH>
+
+
+
+			<TH>总流水</TH>
+			<TH>总充值</TH>
+			<TH>确定提现</TH>
+			<TH>待审核提现</TH>
+
+
+
+			
+
+
+
+
+
+		</TR>
+
+
+
+		</THEAD>
+
+
+
+		<TBODY>
+
+
+
+		<volist id="list" name="list">
+
+
+
+		<TR>
+
+
+
+			<TD>{$i}</TD>
+
+
+
+			<TD>{$list.wechat_name}</TD>
+
+
+
+			<TD><a href="{:U('Member/detail',array('id'=>$list['userid']))}">{$list.phone}</a></TD>
+
+
+
+			
+
+			<TD>
+
+
+
+			{$list.amount}
+
+
+
+			</TD>
+			<TD>{$list.paysum|default=0} </TD>
+<TD>{$list.sucsum|default=0}</TD>
+<TD>{$list.errsum|default=0}</TD>
+
+
+
+
+
+
+
+
+
+			
+
+			
+
+
+
+		</form>
+
+
+
+		</TR>
+
+
+
+		</volist>
+
+
+
+	  </TBODY>
+
+
+
+	</TABLE>
+
+
+
+	<div>{$page}</div>
+
+
+
+</div>
+
+
+
+</block>

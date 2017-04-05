@@ -1,0 +1,166 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+.sign-required{color:red;}
+.house-label{
+	color:#4A97E4;
+	margin-right:10px;
+	width: 80px;
+}
+.house-block{height:35px;}
+.house-block .radio-inline{
+	padding-top:0;
+	width: 50px;
+}
+input[type="text"].inputSmall {
+border: none;
+border-bottom: 1px solid #d5d5d5;
+padding: 0 !important;
+width: 50px;
+line-height: 20px;
+text-align: center;
+outline: 0 !important;
+}
+input[type="text"].inputSmall:focus {
+border-color: #4A97E4;
+}
+.inputSmall:focus{
+outline:0;
+boxshadow:none;
+}
+</style>
+</block>
+<block name="js">
+<include file="Public:upload" />
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>房型设置</h4>
+		<a href="{:U('house',array('id'=>$_GET['hid']))}" class="btn btn-default btn-sm">
+			<span class="fa fa-angle-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form class="form-horizontal" method="post" action="">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="col-sm-2">房型名称<span class="sign-required">*</span></label>
+			<div class="col-md-4">
+				<input type="text" name="name" value="{$list['name']}" class="form-control">
+			</div>
+			<span class="col-md-4 text-info">
+				如:"标准房/商务套房"
+			</span>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">简要说明</label>
+			<div class="col-md-4">
+				<input type="text" name="desc" value="{$list['desc']}" class="form-control" />
+			</div>
+			<span class="col-md-4 text-info">
+				尽量简短，如"大床，双床，适合2人"
+			</span>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">门店价</label>
+			<div class="col-md-4">
+				<input type="text" name="price" value="{$list['price']}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">微信价</label>
+			<div class="col-md-4">
+				<input type="text" name="sale_price" value="{$list['sale_price']}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">配套设施</label>
+			<div class="col-md-6">
+				<div class="house-block">
+					<label class="house-label">&nbsp;楼层</label>
+					<input type="text" name="floor" value="{$list['floor']}" class="inputSmall" />
+				</div>
+				<div class="house-block">
+					<label class="house-label">&nbsp;床位</label>
+					<input type="text" name="bed" value="{$list['bed']}" class="inputSmall" />
+				</div>
+				<div class="house-block">
+					<label class="house-label"><span class="fa fa-cutlery"></span>&nbsp;早餐供应</label>
+					<label class="radio-inline"><input type="radio" <eq name="list.dining" value="2">checked</eq>  name="dining" value="2" />双早</label>
+					<label class="radio-inline"><input type="radio" <eq name="list.dining" value="1">checked</eq> name="dining" value="1" />单早</label>
+					<label class="radio-inline"><input type="radio" <eq name="list.dining" value="0">checked</eq> name="dining" value="0" />无早</label>
+				</div>
+				<div class="house-block">
+					<label class="house-label"><span class="fa fa-wifi"></span>&nbsp;WIFI</label>
+					<label class="radio-inline"><input type="radio" <eq name="list.has_wifi" value="1">checked</eq> name="has_wifi" value="1" />有</label>
+					<label class="radio-inline"><input type="radio" name="has_wifi" <eq name="list.has_wifi" value="0">checked</eq> value="0" />无</label>
+				</div>
+				<div class="house-block">
+					<label class="house-label">&nbsp;窗户</label>
+					<label class="radio-inline"><input type="radio" <eq name="list.has_window" value="1">checked</eq>  name="has_window" value="1" />有</label>
+					<label class="radio-inline"><input type="radio" <eq name="list.has_window" value="0">checked</eq>  name="has_window" value="0" />无</label>
+				</div>
+				<div class="house-block">
+					<label class="house-label">&nbsp;浴缸</label>
+					<label class="radio-inline"><input type="radio" <eq name="list.has_bathtub" value="1">checked</eq>  name="has_bathtub" value="1" />有</label>
+					<label class="radio-inline"><input type="radio" <eq name="list.has_bathtub" value="0">checked</eq>  name="has_bathtub" value="0" />无</label>
+				</div>
+				
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">展示图片1</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$list['image_1']}" id="image_1" name="image_1" />
+				<img id="image_1Holder" style="width:216px;height:120px;" class="" <if condition="$list['image_1'] eq ''">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$list['image_1']}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" data-toggle="upload-image" data-target="image_1">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">展示图片2</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$list['image_2']}" id="image_2" name="image_2" />
+				<img id="image_2Holder" style="width:216px;height:120px;" class="" <if condition="$list['image_2'] eq ''">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$list['image_2']}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" data-toggle="upload-image" data-target="image_2">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">展示图片3</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$list['image_3']}" id="image_3" name="image_3" />
+				<img id="image_3Holder" style="width:216px;height:120px;" class="" <if condition="$list['image_3'] eq ''">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$list['image_3']}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" data-toggle="upload-image" data-target="image_3">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">展示图片4</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$list['image_4']}" id="image_4" name="image_4" />
+				<img id="image_4Holder" style="width:216px;height:120px;" class="" <if condition="$list['image_4'] eq ''">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$list['image_4']}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" data-toggle="upload-image" data-target="image_4">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-5 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

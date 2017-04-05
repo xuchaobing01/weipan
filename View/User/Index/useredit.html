@@ -1,0 +1,65 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript">
+	$("#btnBack").click(function(e){
+		location.href="{:U('Index/home')}";
+	});
+	$(function(){
+		$("#editForm").validationEngine("attach",{ 
+			promptPosition:"centerRight",
+			scroll:true,
+			showOneMessage:true
+		});
+	});
+</script>
+</block>
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h3>
+		<span class="glyphicon glyphicon-user"></span>&nbsp;请如实填写您的信息
+		</h3>
+	</div>
+    <form id="editForm" method="post" class="form-horizontal role="form" action="{:U('Index/usersave')}" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="userName" class="col-sm-2 control-label">商户名称</label>
+			<div class="col-sm-4">
+			  <input id="userName" name="username" type="text" class="form-control validate[required,minSize[4]]"  value="{$user['username']}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="cellPhone" class="col-sm-2 control-label">手机号码</label>
+			<div class="col-sm-4">
+			  <input id="cellPhone" name="cellphone" type="text" class="form-control validate[required,custom[phone]]" value="{$user['cellphone']}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="email" class="col-sm-2 control-label">常用邮箱</label>
+			<div class="col-sm-4">
+			  <input id="email" name="email" type="text" class="form-control validate[required,custom[email]]" value="{$user['email']}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">会员套餐</label>
+			<div class="col-sm-4" style="padding-top:6px;">
+				<strong class="text-warning">{$user['gname']}</strong>&nbsp;
+				
+				<a target="_blank" href="http://sighttp.qq.com/authd?IDKEY=7d2c6c4a99230e5f97a6b8c42432e99c3a0eb0506bb10bfc">
+					升级续费
+				</a>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-4">
+				<button id="saveSetting" type="submit" class="btn btn-primary" >保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

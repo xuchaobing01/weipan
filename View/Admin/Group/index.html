@@ -1,0 +1,29 @@
+<extend name="Public:base2" />
+<block name="content">
+<table class="table table-bordered">
+	<tr>
+		<td width="70">编号</td>
+		<td width="350">用户组名称</td>
+		<td >用户组描述</td>
+		<td width="70">状态</td>
+		<td width="200">管理操作</td>
+	</tr>
+	<volist name="list" id="vo">
+	<tr>
+		<td align='center'>{$vo.id}</td>
+		<td >{$vo.name}</td>
+		<td >{$vo.remark}</td>
+		<td align='center'><eq name="vo.status" value="1"><font color="red">√</font><else/><font color="blue">×</font></eq> 
+		</td>
+		<td align='center'>
+			<a href="javascript:setting_access({$vo.id}, '{$vo.name}')">权限设置</a>
+			| <a href="{:U('Group/edit/',array('id'=>$vo['id']))}">修改</a>
+			| <a href="javascript:void(0)" onclick="return  confirmurl('{:U('Group/del/',array('id'=>$vo['id']))}','确定删除该角色吗?')">删除</a>
+		</td>
+	</tr>
+	</volist>
+</table>
+<script type="text/javascript">
+
+</script>
+</block>

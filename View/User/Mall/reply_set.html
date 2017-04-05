@@ -1,0 +1,56 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<ul class="nav nav-tabs" role="tablist">
+		<li class="active"><a href="javascript:void(0)">回复设置</a></li>
+		<li><a href="{:U('set')}">功能设置</a></li>
+		<li><a href="{:U('transport_set')}">物流设置</a></li>
+	</ul>
+	<hr style="border:0;" />
+	<form class="form-horizontal" method="post" action="">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >关键词</label>
+			<div class="col-md-4">
+				<input type="text" name="keyword" value="{$keyword.keyword|default='商城'}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >回复标题</label>
+			<div class="col-md-4">
+				<input type="text" name="title" value="{$set.title|default='微商城'}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="picurl" class="col-sm-2 control-label">回复图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" name="picurl" id="picurl" value="{$set.picurl|default='/Public/User/images/photo/noneimg.jpg'}" class="form-control" />
+				<img id="picurlHolder" style="width:216px;height:120px;" class="img-rounded" <if condition="($set eq null) OR($set['picurl'] eq '')">src="/Public/User/images/photo/noneimg.jpg"</if> src="{$set.picurl}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('picurl',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('picurl')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+					&nbsp;&nbsp;建议尺寸:720*400
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >回复内容</label>
+			<div class="col-md-4">
+				<textarea style="height:75px" name="info" id="info" class="form-control">{$set.info}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<button type="submit" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="/Public/Common/js/upload.js?ver=7799"></script>
+</block>

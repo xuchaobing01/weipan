@@ -1,0 +1,41 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>菜品分类管理</h4>
+	</div>
+	<a style="margin:10px 0;" href="{:U('Dining/catadd')}" title="添加" class="btn btn-primary">添加分类</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="50">名称</th>
+		<th width="160">分类名称</th>
+		<th width="260">简介</th>
+        <th width="80">分类排序</th>
+		<th width="180">更新时间</th>
+		<th width="150" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="hostlist"> 
+		<tr>
+		<td><input type="checkbox" name="del_id[{$i}]" value="285" class="checkitem" /></td>
+		<td>{$hostlist.name}</td>
+		<td>{$hostlist.des}</td>
+            <td>{$hostlist.sorts}</td>
+		<td>{$hostlist.time|date="Y-m-d H:i",###}</td>
+		<td>
+		<a href="{:U('Dining/catSet',array('id'=>$hostlist['id']))}">修改</a>
+		<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Dining/catDel',array('id'=>$hostlist['id']))}');">删除</a>
+		<span style="display:none"><if condition="($parentid eq '0') or ($parentid eq '')">&nbsp;|&nbsp;<a href="{:U('Dining/cats',array('parentid'=>$hostlist['id']))}">子分类</a>
+		<a href="{:U('Dining/catAdd',array('parentid'=>$hostlist['id']))}">添加子分类</a></span></if>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+</div>
+</block>

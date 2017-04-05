@@ -1,0 +1,221 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style type="text/css">
+	ul{
+		list-style:none;
+		overflow:hidden;
+		margin:0;
+		padding:0;
+	}
+	.fluid-list li{
+		float:left;
+		width: 170px;
+		height: 383px;
+		margin: 0 20px 20px 0;
+		text-align: center;
+		background: url('{:RES}/images/img/radio_iphone0.png') no-repeat center top;
+	}
+	.fluid-list li:hover,.fluid-list li.active{
+		background: url('{:RES}/images/img/radio_iphone.png') no-repeat center top;
+	}
+	radio{
+		display:inline-block;
+		vertical-align: bottom;
+	}
+	
+	label{
+		cursor:pointer;
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("input.radio0").click(function(){
+			var radiostyle=$(this).val();
+			$(".fluid-list li").each(function(){
+				$(this).removeClass("active");
+			});
+			$(this).parents("li").addClass("active");
+			$.ajax({
+				type:"post",
+				data:{'style':radiostyle},
+				url:"{:U('Homemenu/style')}",
+				dataType:"json",
+			});
+		});
+	});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>微网站底部菜单设置</h4>
+	</div>
+	
+	<ul class="nav nav-tabs" style="margin-bottom:20px;">
+		<li><a href="{:U('Homemenu/index')}">菜单项设置</a></li>
+		<li class="active"><a href="javascript:void(0)">菜单风格</a></li>
+		<li><a href="{:U('Homemenu/set')}">菜单颜色与版权</a></li>
+	</ul>
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="fluid-list">
+				<li <if condition="$style eq 0"> class="active" </if> >
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/000.png" />
+							<input  class="radio0" type="radio" name="style" value="0" id="style_0" <if condition="$style eq 0"> checked </if>>
+								关闭底部导航
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 1"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/001.png" />
+							<input class="radio0" type="radio" name="style" value="1" id="style_1" <if condition="$style eq 1"> checked </if>>
+								1.左侧展开
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 2"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/002.png" />
+							<input class="radio0" type="radio" name="style" value="2" id="style_2" <if condition="$style eq 2"> checked </if>>
+								2.左侧滑入
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 3"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/003.png" />
+							<input class="radio0" type="radio" name="style" value="3" id="style_3" <if condition="$style eq 3"> checked </if>>
+								3.左侧滑入
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 4"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/004.png" />
+							<input class="radio0" type="radio" name="style" value="4" id="style_4" <if condition="$style eq 4"> checked </if>>
+							4.右侧滑入
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 5"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/005.png" />
+							<input class="radio0" type="radio" name="style" value="5" id="style_5" <if condition="$style eq 5"> checked </if>>
+							5.左侧底部滑入
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 6"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/006.png" />
+							<input class="radio0" type="radio" name="style" value="6" id="style_6" <if condition="$style eq 6"> checked </if>>
+							6.右侧底部滑入
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 7"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/007.png" />
+							<input class="radio0" type="radio" name="style" value="7" id="style_7" <if condition="$style eq 7"> checked </if>>
+							7
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 8"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/008.png" />
+							<input class="radio0" type="radio" name="style" value="8" id="style_8" <if condition="$style eq 8"> checked </if>>
+							8
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 9"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/009.png" />
+							<input class="radio0" type="radio" name="style" value="9" id="style_9" <if condition="$style eq 9"> checked </if>>
+							9
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 10"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/010.png" />
+							<input class="radio0" type="radio" name="style" value="10" id="style_10" <if condition="$style eq 10"> checked </if>>
+							10
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 11"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/011.png" />
+							<input class="radio0" type="radio" name="style" value="11" id="style_11" <if condition="$style eq 11"> checked </if>>
+							11
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 12"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/012.png" />
+							<input class="radio0" type="radio" name="style" value="12" id="style_12" <if condition="$style eq 12"> checked </if>>
+							12
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 13"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/013.png" />
+							<input class="radio0" type="radio" name="style" value="13" id="style_13" <if condition="$style eq 13"> checked </if>>
+							13
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 14"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/014.png" />
+							<input class="radio0" type="radio" name="style" value="14" id="style_14" <if condition="$style eq 14"> checked </if>>
+							14
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 15"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/015.png" />
+							<input class="radio0" type="radio" name="style" value="15" id="style_15" <if condition="$style eq 15"> checked </if>>
+							15
+						</label>
+					</div>
+				</li>
+				<li <if condition="$style eq 16"> class="active" </if>>
+					<div class="radio0">
+						<label>
+							<img src="{:RES}/css/catemenu-style/016.png" />
+							<input class="radio0" type="radio" name="style" value="16" id="style_16" <if condition="$style eq 16"> checked </if>>
+							16
+						</label>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+</block>

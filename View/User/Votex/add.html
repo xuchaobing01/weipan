@@ -1,0 +1,305 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<!--link rel="stylesheet" href="{:STATICS}/vote/style.css" /-->
+<block name="js">
+<include file="Public:upload" />
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{:RES}/js/date/WdatePicker.js" type="text/javascript"></script>
+<script src="{:STATICS}/vote/common.js" type="text/javascript"></script>
+<script type="text/javascript">
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('#info', {
+	resizeType : 1,
+	allowPreviewEmoticons : false,
+	allowImageUpload : true,
+	uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+	items : [
+	'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+	});
+});
+
+$(function(){
+	function check(el){
+		if($(el).is(':checked')){
+			$('#signEndTime').show();
+		}
+		else $('#signEndTime').hide();
+	}
+	check($('#onlineSign'));
+	$('#onlineSign').change(function(){
+		check(this);
+	});
+
+	function check1(el){
+		if($(el).is(':checked')){
+			$('#telphone').show();
+		}
+		else $('#telphone').hide();
+	}
+	check1($('#ontelphone'));
+	$('#ontelphone').change(function(){
+		check1(this);
+	});
+})
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+<div class="page-header">
+	<a class="btn btn-sm btn-default" href="{:U('Votex/index')}"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+</div>
+<code><?php echo C('WAP_DOMAIN').'/wap/votex/index?token='.session('token').'&id='.$vo['id'];?></code>
+<div style="margin-top:10px;">
+	<form class="form-horizontal" method="post" action="">
+		<if condition="$vo['id'] neq ''">
+		  <input type="hidden" name="id" value="{$vo['id']}">
+		</if>
+		<div class="form-group">
+			<label class="control-label col-xs-2">投票标题</label>
+			<div class="col-md-4">
+				<input type="text" name="title" value="{$vo.title}" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">顶部幻灯片1</label>
+			<div class="col-md-4">
+				<input type="hidden" name="picurl" value="{$vo.banner}" class="form-control" id="img" style="display:inline-block;width:250px;" />
+				<img id="imgHolder" style="width:216px;" class="img" src="{$vo.banner}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">顶部幻灯片2</label>
+			<div class="col-md-4">
+				<img id="banner2Holder" style="width:216px;" class="img" src="{$vo.banner2}"/>
+				<input type="hidden" name="banner2" value="{$vo.banner2}" class="form-control" id="banner2" />
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('banner2')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('banner2')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">顶部幻灯片3</label>
+			<div class="col-md-4">
+				<img id="banner3Holder" style="width:216px;" class="img" src="{$vo.banner3}"/>
+				<input type="hidden" name="banner3" value="{$vo.banner3}" class="form-control" id="banner3" />
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('banner3')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('banner3')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">投票说明</label>
+			<div class="col-md-4">
+				<textarea class="form-control" id="info2" name="info" style="height: 120px;">{$vo.detail}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">投票时间：</label>
+			<div class="col-md-6">
+				<input style="display:inline-block;width:120px;" type="input" class="form-control" id="statdate" value="<if condition="$vo['start_time'] neq ''">{$vo.start_time|date="Y-m-d",###}</if>" data-toggle="datetime-picker" name="statdate">
+				到
+				<input style="display:inline-block;width:120px;" type="input" class="form-control" id="enddate" value="<if condition="$vo['end_time'] neq ''">{$vo.end_time|date="Y-m-d",###}</if>" name="enddate" data-toggle="datetime-picker">
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-2">每天每人投票数：</label>
+			<div class="col-md-4">
+				<input type="text" name="num" value="{$vo.num|default=1}" class="form-control" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-2">候选项重命名：</label>
+			<div class="col-md-4">
+				<input type="text" name="rename1" value="{$vo.rename1}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">参与人数重命名：</label>
+			<div class="col-md-4">
+				<input type="text" name="rename2" value="{$vo.rename2}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">累计投票重命名：</label>
+			<div class="col-md-4">
+				<input type="text" name="rename3" value="{$vo.rename3}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">分享标题：</label>
+			<div class="col-md-4">
+				<input type="text" name="share_title" value="{$vo.share_title}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">分享图片：</label>
+			<div class="col-md-4">
+				<img id="shareImgHolder" style="width:216px;" class="img" src="{$vo.share_img}"/>
+				<input type="hidden" name="share_img" value="{$vo.share_img}" class="from-control" id="shareImg" />
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('shareImg',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('shareImg')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">分享内容：</label>
+			<div class="col-md-4">
+				<input type="text" name="share_detail" value="{$vo.share_detail}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">统一增加票数：</label>
+			<div class="col-md-4">
+				<input type="text" name="increment" value="0" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">允许微信报名：</label>
+			<div class="col-md-4">
+				<label><input id="onlineSign" <?php if($vo['online_sign'])echo 'checked';?> type="checkbox" name="online_sign" value="1" /></label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">报名需要审核：</label>
+			<div class="col-md-4">
+				<label><input id="onlineSign" <?php if($vo['reg_sign'])echo 'checked';?> type="checkbox" name="reg_sign" value="1" /></label>
+			</div>
+		</div>
+		
+		<div id="signEndTime">
+			<div class="form-group">
+				<label class="control-label col-xs-2">报名结束时间：</label>
+				<div class="col-md-4">
+					<input style="display:inline-block;width:150px;" type="input" class="form-control" value="<if condition="$vo['sign_end_time'] neq ''">{$vo.sign_end_time|date='Y-m-d',###}</if>" data-toggle="datetime-picker" name="sign_end_time">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-xs-2">报名页面图片：</label>
+				<div class="col-md-4">
+					<img id="sign_bannerHolder" style="width:216px;" class="img" src="{$vo.sign_banner}"/>
+					<input type="hidden" name="sign_banner" value="{$vo.sign_banner}" class="from-control" id="sign_banner" />
+					<div class="btn-group" style="vertical-align:bottom;">
+						<span class="btn btn-xs btn-primary" onclick="selectAsset('sign_banner',720,400)">
+							<span class="glyphicon glyphicon-cloud-upload"></span>选择
+						</span>
+						<span class="btn btn-primary btn-xs" onclick="previewImg('sign_banner')">
+							<span class="glyphicon glyphicon-picture"></span>预览
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-xs-2">报名说明：</label>
+				<div class="col-md-4">
+					<input type="text" name="sign_info" value="{$vo.sign_info}" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-xs-2">标题字段重命名：</label>
+				<div class="col-md-4">
+					<input type="text" name="sign_title" value="{$vo.sign_title}" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-xs-2">图片字段重命名：</label>
+				<div class="col-md-4">
+					<input type="text" name="sign_img" value="{$vo.sign_img}" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-xs-2">描述字段重命名：</label>
+				<div class="col-md-4">
+					<input type="text" name="sign_desc" value="{$vo.sign_desc}" class="form-control" />
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<label class="control-label col-xs-2">需填写手机号码：</label>
+				<div class="col-md-4">
+					<label><input id="ontelphone" <?php if($vo['ontelphone'])echo 'checked';?> type="checkbox" name="ontelphone" value="1" /></label>
+				</div>
+			</div>
+			<div id="telphone">		
+				<div class="form-group">
+				<label class="control-label col-xs-2">手机字段重命名：</label>
+				<div class="col-md-4">
+					<input type="text" name="telname" value="{$vo.telname|default=手机号码}" class="form-control" />
+				</div>
+				</div>
+			</div>
+			<div class="form-group">
+					<label class="control-label col-xs-2">新增字段重命名（为空则标示不需要）：</label>
+					<div class="col-md-4">
+						<input type="text" name="msg1" value="{$vo.msg1}" class="form-control" />
+					</div>
+			</div>
+			<div class="form-group">
+					<label class="control-label col-xs-2">新增字段备注信息（为空则标示不需要）：</label>
+					<div class="col-md-4">
+						<input type="text" name="msg2" value="{$vo.msg2}" class="form-control" />
+					</div>
+			</div>
+			<div class="form-group">
+					<label class="control-label col-xs-2">版权信息（为空则不显示）：</label>
+					<div class="col-md-4">
+						<input type="text" name="copyright" value="{$vo.copyright}" class="form-control" />
+					</div>
+			</div>
+			
+			
+			
+			<div class="form-group">
+					<label class="control-label col-xs-2">报名页面：</label>
+					<div class="col-md-4">
+					<input type="radio" name="regpage" value="0" id="enabled1"  <?php if($vo['regpage'] ==0)echo 'checked';?>  /> 默认版本
+                    
+                   <input type="radio" name="regpage" value="1" id="enabled2"  <?php if($vo['regpage'] ==1)echo 'checked';?>  /> 版本1
+                    
+						</div>
+			</div>
+			
+		</div>
+
+
+
+		<div class="form-group">
+			<div class="col-md-4 col-xs-offset-2">
+				<button type="submit" name="button" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+</block>

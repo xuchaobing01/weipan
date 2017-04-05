@@ -1,0 +1,79 @@
+<extend name="Public:base2"/>
+<block name="content">
+<div id="artlist">
+	<div class="row">
+		<div class="col-md-4">
+			<form action="{:U('search')}" method="post">
+				<div class="input-group">
+					<input type='hidden' name="type" value="1" />
+					<input name="name" type="text" class="form-control" placeholder="用户名、邮箱" />
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-primary" type="button">搜索</button>
+					</span>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-4">
+			<div class="input-group">
+				<span class="input-group-addon">代理商</span>
+				<select class="form-control" id="agentSelect">
+					<option value="">全部</option>
+					<option value="0" <?php if(isset($_GET['aid'])&&$_GET['aid']==0)echo "selected";?>>总部</option>
+					<volist name="agents" id="agent">
+					<option value="{$agent.id}" <eq name="agent.id" value="$_GET['aid']">selected</eq>>{$agent.company}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+<hr/>
+<table class="table table-striped" id="alist">
+	<thead>
+	<tr>
+		<td width="70">编号</td>
+		<td width="100">用户名</td>
+		<td width="100">用户组</td>
+		<td width="120">最后登录时间</td>
+		<td width="120">注册时间</td>
+		<td width="120">到期时间</td>
+		<td width="40">状态</td>
+		<td width="120">操作</td>
+	</tr>
+	</thead>
+	<tbody>
+	<volist name="info" id="vo">
+		<tr>
+			<td>{$vo.id}</td>
+			<td>{$vo.username}</td>
+			<td>{$group[$vo['gid']]}</td>
+			<td>{$vo['last_login_time']|date='Y-m-d H:i:s',###}</td>
+			<td>{$vo['create_time']|date='Y-m-d',###}</td>
+			<td>{$vo['viptime']|date='Y-m-d',###}</td>
+			<td align="center">
+			<eq name="vo.status" value="1">
+			<span class="text-success"><span class="glyphicon glyphicon-ok-sign"></span></span>
+			<else/>
+			<span class="text-error"><span class="glyphicon glyphicon-ban-circle"></span></span>
+			</eq>
+			</td>
+			<td>
+				<a class="btn btn-default btn-xs" href="{:U('Users/edit/',array('id'=>$vo['id']))}">修改</a>
+				<a class="btn btn-danger btn-xs" href="{:U('Users/del/',array('id'=>$vo['id']))}" onclick="return confirm('确定删除该用户吗?')">删除</a>
+			</td>
+		</tr>
+	</volist>
+	</tbody>
+</table>
+<div class="listpage">{$page}</div>
+</block>
+<block name="js">
+<script>
+	var url = "{:U('Users/'.ACTION_NAME)}";
+	$('#agentSelect').change(function(){
+		var v = $(this).val();
+		if(v != '')location.href = url+"?aid="+v;
+		else location.href = url;
+	});
+</script>
+</block>

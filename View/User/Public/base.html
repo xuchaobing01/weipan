@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	<meta charset="utf-8" />
+	<meta name="keywords" content="微市场 免费微信营销  微信营销平台 微信公众号服务平台 合肥微信营销平台" />
+	<meta name="description" content="免费微信营销平台 合肥微信营销平台 微信公众号服务平台  微官网 微相册 微客服  微订单"/>
+	<meta name="baidu-site-verification" content="pKfXuVuMa3" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<block name="title">
+	<title>{:C('PLATFORM_NAME')}</title>
+	</block>
+	<block name="default-css">
+	<link rel="stylesheet" type="text/css" href="{:STATICS}/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="{:STATICS}/font-awesome/css/font-awesome.min.css" />
+	<!--<link type="text/css" rel="stylesheet" href="/Public/Admin/me/css/bootstrap-me.css" />-->
+	<link rel="stylesheet" type="text/css" href="{:RES}/css/user.css" />
+	<link rel="stylesheet" type="text/css" href="{:RES}/css/bs-context.css"/>
+	</block>
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="{:STATICS}/js/html5shiv.js"></script>
+	<script src="{:STATICS}/js/respond.min.js"></script>
+	<![endif]-->
+	<style type="text/css">
+		.navbar-nav>li>a{
+			font-weight: bold;
+			color: white;
+		}
+		
+		.navbar-nav>li>a:hover{
+			background-color: black;
+		}
+
+		.navbar-nav>li.active>a{
+			background-color: white;
+			color: rgb(42, 100, 150);
+		}
+
+		.wx-subnav{
+			padding: 0 4px;
+		}
+		.wx-subnav a{
+			color: gray;
+		}
+		.wx-subnav a:hover{
+			color: rgb(66, 139, 202);
+		}
+		.wx-subnav a.active{
+			color: rgb(66, 139, 202);
+			border-radius: 0;
+			border-left: 2px solid rgb(66, 139, 202);
+		}
+	</style>
+	<block name="css"></block>
+	<script type="text/javascript" src="{:C('CDN_JQUERY')}"></script>
+	<!--百度统计异步代码 -->
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?b48a0ed48d652448701edf73042ae5ec";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+</head>
+<body>
+
+<script type="text/javascript">
+$(function(){
+	$('#rssSubmit').click(function(){
+		$('#rssForm').submit();
+	});
+	var interval;
+	//倒计时
+	var interval;
+	function stop(now){
+		if(parseInt($('#second').text()) <= 1 || now){
+			$('#down').children(":first").click();
+		}else{
+			$('#second').text(parseInt($('#second').text()) - 1);
+		}	
+	}
+	interval = setInterval(stop, 1000);
+
+	$('#down').click(function(){
+		clearInterval(interval);
+		$('#second').parent().hide();
+	});
+})
+</script>
+
+
+<script>
+var intval;
+
+intval = setInterval(stop,1000);
+function stop(now){
+	if(parseInt($(this).text())<=1){
+		$(".click").click();
+	}
+	
+}
+
+
+</script>
+
+	<!-- 导航栏-->
+	<div id="" class="navbar wx-nav" role="navigation">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="{:U('User/Index/index')}">{:C('PLATFORM_NAME')}</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<volist name="__MENU__.root" id="vo">	
+			<?php if(strpos($vo['url'],'vshop')){ ?>
+				<li class><a target="_blank" href="http://w.weimarket.cn/{$vo['url']}?uid=<?php echo session('uid');?>">{$vo.title}</a></li>
+			<?php }else{ ?>
+				<li class="<?php if($vo['active']) echo 'active';?>"><a href="{:U($vo['url'])}">{$vo.title}</a></li>
+			<?php }?>
+			</volist>
+
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">
+					<if condition="$_SESSION['account_name']">
+					{$Think.session.account_name}({$_SESSION['uname']})
+					<else/>
+					{$Think.session.uname}
+					</if>
+					<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+					<li><a href="javascript:void(0)" class="ajax-url" src="{:U('Index/passedit')}">修改密码</a></li>
+					</ul>
+				</li>
+				<li><a href="javascript:location.href='{:U('User/logout')}'">退出</a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- 页面主体部分-->
+	<div class="west-pane">
+		<ul class="nav nav-stacked wx-sidenav" style="max-width: 300px;">
+			<volist name="__MENU__['current']['child']" id="sub_menu">
+				<if condition="$key eq ''">
+				<volist name="sub_menu" id="menu">
+					<li>
+						<a href="javascript:void(0)" class="ajax-url"  src="{$menu.url|U}">{$menu.title}</a>
+					</li>
+				</volist>
+				<else/>
+				<li>
+				<a href="javascript:void(0)">
+					<span>{$key}</span>
+					<span class="fa fa-chevron-right wx-sidenav-icon"></span>
+				</a>
+				<ul class="nav nav-pills nav-stacked wx-subnav">
+					<volist name="sub_menu" id="menu">
+					<li>
+						<a href="javascript:void(0)" class="ajax-url" src="{$menu.url|U}">{$menu.title}</a>
+					</li>
+					</volist>
+				</ul>
+				</li>
+				</if>
+			</volist>
+		</ul>
+	</div>
+	<block name="content"></block>
+	<script type="text/javascript" src="{:STATICS}/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(".wx-sidenav>li>a").click(function(e){
+			if($(this).parent().hasClass("active")){
+				$(this).children('.fa').removeClass("fa-chevron-up").addClass("fa-chevron-right")
+				.end().siblings(".nav").hide(500);
+				$(this).parent().removeClass("active");
+			}
+			else{
+				$(".wx-sidenav>li.active").removeClass("active")
+				.find(".fa").removeClass("fa-chevron-up").addClass("fa-chevron-right")
+				.end().find(".nav").hide();
+				$(this).parent().addClass("active");
+				$(this).find(".fa")
+				.removeClass("fa-chevron-right").addClass("fa-chevron-up")
+				.end().siblings(".nav").show(500);
+			}
+		});
+		
+		$("a.ajax-url").click(function(e){
+			if(!$(this).hasClass("active")){
+				$(".wx-subnav a.active").removeClass("active");
+				$(this).addClass("active");
+				$("#wp>iframe").attr("src",$(this).attr("src"));
+			}
+			else{
+				$("#wp>iframe").attr("src",$(this).attr("src"));
+			}
+		});
+		$(function(){
+			$('.west-pane a.ajax-url:first').click();
+		})
+	</script>
+	<block name="js"></block>
+</body>
+</html>

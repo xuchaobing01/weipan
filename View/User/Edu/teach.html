@@ -1,0 +1,37 @@
+<extend name="Public:innerbase" />
+<block name="js"></block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>名师管理</h4>
+		<code><?php echo C('WAP_DOMAIN').U('Wap/Edu/teach',['token'=>session('token'),'wechat_id'=>'{wechat_id}']);?></code>
+	</div>
+	<a style="margin:10px 0;" href="{:U('teach_edit')}" title="添加" class="btn btn-primary">添加名师</a>
+	<table class="table wm-table-bordered table-hover table-striped">
+		<thead>
+		<tr>
+		<th width="50">姓名</th>
+		<th width="120">头像</th>
+		<th width="120">校区</th>
+		<th width="160">荣誉</th>
+		<th width="200" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="vo"> 
+		<tr>
+		<td>{$vo.name}</td>
+		<td><img height="120" src="{$vo.img}" /></td>
+		<td>{$vo.school_name}</td>
+		<td>{$vo.label}</td>
+		<td>
+		<a class="btn btn-xs btn-default" href="{:U('teach_edit?id='.$vo['id'])}">修改</a>
+		<a class="btn btn-xs btn-danger" href="{:U('st_delete?id='.$vo['id'])}">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>

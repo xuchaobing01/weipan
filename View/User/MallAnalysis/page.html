@@ -1,0 +1,125 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/daterangepicker/daterangepicker-bs3.css" />
+</block>
+<block name="content">
+	<div class="container-fluid">
+		<div style="margin-left:40px;">
+			<div class="btn-group">
+				<a href="#" class="btn btn-success">访问人数</a>
+				<a href="{:U('time_range')}" class="btn btn-default">访问时段</a>
+				<!--<button type="button" class="btn btn-default">Right</button>-->
+			</div>
+			<hr style="margin:10px 0;"/>
+			<div class="btn-toolbar" role="toolbar">
+				<div class="btn-group btn-group-sm">
+					<button id="7days" name="7" type="button" class="btn <?php echo $range==7?'btn-success':'btn-default';?>">最近7天</button>
+					<button id="15days" name="15" type="button" class="btn <?php echo $range==15?'btn-success':'btn-default';?>">最近15天</button>
+					<button id="30days" name="30" type="button" class="btn <?php echo $range==30?'btn-success':'btn-default';?>">最近30天</button>
+				</div>
+				<div class="btn-group btn-group-sm" style="width: 180px;">
+					<input type="text" id="daterange" style="text-align:center;" name="daterange" class="form-control input-sm" value="<?php echo strpos($range,'~')?$range:'';?>" placeholder="自定义日期范围" />
+				</div>
+			</div>
+		</div>
+		<div id="main" style="height:400px"></div>
+	</div>
+</block>
+<block name="js">
+<script src="{:STATICS}/js/moment.min.js"></script>
+<script src="{:STATICS}/daterangepicker/daterangepicker.js"></script>
+ <!-- ECharts单文件引入 -->
+<script src="http://echarts.baidu.com/build/echarts-plain.js"></script>
+<script type="text/javascript">
+	// 基于准备好的dom，初始化echarts图表
+	var myChart = echarts.init(document.getElementById('main'));
+	var option = {
+		tooltip: {
+			show: true
+		},
+		toolbox: {
+			show : true,
+			feature : {
+				mark : {show: false},
+				dataView : {show: false, readOnly: false},
+				magicType : {show: true, type: ['line', 'bar']},
+				restore : {show: true},
+				saveAsImage : {show: true}
+			}
+		},
+		legend: {
+			data:['微商城PV','微商城UV']
+		},
+		xAxis : [
+			{
+				type : 'category',
+				data : {$xAxis|json_encode}
+			}
+		],
+		yAxis : [
+			{
+				type : 'value'
+			}
+		],
+		series : [
+			{
+				"name":"微商城PV",
+				"type":"line",
+				"data":{$series['PV']|json_encode}
+			},
+			{
+				"name":"微商城UV",
+				"type":"line",
+				"data":{$series['UV']|json_encode}
+			}
+		]
+	};
+
+	// 为echarts对象加载数据 
+	myChart.setOption(option);
+	var url = "{:U('page')}";
+	$(function(){
+		$('#7days,#15days,#30days').click(function(){
+			if(!$(this).hasClass('btn-success')){
+				location.href = url+'?daterange='+$(this).attr('name');
+			}
+		});
+	})
+</script>
+<script>
+	var zh_CN = {
+		applyLabel: '确定',
+		cancelLabel: '取消',
+		fromLabel: '从',
+		toLabel: '至',
+		weekLabel: 'W',
+		customRangeLabel: '自定义',
+		daysOfWeek: ['日','一','二','三','四','五','六'],
+		monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+		firstDay: moment.localeData()._week.dow
+	};
+	$('#daterange').daterangepicker(
+		{ 
+			format: 'YYYY-MM-DD',
+			startDate: moment().subtract(6, 'days'),
+			endDate: moment(),
+			separator: '~',
+			locale: zh_CN,
+			/*ranges: {
+			   '今天': [moment(), moment()],
+			   '昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			   '最近7天': [moment().subtract(6, 'days'), moment()],
+			   '最近30天': [moment().subtract(29, 'days'), moment()],
+			   '本月': [moment().startOf('month'), moment().endOf('month')],
+			   '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			},*/
+		},
+		function(start, end, label) {
+			var range = start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD')
+			$('#dateRange').val(range);
+			location.href = url+'?daterange='+range;
+			
+		}
+	);
+</script>
+</block>

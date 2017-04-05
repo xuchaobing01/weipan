@@ -1,0 +1,56 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<hr/>
+	<a href="{:U('card')}" class="btn btn-sm btn-default">
+		<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+	</a>
+	<hr/>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs">
+		<li><a href="{:U('Membercard/privilege',['cid'=>$_GET['cid']])}">VIP特权</a></li>
+		<li class="active"><a href="javascript:void(0)">优惠券</a></li>
+		<li><a href="{:U('Membercard/integral',['cid'=>$_GET['cid']])}">礼品券</a></li>
+	</ul>
+	<div class="page-header wm-page-header">
+		<a class="btn btn-primary" href="{:U('Membercard/coupon_add',['cid'=>$_GET['cid']])}">添加优惠券</a>
+	</div>
+	<table class="table wm-table-bordered">
+	  <thead>
+		<tr>
+			<th class="answer">优惠券名称</th>
+			<th class="answer">优惠金额</th>
+			<th class="time">状态</th>
+			<th class="time">创建时间</th>
+			<th class="time">到期时间</th>
+			<th class="edit norightborder">操作</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		<volist name="data_vip" id="data_vip">           
+		<tr>
+			<td><div class="answer_text">{$data_vip.title}</div></td>
+			<td><div class="answer_text">{$data_vip.discount_money}</div></td>
+			<td>
+				<switch name="data_vip.status">
+					<case value="0"><span class="label label-warning">未发布<span></case>
+					<case value="1"><span class="label label-success">已发布</span></case>
+				</switch>
+			</td>
+			<td>{$data_vip.create_time|date='Y-m-d',###}</td>
+			<td>{$data_vip.expire_date|date='Y-m-d',###}</td>
+			<td>
+				<if condition="$data_vip['status'] eq 0">
+				<a class="btn btn-xs btn-success" href="{:U('coupon_publish?id='.$data_vip['id'])}">发布</a>
+				<else/>
+				<a class="btn btn-xs btn-default" href="{:U('coupon_sncode',['cid'=>$_GET['cid'],'id'=>$data_vip['id']])}">查看SN码</a>
+				</if>
+				<a class="btn btn-xs btn-default" href="{:U('Membercard/coupon_edit',array('id'=>$data_vip['id'],'cid'=>$_GET['cid']))}">编辑</a>
+				<a class="btn btn-xs btn-danger" href="{:U('Membercard/coupon_del',array('id'=>$data_vip['id'],'cid'=>$_GET['cid']))}">删除</a>
+			</td>
+		</tr>
+		</volist>
+	  </tbody>
+	</table>
+</div>
+</block>

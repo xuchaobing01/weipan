@@ -1,0 +1,150 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+#uploadFile{
+	position: absolute;
+	opacity: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	margin:0;
+	padding:0;
+	cursor: pointer;
+}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<a href="{:U('chaibao2/index')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+			返回
+		</a><h4>小票管理</h4>		
+	</div>
+	<div role="tabpanel tabbable tabbable-custom">
+	  <!-- Nav tabs -->
+		<!-- Tab panes -->
+		<div class="tab-content" style="padding-top:5px;">
+			<div role="tabpanel" class="tab-pane active" id="student">
+				<div class="upload-button" style="margin:10px 0;" >
+					<span class="btn btn-primary">
+					<input class="upload" type="file" name="file" id="uploadFile" />
+					导入小票
+					</span>
+					<div class="btn-group">
+						<button  id="delall" type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown">批量删除 
+						</button>
+					</div>
+				</div>
+				<div class="page-header wm-page-header">
+		<form method="get" action="__SELF__" class="form-inline">
+		<label>小票号</label>
+		<input name="number" type="text" value="{$_GET['number']}" class="form-control" />
+		<button class="btn btn-primary" type="submit">
+			<span class="glyphicon glyphicon-search"></span>
+			查询
+		</button>
+		</form>
+	</div>
+	
+				<table class="table wm-table-bordered table-hover table-striped">
+					<thead>
+					<tr>
+					<th width="50" class="select"><input type="checkbox" value="反选" name="button" id="selected"  style="color:#94D38A;"></th>
+					<th width="50">序号</th>
+					<th width="120">小票号码</th>
+					<!-- <th width="120">获奖者</th> -->
+					<th width="120">状态</th>
+				
+					<th width="200">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<volist name="res" id="vo"> 
+					<tr>
+					<td><input type="checkbox" name="items" value="{$vo.id}"  class="checkitem" /></td>
+					<td>{$i}</td>
+					<td>{$vo.coupons}</td>
+					<!-- <td>{$vo.wechat_name}</td> -->
+					<td><if condition="$vo['isuser'] eq 1">
+					<span style="color:red">已使用</span>
+			<else />
+			
+			未使用
+		</if></td>
+					<td>
+					<if condition="$vo['isuser'] eq 1">
+						<a class="btn btn-xs btn-default" href="{:U('edit_coupons?id='.$vo['id'].'&cid='.$cid)}">修改为未使用</a>
+					</if>
+					</td>
+					<!--<td>
+					<a class="btn btn-xs btn-default" href="{:U('student_edit?id='.$vo['id'])}">修改</a>
+					<a class="btn btn-xs btn-danger" href="{:U('stu_delete?id='.$vo['id'])}">删除</a>
+					</td>-->
+					</tr>
+					</volist>
+					</tbody>
+				</table>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="teacher"></div>
+		</div>
+	</div>
+	<div>{$page}</div>
+</div>
+<div class="modal fade" id="indicatorModal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<i class="fa fa-lg fa-spinner fa-spin"></i>&nbsp;正在上传数据，请稍候...
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</block>
+<block name="js">
+<script src="/Public/Common/js/jquery.ajaxfileupload.js"></script>
+<script type="text/javascript">
+$("#uploadFile").AjaxFileUpload({
+	action: "{:U('chaibao2/coupons_import',array('cid'=>$cid))}",
+	onSubmit: function(filename) {
+		$('#indicatorModal').modal('show');
+		return true;
+	},
+	onComplete: function(filename, response) {
+		$('#indicatorModal').modal('hide');
+		location.reload();
+	}
+});
+$(function(){
+	$("#delall").click(function(){
+		var arrChk=$("input[name='items']:checked");
+		var allid='';
+		 $(arrChk).each(function(){
+			allid = allid + this.value +',';     
+		 });
+		 if(allid !=''){
+			 $.ajax({
+					type	:	"get",
+					url  	:	"{:U('chaibao2/delall',array('cid'=>$cid))}",
+					data	:	"allid=" + allid,
+					timeout :	30000,
+					dataType	:	"json",
+					success:function(dataHtml){
+						alert('批量删除成功');
+						location.reload();
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						alert('操作失效')
+					}
+				});	 
+		 }				
+	})
+	
+	$("#selected").click(function(){
+		$('input[name="items"]').attr("checked",this.checked); 	 
+	})
+})
+</script>
+</block>

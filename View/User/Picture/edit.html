@@ -1,0 +1,105 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css" />
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<script type="text/javascript">
+	$('#category').change(function(){
+		$('#category_name').val($(this).find('option:selected').text());
+	});
+	$(function(){
+		$("#editForm").validationEngine("attach",{ 
+			promptPosition:"centerRight",
+			scroll:true,
+			showOneMessage:true
+		});
+	});
+</script>
+</block>
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h4>{$title}&nbsp;</h4>
+		<a class="btn btn-sm btn-default" href="/User/Picture/index.html">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" role="form" action="" method="post">
+        <div class="tab-pane active fade in" id="upload" style="padding:40px 10px 10px;">
+            <input id="fileUpload" name="file" type="file" />
+        </div>
+	</form>
+    <style>
+        #imgList li {
+            position: relative;
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            background-color: #ace;
+        }
+        #imgList li img {
+            cursor: pointer;
+            opacity: 0.8;
+            max-height: 120px;
+            width: 150px;;
+            vertical-align: middle;
+        }
+        .cBtn {
+            width: 25px;
+            height: 25px;
+            background: url(/Public/User/images/sprBg.png) no-repeat;
+            background-size: 400px auto;
+            -webkit-background-size: 400px auto;
+            position: absolute;
+            right: -10px;
+            top: -10px;
+        }
+    </style>
+    <br>
+    <ul id="imgList" load-state="1">
+    </ul>
+</div>
+
+
+    <script type="text/javascript" src="{:STATICS}/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('#fileUpload').uploadify({
+                'fileObjName' : 'file',
+                'swf'      : '{:STATICS}/uploadify/uploadify.swf',
+                'uploader' : "{:U('Qiniu/upload')}",
+                'buttonText' : '上传图片',
+                'multi' : true,
+                'fileSizeLimit' : '512KB',
+                'fileTypeDesc' : 'Image Files',
+                'fileTypeExts' : '*.gif; *.jpg; *.png; *.gif;',
+                'onUploadSuccess' : function(file, resp) {
+                    resp=$.parseJSON(resp);
+                    if(resp.error !=0){
+                        alert(resp.message);
+                    }
+                    else{
+                        var li=$('<li><img src="'+resp.url+'"></li>');
+                        $("#imgList").append(li);
+                    }
+                },
+                'onUploadError' : function(file, errorCode, errorMsg, errorString) {
+                    alert('文件 ' + file.name + ' 无法上传: ' + errorString);
+                }
+            });
+        });
+
+        function notify(url){
+            if(window.parent&&window.parent['success']){
+                window.parent['success'](url);
+            }
+        }
+    </script>
+</block>

@@ -1,0 +1,72 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h3>{$title}</h3>
+		<a class="btn btn-default btn-sm" href="{:U('Selfform/product',['id'=>$_GET['formid']])}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form class="form-horizontal" role="form" action="{:U('Selfform/productedit')}" method="post">
+		<input type="hidden" name="form_id" value="{$_GET['formid']}"/>
+		<input type="hidden" name="id" value="{$product.id}"/>
+		<div class="form-group">
+			<label for="name" class="col-sm-2 control-label">产品名称</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="title" name="name" value="{$product.name}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">产品图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$product.img}" id="img" name="img" />
+				<img id="imgHolder" style="width:240px;height:120px;" class="img-rounded" <if condition="$product['img'] eq ''">data-src="$holder.js/240x120/gray/text:640*320"</if> src="{$product.img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',700,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="desc" class="col-sm-2 control-label">产品描述</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" value="{$product.desc}" id="desc" name="desc" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="detail" class="col-sm-2 control-label">详细内容</label>
+			<div class="col-sm-10">
+				<textarea class="form-control" id="content" rows="12" name="detail" >
+					{$product['detail']|htmlspecialchars_decode}
+				</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">产品状态</label>
+			<div class="col-sm-10" style="padding-top:5px;">
+				<label>
+					<input type="radio" name="status" id="status1" value="0" <if condition="$product['status'] eq 0">checked</if>>上线&nbsp;&nbsp;
+				</label>
+				<label>
+					<input type="radio" name="status" id="status2" value="1" <if condition="$product['status'] eq 1">checked</if>>下线
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

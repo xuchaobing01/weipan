@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>{$item['title']}</title>
+<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" name="viewport" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/font-awesome/css/font-awesome.min.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/flat-ui/css/flat-ui.css" />
+<style type="text/css">
+	.price{
+		font-size: 16px;
+		color: #999;
+	}
+	.oprice{
+		font-size: 16px;
+		color: #333;
+	}
+	h4{
+		font-size: 18px;
+	}
+	.swipe{
+	overflow:hidden;
+	position:relative;
+}
+
+.swipe>ol{
+	height:20px;
+	position: relative;
+	z-index:10;
+	margin-top:-20px;
+	text-align:left;
+	padding-left:20px;
+	background-color:rgba(0,0,0,0.5);
+}
+
+.swipe>ol>li{
+	display:inline-block;
+	margin:4px 2px;
+	width:24px;
+	height:4px;
+	background-color:rgb(153, 153, 153);
+}
+.swipe>ol>li.on{
+	background-color:rgb(228, 57, 60);
+}
+h1 {
+    font-family:"微软雅黑";
+    font-size:40px;
+    margin:20px 0;
+    border-bottom:solid 1px #ccc;
+    padding-bottom:20px;
+    letter-spacing:2px;
+}
+.time-item strong {
+    background:#C71C60;
+    color:#fff;
+    line-height:49px;
+    font-size:28px;
+    font-family:Arial;
+    padding:0 10px;
+    margin-right:4px;
+    border-radius:5px;
+    box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+}
+#day_show {
+    float:left;
+    line-height:49px;
+    color:#c71c60;
+    font-size:32px;
+    margin:0 10px;
+    font-family:Arial,Helvetica,sans-serif;
+}
+.item-title .unit {
+    background:none;
+    line-height:49px;
+    font-size:24px;
+    padding:0 10px;
+    float:left;
+}
+.mod_btn {
+	display: inline-block;
+	box-shadow: none;
+	border-radius: 5px;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: none;
+	color: #999;
+	padding: 0 5px;
+	cursor: pointer;
+	width: 45%;
+	height: 40px;
+	line-height: 40px;
+	font-size: 17px;
+    }
+    .btn_em {
+        color: #fff;
+        background: #202020;
+    }
+    .btn_strong {
+        color: #fff;
+        background: #d20816;
+    }
+    .buy-div{
+        width: 100%;
+        text-align: center;
+    }
+	#home img{
+		max-width:100%;
+	}
+	
+	.product-tags{
+		list-style:none;
+		maring:0;
+		padding-left: 10px;
+	}
+	
+	.product-tags li{
+		margin: 5px 0;
+	}
+	
+	.comment-avatar{
+		background-color: rgb(30, 107, 184);
+		width: 40px;
+		border-radius: 50%;
+		box-shadow: rgb(156, 168, 175) 1px 1px;
+	}
+	.page-header{
+		margin-bottom: 10px;
+	}
+</style>
+<script charset="utf-8" src="{:C('CDN_JQUERY2')}" type="text/javascript"></script>
+</head>
+<body>
+	<div id='slider' class='swipe'>
+		<div class='swipe-wrap'>
+			<volist name="item['img_list']" id="img">
+				<div>
+					<img src="{:$img['url']}" style="width:100%;"/>
+				</div>
+			</volist>
+		</div>
+		<ol>
+			<volist name="item['img_list']" id="img">
+				<li <?php if($i==1)echo 'class="on"';?>></li>
+			</volist>
+		</ol>
+	</div>
+	<div class="container">
+		<div class="page-header" style="margin-top: 10px;">
+			<h4 class="ware_title">{$item.title}</h4>
+			<p>{$item.intro}</p>
+		</div>
+		<ul class="product-tags">
+			<li>
+				<span class="oprice">优惠价：</span>
+				<span style="color: rgb(234, 57, 63);font-size:24px;" class="">¥{$item.oprice}</span>
+			</li>
+			<li>
+				<span class="price">原&nbsp;&nbsp;&nbsp;&nbsp;价：</span>
+				<span ectype="goods_price"  style="font-size:15px;text-decoration: line-through;">¥{$item.price}</span>
+			</li>
+			<li> <span class="price">品&nbsp;&nbsp;&nbsp;&nbsp;牌：</span> {$item.brand}</li>
+			<li><span class="price">销售情况:</span> 售出 {$item.buy_num} 件</li>
+		</ul>
+		<div class="row" style="margin:10px 0;">
+			<?php $now = time();?>
+			<if condition="$item['rush_time'] gt $now">
+			<div class="col-xs-12" id="clock">
+				<div style="font-size:28px;font-weight:bold;color: rgb(234, 57, 63);margin: 10px 0;">
+				距离开抢还剩
+				</div>
+				<div class="time-item">
+					<span id="day_show" style="display:none;">0天</span>
+					<strong id="hour_show"><s id="h"></s>0时</strong>
+					<strong id="minute_show"><s></s>00分</strong>
+					<strong id="second_show"><s></s>00秒</strong>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<button id="btnRush" data-loading-text="正在努力抢购..." style="display:none;" disabled class="btn btn-danger btn-block" onclick="rush();">立即抢购</button>
+			</div>
+			<else/>
+				<if condition="$item['goods_stock'] lt 1">
+				<button style="background-color: rgb(204, 204, 204);" disabled class="btn btn-default btn-block">已经被抢光了</button>
+				<else/>
+				<button id="btnRush" data-loading-text="正在努力抢购..."  class="btn btn-danger btn-block" onclick="rush();">立即抢购</button>
+				</if>
+			</if>
+		</div>
+	</div>
+	<hr style="border:0;"/>
+	<div class="container">
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="active"><a href="#home" role="tab" data-toggle="tab">商品详情</a></li>
+			<li><a href="#profile" role="tab" data-toggle="tab">用户评论</a></li>
+		</ul>
+		<div class="tab-content goods-detail" style="padding-top:20px;">
+			<div class="tab-pane active" id="home">
+				{$item.info}
+			</div>
+			<div class="tab-pane" id="profile">
+				<ul class="media-list">
+					<volist name="comments" id="vo">
+					<li class="media">
+						<a class="pull-left">
+							<span class="media-object">
+                                <if condition="$vo.headimgurl && $vo.headimgurl neq '0'">
+                                    <img class="comment-avatar" src="{$vo.headimgurl}64" />
+                                <else/>
+                                    <img class="comment-avatar" src="{$vo.thumbnail|default='/Public/Wap/images/photo/plugmenu2.png'}" />
+                                </if>
+							</span>
+							<span style="font-size: 13px;">{$vo.wechat_name}</span>
+						</a>
+						<div class="media-body">
+							<h4 class="media-heading">{$vo.info}</h4>
+							<p><small>{$vo.add_time|date='Y/m/d H:i:s',###}</small></p>
+							<if condition="$vo.info_reply neq ''"><p><i class="fa fa-comments-o"></i>&nbsp;<i>{$vo.info_reply}</i></p></if>
+						</div>
+					</li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	<?php $time = time();?>
+	var intDiff = <?php echo $item['rush_time']-$time;?>;
+	//设置定时器
+	if(intDiff >= 0) timer(intDiff);
+    function rush(){
+		var url  = "{:U('Shopcart/rush',['token'=>$token])}";
+		$('#btnRush').button('loading');
+		$.ajax({
+			url:url,
+			data:{'goodId':<?php echo $item['id'];?>},
+			success:function(data){
+				if(data.status == 1){
+					location.href = "{:U('Order/jiesuan',['token'=>$token])}";
+				}
+				else {
+					alert(data.msg);
+					$('#btnRush').button('reset');
+				}
+			},
+			error:function(){
+				alert('抢购失败,请稍后再试！');
+				$('#btnRush').button('reset');
+			},
+			type:'post',
+			dataType:'json'
+		});
+    }
+	
+	function timer(intDiff){
+	    window._interval = window.setInterval(function(){
+	    var day=0,
+	        hour=0,
+	        minute=0,
+	        second=0;//时间默认值        
+	    if(intDiff > 0){
+	        day = Math.floor(intDiff / (60 * 60 * 24));
+	        hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+	        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+	        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+	    }
+		else{
+			window.clearInterval(window._interval);
+			$('#btnRush').show().attr('disabled',false);
+			$('#clock').hide();
+		}
+	    if (minute <= 9) minute = '0' + minute;
+	    if (second <= 9) second = '0' + second;
+	    $('#day_show').html(day+"天");
+	    $('#hour_show').html('<s id="h"></s>'+hour+'时');
+	    $('#minute_show').html('<s></s>'+minute+'分');
+	    $('#second_show').html('<s></s>'+second+'秒');
+		intDiff--;
+	    }, 1000);
+	}
+	
+	//产品图
+	$(function(){
+		new Swipe(document.getElementById('slider'), {
+			speed:500,
+			auto:3000,
+			callback: function(){
+				var lis = $(this.element).next("ol").children();
+				lis.removeClass("on").eq(this.index).addClass("on");
+			}
+		});
+		$('#btnInc').click(function(){
+			setInc($('#quantity'));
+		});
+		$('#btnDec').click(function(){
+			setDec($('#quantity'));
+		});
+		
+	});
+	
+</script>
+<script charset="utf-8" src="/Public/Common/js/swipe.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Public/Common/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/Public/Common/js/WeixinApi.js"></script>
+<script type="text/javascript">
+	var shareData = {
+        "appId": "<?php echo $appid;?>", // 服务号可以填写appId,wx7a2d802083170153
+        "imgUrl" : '<?php echo $item['img'];?>',
+        "link" : '<?php echo C('WAP_DOMAIN').U('Item/index',['token'=>$token,'id'=>$item['id']]); ?>',
+        "desc" : '<?php echo str_replace(["\r\n","\r","\n"],'',$item['intro']);?>',
+        "title" : "<?php echo $item['title'];?>"
+    };
+	var imgSrc = $('.swipe-wrap img').map(function(){return $(this).attr('src')}).toArray();
+	WeixinApi.ready(function(Api) {
+		// 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
+		Api.shareToFriend(shareData);
+
+		// 点击分享到朋友圈，会执行下面这个代码
+		Api.shareToTimeline(shareData);
+
+		// 点击分享到腾讯微博，会执行下面这个代码
+		Api.shareToWeibo(shareData);
+		
+		$('.swipe-wrap img').click(function(){
+			var curSrc = $(this).attr('src');
+			// 调起
+			Api.imagePreview(curSrc, imgSrc);
+		});
+	});
+</script>
+<?php echo analysor(['token'=>$token,'wechat_id'=>$wechat_id,'module'=>'mall','page'=>'item_'.$item['id']]);?>
+</html>

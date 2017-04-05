@@ -1,0 +1,141 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="{:STATICS}/spark/spark.util.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<include file="Public:upload" />
+<script>
+$(function(){
+	$("#form").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+	$(".datetime-picker").datetimepicker({format: 'yyyy-mm-dd',language:'zh-CN',minView:2,autoclose:true});
+
+    var editor;
+    KindEditor.ready(function(K) {
+        editor = K.create('#remark', {
+            resizeType : 1,
+            allowPreviewEmoticons : false,
+            allowImageUpload : true,
+            uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+            items : [
+                'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+        });
+    });
+});
+
+	function find(da) {
+		$("input[name='type']").val(da);
+	}
+	
+	function che() {
+		var temp=/^(\+|-)?\d+($|\.\d+$)/
+		var s = document.getElementById("money");
+		if(temp.test(s.value)==false){
+			alert("充值金额不正确！");
+			return false;
+		}
+	}
+
+	function check(){
+		var pass1= $("input[name='password']").val();
+		var repass1= $("input[name='repassword']").val();
+		
+		if(pass1 != repass1){
+			alert("一级密码不一致！");
+			return false;
+		}
+		
+	}
+
+
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<ul class="nav nav-tabs wm-tabs">
+		<li><a href="{:U('Member/couponlist')}">券管理</a></li>
+		<li  class="active"><a href="{:U('Member/addcoupon')}">添加券</a></li>
+	</ul>
+	<form id="form" class="form-horizontal" method="post" style="margin-top:20px;">
+		<input type="hidden" name="id" value="{$data['id']}">
+		<div class="form-group">
+			<label class="control-label col-xs-2">名称</label>
+			<div class="col-md-4">
+				<input type="text" name="name" class="validate[required] form-control" value="{$data['name']}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">类型</label>
+			<div class="col-md-4">
+				<select class="form-control" name="type" value="{$data['type']}">
+					<option value="Win">必盈</option>
+					<option value="Incr">增益</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">有效期天数</label>
+			<div class="col-md-4">
+				<input type="text" name="overdue_time" value="{$data['overdue_time']}" class="validate[required] form-control" value="0" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">价格</label>
+			<div class="col-md-4">
+				<input type="text" name="amount" value="{$data['amount']}" class="validate[required] form-control" value="0" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">适用范围</label>
+			<div class="col-md-4">
+				<select class="form-control" name="use_area" value="{$data['use_area']}">
+					<option value="ALL">全场使用</option>
+					<option value="BTCCNY">比特币</option>
+				</select>
+
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">要求消费(元)</label>
+			<div class="col-md-4">
+				<input type="text" name="satisfy_amount" value="{$data['satisfy_amount']}" class="validate[required] form-control" value="0" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">注册赠送张数</label>
+			<div class="col-md-4">
+				<input type="text" name="register_present" value="{$data['register_present']}" class="validate[required] form-control" value="0" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">首次充值赠送比例</label>
+			<div class="col-md-4">
+				<input type="text" name="recharge_present" value="{$data['recharge_present']}" class="validate[required] form-control" value="0" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">使用说明</label>
+			<div class="col-md-4">
+				<textarea class="form-control validate[required]" name="remark" id="remark" rows="10">{$data.remark}</textarea>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-md-4 col-xs-offset-2">
+				<button type="submit" onclick="return check()" class="btn btn-success">保存</button>
+			</div>
+
+		</div>
+	</form>
+</div>
+</block>

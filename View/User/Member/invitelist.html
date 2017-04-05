@@ -1,0 +1,69 @@
+<extend name="Public:innerbase" />
+
+
+
+<block name="js">
+
+
+
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+
+
+
+</block>
+
+<block name="content">
+	
+<div class="container-fluid">
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="javascript:void(0)">邀请码管理</a></li>
+
+	</ul>
+	<div class="page-header wm-page-header">
+
+		<form method="get" action="__SELF__" class="form-inline">
+			<label>创建人手机号</label>
+			<input name="phone" type="text" value="{$_GET['phone']}" class="form-control" />
+			<button class="btn btn-primary" type="submit">
+				<span class="glyphicon glyphicon-search"></span>
+				查询
+			</button>&nbsp
+			<a class="btn btn-primary"  href="{:U('Member/addinvite')}">添加邀请码</a>
+		</form>
+
+	</div>
+
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+		<THEAD>
+		<TR>
+			<TH>ID</TH>
+			<TH>邀请码</TH>
+			<TH>创建者手机号</TH>
+			<TH>是否使用</TH>
+			<TH>使用者手机号</TH>
+		</TR>
+		</THEAD>
+
+		<TBODY>
+
+		<volist id="list" name="list">
+		<TR>
+			<TD>{$list.id}</TD>
+			<TD>{$list.code}</TD>
+			<TD>{$list.phone}</TD>
+			<TD><if condition="$list.is_used eq 1 ">已使用<else /> 未使用</if></TD>
+			<TD>{$list.used_phone}</TD>
+		</form>
+
+		</TR>
+
+		</volist>
+
+	  </TBODY>
+
+	</TABLE>
+
+	<div>{$page}</div>
+</div>
+
+</block>

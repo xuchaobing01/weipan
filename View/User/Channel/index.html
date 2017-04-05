@@ -1,0 +1,72 @@
+<extend name="Public:innerbase" />
+
+<block name="css">
+
+</block>
+
+<block name="content">
+
+    <div class="container-fluid">
+
+        <div class="page-header">
+
+            <h3 style="color:rgb(77, 112, 148)">{$wxaccount['wxname']}</h3>
+
+            <span class="label label-primary" style="background-color:rgb(209, 202, 20);">{$wxaccount['wxtype']}</span>
+
+        </div>
+
+        <table class="table table-bordered">
+
+            <tbody>
+
+            <tr>
+
+                <td>会员名: {$user['username']}</td>
+                <td>手机: {$user['phone']}</td>
+
+                <td>注册时间: <?php echo date('Y-m-d H:i:s',$user['create_time'])?></td>
+
+
+            </tr>
+
+            <tr><td colspan="3"></td></tr>
+
+            <tr>
+
+                <td>线上总人数: {$user.count|default=0}</td>
+                <td>线上总充值: {$user.pay|default=0}</td>
+
+                <TD>当前盈亏: <?php echo $user['win']-$user['win_amont'] ;?>/{$user.las|default=0}</TD>
+
+
+
+
+
+            </tr>
+            <tr><td colspan="3"></td></tr>
+            <tr>
+
+                <td>已结算金额: {$user.allgive|default=0}</td>
+
+
+                <td>结算时间:  <?php if($user['givetime']>0){echo date('Y-m-d H:i:s',$user['givetime']);}?></td>
+
+
+
+            </tr>
+
+
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</block>
+
+<block name="js">
+
+</block>

@@ -1,0 +1,67 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/pnotify/pnotify.custom.min.css" />
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+<div class="page-topbar">
+	<ol class="breadcrumb">
+	  <li><a href="/User/Index/home.html">控制台</a></li>
+	  <li><a href="#">控制台</a></li>
+	  <li class="active">添加商品(选择分类)</li>
+	</ol>
+</div>
+<div class="container-fluid">
+	<form action="{:U('item_set')}" method="get" class="form-horizontal" data-toggle="validate">
+		<div class="form-group">
+			<label for="title" class="control-label col-sm-2">所属分类</label>
+			<div class="col-sm-4">
+				<select class="form-control validate[required]" name="cate_id">
+					<option value="">请选择分类</option>
+					<volist name="cates" id="vo">
+					<option <if condition="$vo['id'] eq $spec['cate_id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+			  <button type="submit" class="btn btn-success">下一步</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/js/jquery.form.js"></script>
+<script src="{:STATICS}/pnotify/pnotify.custom.min.js"></script>
+<script src="/Public/Common/js/upload.js"></script>
+<script>
+	$('.ajax-form').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+				jump(2000);
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		}
+	});
+	
+	function jump(delay){
+		delay = delay || 3000;
+		setTimeout("location.reload()",delay);
+	}
+</script>
+</block>

@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>{$config.shop_title}</title>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="{:RES}/css/default.css" />
+<link type="text/css" rel="stylesheet" href="{:RES}/css/theme{$config.custom_plate}.css" />
+<style>
+#loadAds{
+	<if condition="$loadAds['extval'] neq ''">
+	background-color:{$loadAds.extval};
+	</if>
+	<if condition="$loadAds['extimg'] neq ''">
+	background-image:url({$loadAds.extimg});
+	</if>
+}
+.common_title{
+	border-left-color:{$config.theme_color};
+}
+.major p {
+  color: {$config.theme_color};
+}
+</style>
+</head>
+<body menu-active="MENU_INDEX">
+<!-- 加载页广告位-->
+<if condition="$loadAds AND $showLoadImg">
+<div id="loadAds">
+	<a href="<?php echo $loadAds['url']?$loadAds['url']:'javascript:void(0)';?>">
+		<img id="adsCover" src="{$loadAds.content}"/>
+	</a>
+	<div class="entry-wrapper">
+		<span id="entryMall">进入商城</span>
+	</div>
+</div>
+<script>
+	$('#adsCover').on('load',function(){
+		setTimeout('closeAds()',5000);
+		$('#entryMall').click(function(){
+			$('#loadAds').addClass('close');
+		});
+	});
+	
+	function closeAds(){
+		$('#loadAds').addClass('close');
+		setTimeout('removeEl()',2000);
+	}
+	function removeEl(){
+		$('#loadAds').remove();
+	}
+	var json={time:new Date().getTime()};
+	window.history.replaceState(json,'微信商城',"/mall/index.php?token={$token}&wechat_id={$wechat_id}");
+</script>
+</if>
+<div class="banner">
+	<div id='slider' class='swipe'>
+		<div class='swipe-wrap'>
+			<volist name="ad" id="vo">
+			<div>
+				<a href="{$vo.url}">
+					<img title="{$vo.desc}" src="{$vo.content}" style="width:100%;"/>
+				</a>
+			</div>
+			</volist>
+		</div>
+		<ol>
+			<volist name="ad" id="img">
+			<li <?php if($i==1)echo 'class="on"';?>></li>
+			</volist>
+		</ol>
+	</div>
+</div>
+<div class="content">
+	<div class="cate_panel_wrap">
+		<div class="cate_panel swipe" id="cate_slider">
+			<ul class="cates_wrapper">
+				<?php $cate_count = count($index_cate_list);?>
+				<volist name='index_cate_list' id='vo' >
+					<if condition="$i%4 eq 1"><li></if>
+						<div class="cate">
+							<a class="cate-item" href="{:U('book/cate',array('cid'=>$vo['id'],'token'=>$token))}">
+								<notempty name="vo.img"><img class="cate-img" src="{$vo.img}"/></notempty>
+								<div class="cate-title">{$vo.name}</div>
+							</a>
+						</div>
+					<if condition="($i%4 eq 0) OR ($i eq $cate_count)"></li></if>
+				</volist>
+			</ul>
+		</div>
+		<if condition="$cate_count gt 4">
+			<span class="pre"><i class="fa fa-chevron-left"></i></span>
+			<span class="next"><i class="fa fa-chevron-right"></i></span>
+		</if>
+	</div>
+   
+	<if condition="$productAds">
+	<div class="module_special">
+		<div class="product-ads">
+			<a href="<?php echo $productAds['url']?$productAds['url']:'javascript:void(0)';?>">
+				<img src="{$productAds.content}" />
+			</a>
+		</div>
+	</div>
+	</if>
+	<div class="plates">
+	{$plate_html}
+	</div>
+</div>
+<include file="Public:footer" />
+<script charset="utf-8" src="/Public/Common/js/swipe.js" type="text/javascript"></script>
+<script charset="utf-8" src="/Public/Common/js/jquery.lazyload.min.js" type="text/javascript"></script>
+<script>
+$(function(){
+    $("img.lazy").each(function(i, o){
+        $(this).attr("src", $(this).attr("data-original"));
+    });
+
+	var swipe = new Swipe(document.getElementById('slider'), {
+		speed:500,
+		auto:3000,
+		callback: function(){
+			var lis = $(this.element).next("ol").children();
+			lis.removeClass("on").eq(this.index).addClass("on");
+		}
+	});
+	window.cateSwipe = new Swipe(document.getElementById('cate_slider'), {
+		auto: 0
+	});
+	$('.cate_panel_wrap .pre').click(function(){
+		cateSwipe.prev();
+	});
+	$('.cate_panel_wrap .next').click(function(){
+		cateSwipe.next();
+	});
+	$("img").lazyload({});
+});
+</script>
+<script type="text/javascript">
+	var shareData = {
+        "appId": "<?php echo $appid;?>", // 服务号可以填写appId,wx7a2d802083170153
+        "imgUrl" : '<?php echo $set['picurl'];?>',
+        "link" : '<?php echo C('WAP_DOMAIN').U('Index/index',['token'=>$token]); ?>',
+        "desc" : '<?php echo $set['info'];?>',
+        "title" : "<?php echo $set['title'];?>"
+    };
+	
+</script>
+<?php echo analysor(['token'=>$token,'wechat_id'=>$wechat_id,'module'=>'mall','page'=>'index']);?>
+</body>
+</html>

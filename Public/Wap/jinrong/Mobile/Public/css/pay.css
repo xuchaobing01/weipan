@@ -1,0 +1,63 @@
+body,p,h1,h2,h3,h4,h5,li,span,i,ul,img,a,strong{margin:0;padding:0; }
+body{font-family:"microsoft yahei"; font-size:16px;}
+li{list-style-type:none; float:left;}
+a{text-decoration:none;}
+img{border:none;}
+i{font-style:normal}
+input,select,textarea{outline:none;}
+input[type="submit"],input[type="reset"],input[type="button"],button {-webkit-appearance: none;font-family:"microsoft yahei"; }
+textarea{resize:none;}
+div{margin:0 auto;}
+.fl{float:left;}
+.fr{float:right;}
+
+
+.mobile_wrap{ position: relative;width: 100%;background:#dc423a; display:table; padding-bottom:20px;height: 100%;}
+.balance{width:95%;padding-top: 15px;}
+.balance h2{color:#ffffff;font-weight:normal;text-align:center;line-height:60px;font-size:20px;}
+.balance h2 i{color:#f5e350;font-size:26px;}
+.active{display:table;width:95%;background:#fff;border-radius:20px;}
+.active h1{text-align:center;color:#7e040c;text-align:center; padding:10px 0;font-size:20px;font-weight:normal;}
+.active h1 b{font-size:26px;}
+.active h1 i{color:#dc423a;}
+.active h1 i span{font-size:26px;}
+.active h2{background:#fe635f;color:#ffffff;text-align:center; padding:10px 0;font-weight:normal;font-size: 18px;}
+.active h2 i{color:#efdc70;}
+.active ul{display:table;width:100%; padding-bottom:20px;margin-top:10px;}
+.active ul li{width:31.2%;height:50px; margin:0 1%;margin-top:10px;text-align:center;color:#811b10;position:relative;}
+.active ul li:after{ content:"";position:absolute;width:100%;height:100%;border:solid 1px #e39764; left:0px;top:-1px;}
+.active ul li img{width:101%;height:100%;}
+/*.active ul li:nth-child(3){background:#e63357;}*/
+.active ul li p{font-size:18px;margin-top:6px;line-height:20px;}
+.active ul li span{font-size:14px; white-space:nowrap; word-spacing:normal; overflow:hidden;width:100%;float:left;text-overflow:ellipsis;color: #9C9898;}
+.active ul li.slct{position:relative;}
+.active ul li.slct:after{border:solid 1px #d94334}
+.active ul li.slct:before{content:"";width:30px;height:22px;position:absolute; bottom:0px; right:-1px; background:url(../images/select.png); background-size:100% 100%;}
+.active ul li.not{color:#838383;}
+.active ul li.not p{padding-top:8px}
+.active ul li.not input{position:absolute;height:48px; border:none; left:1px; top:0; z-index:1;width:100%;font-size:18px; color:#333; text-align:center; display:none;}
+.active ul li.not:after{border:solid 1px #c0c0c0}
+.active ul li.nosel p,.active ul li.nosel span{ opacity:0;position:absolute;}
+
+.prompt{width:95%;margin-top:10px;}
+.prompt p{color:#dddddd;}
+.prompt .but_sub{height:40px; border:none;background:#fbe26b;border-radius:4px;width:100%;color:#811b10;font-size:16px;margin-top:8px; cursor:pointer;}
+.prompt span{position:relative;color:#dddddd;margin-top:15px;float:left;width:100%;}
+.prompt span input{ -webkit-appearance:none;width:14px;height:14px; background:url(../images/img2.png) no-repeat; background-size:100% 100%;float:left;}
+.prompt span i{ background:url(../images/img1.png); background-size:100% 100%;width:18px;height:18px;position:absolute; left:0px; top:-3px;}
+.prompt span a{color:#ffed20; text-decoration:underline;}
+
+.explain{width:95%;display:table; display:none;}
+.explain .text{margin-top:30px;margin-top:20px;float:left;color:#dddddd;}
+
+.box_show{width:100%;height:100%; position:fixed; top:0; left:0; background:rgba(0,0,0,.65); display:none; z-index:1;}
+.box_show .layout{width:80%;border-radius:20px;height:300px; background:#fff;position:absolute; left:10%; top:10%; overflow:hidden;}
+.box_show .layout h1{color:#ffffff;background:#f60;line-height:50px;background:#fdb900;font-size:20px;text-align:center;font-weight:normal;}
+.box_show .layout p{color:#494949;text-align:center;width:90%; margin:0 auto;margin-top:50px;}
+.box_show .layout a{ display:block;height:35px;line-height:35px;border-radius:6px;width:90%;text-align:center;border:solid 1px #fdb900; margin:0 auto;margin-top:8px;color:#fdb900;}
+.box_show .layout a.solid{color:#ffffff;background:#ffb901;margin-top:34px;}
+@media screen and (min-width:520px){
+.mobile_wrap{/*width:414px;*/height: 100%;}   
+.box_show{width:414px; left:50%;margin-left:-207px;}
+
+}

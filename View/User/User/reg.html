@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	<meta charset="utf-8" />
+	<meta name="keywords" content="微市场 免费微信营销  微信营销平台 微信公众号服务平台 合肥微信营销平台"/>
+	<meta name="description" content="免费微信营销平台 合肥微信营销平台 微信公众号服务平台  微官网 微相册 微客服  微订单"/>
+	<meta name="baidu-site-verification" content="pKfXuVuMa3" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{:C('PLATFORM_NAME')}-用户注册</title>
+	<link rel="stylesheet" type="text/css" href="{:STATICS}/bootstrap/css/bootstrap-flatly.min.css" />
+	<link rel="stylesheet" type="text/css" href="{:RES}/css/user.css" />
+	<link rel="stylesheet" type="text/css" href="{:RES}/css/bs-context.css"/>
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	  <script src="{:STATICS}/js/html5shiv.js"></script>
+	  <script src="{:STATICS}/js/respond.min.js"></script>
+	<![endif]-->
+	<link type="text/css" media="all" rel="stylesheet" href="{:RES}/css/login.css" />
+	<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+	<script type="text/javascript" src="{:C('CDN_JQUERY')}"></script>
+</head>
+<body>
+<style>
+.main-content {
+  width: 100%;
+  background: url({:RES}/images/login_yun.jpg) repeat-x 0 0;
+  height: 650px;
+}
+.main1000 {
+  width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+.bg50 {
+  background-color: #FFF;
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+  position: absolute;
+  left: 0;
+  top: 50px;
+  width: 1000px;
+  height: 600px;
+}
+.reg_index {
+  background-color: #fff;
+  width: 940px;
+  position: absolute;
+  left: 10px;
+  top: 60px;
+  height: 500px;
+  padding: 60px 20px 0 20px;
+}
+
+</style>
+
+<div class="container main-content" style="padding-top:20px;">
+	<div class="main1000">
+        <div class="bg50"></div>
+	<!--<div class="page-header" style="margin-bottom:0px;">
+		<h3>新用户注册</h3>
+		<hr/>
+	</div>-->
+    <div class="reg_index">
+        <form id="regForm" style="margin-bottom:20px;" class="form-horizontal col-md-6" role="form" action="{:U('User/reg')}" method="post">
+            <div class="form-group">
+                <label for="inputUser" class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                  <input type="text" name="username" class="form-control validate[required,minSize[4],maxSize[16],ajax[verifyUser]]" id="inputUser" placeholder="用户名">
+                  <span class="help-block">长度为4-16个字符</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="inputPassword" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                <input type="password" name="password" class="form-control validate[required,minSize[6],maxSize[16]]" id="inputPassword" placeholder="Password">
+                <span class="help-block">长度为6-20个字符</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputCellphone" class="col-sm-2 control-label">手机</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control validate[required,custom[phone]]" name="cellphone" id="inputCellphone" placeholder="手机">
+                    <span class="help-block">请填写常用手机号，用以接收账号安全信息</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="col-sm-2 control-label">邮箱</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control validate[required,custom[email]]" name="email" id="inputEmail" placeholder="邮箱">
+                <span class="help-block">请填写常用邮箱，用以找回密码</span>
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="inputQQ" class="col-sm-2 control-label">QQ</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control validate[custom[qq]]" name="qq" id="inputQQ" placeholder="QQ">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success">立即注册</button>
+                </div>
+            </div>
+        </form>
+        <div class="col-md-offset-1 col-md-5">
+            <div class="" style="margin-top:5px;">已有账号？<a href="{:U('User/login')}">立即登录</a></div>
+        </div>
+    </div>    
+    </div>
+</div>
+<div class="foot-wrapper">
+	<div class="splitter"></div>
+	<div class="foot-info">
+		<ul>
+			<li><a class="hidden copyright" href="http://www.weimarket.cn" target="_blank">微市场</a></li>
+			<li><a class="hidden copyright" href="http://www.weimarket.cn/about.html" target="_blank">联系我们</a></li>
+			<li><span class="copyright">Copyright © 2013-2014  皖ICP备14001900号</span></li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#regForm").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+	$('input:submit').click(function(){
+		return $("#regForm").validationEngine("validate");
+	});
+});
+
+$.validationEngineLanguage.allRules.verifyUser={
+	"url": "{:U('User/verifyuser')}",
+	"alertTextOk": "<strong style='color:#090;'>用户名可用√<strong>",
+	"alertText": "<strong>用户名不可用×</strong>",
+	"alertTextLoad": "<strong>正在验证...</strong>"
+};
+</script>
+</body>
+</html>

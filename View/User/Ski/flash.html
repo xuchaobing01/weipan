@@ -1,0 +1,48 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style type="text/css">
+	.cateimg img{
+		background-color:#ace;
+		padding:0;
+	}
+</style>
+</block>
+<block name="js"></block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>幻灯片</h4>
+		<a class="btn btn-success" href="{:U('flash_edit')}">
+			<span class="glyphicon glyphicon-plus"></span>添加幻灯片
+		</a>
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+			<th style=" width:160px;">幻灯片图片</th>
+			<th style=" width:120px;">幻灯片描述</th>
+			<th>类型</th>
+			<th>排序</th>
+			<th style=" width:200px;" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<volist name="info" id="vo">
+		<tr>
+			<td>
+				<div class="cateimg">
+					<img src="{$vo.img}" class="img-thumbnail" style="width:72px;height:40px"/>
+				</div>
+			</td>
+			<td>{$vo.info}</td>
+			<td><if condition="$vo.type eq 0">产品主页<elseif condition="$vo.type eq 1"/>视频主页<else/>导师主页</if></td>
+			<td>{$vo.sort}</td>
+			<td>
+				<a class="btn btn-xs btn-default" href="{:U('flash_edit',array('id'=>$vo['id']))}">编辑</a>
+				<a class="btn btn-xs btn-danger" href="{:U('flash_del',array('id'=>$vo['id']))}">删除</a>
+			</td>
+		</tr>
+		</volist>  
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

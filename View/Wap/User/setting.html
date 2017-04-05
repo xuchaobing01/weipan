@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,height=device-height"/>
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/ucenter.css">
+<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/style.css">
+<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/common.css">
+<script src="{:RES}/jinrong/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+<style>body {padding-bottom: 60px; }</style>
+</head>
+<title>设置</title>
+<body>
+<script type="text/javascript">
+var ROOT = '';
+</script>
+<!--页面主体内容区域编辑开始-->
+<section class="jz-wrapper jz-null-bottom">
+    <div class="collect-wrap">
+        <ul class="list-view collect-view margin-top5">
+                        <li>
+                <a href="{:U('User/history')}" class="list-jump" >
+                <div class="list-wrap list-wrap1 jz-flex-row jz-flex-vh">
+                    <div class="list-left jz-flex-col font-sb">
+                        <i class="icon-business2 record-sty record-sty1"></i>联系我们
+                    </div>
+                </div>
+                </a>
+            </li>
+                        <li>
+						
+                <a href="{:U('User/change_password')}" class="list-jump" >
+                <div class="list-wrap list-wrap1 jz-flex-row jz-flex-vh">
+                    <div class="list-left jz-flex-col font-sb">
+                        <i class="icon-asfe-null record-sty record-sty1"></i>修改密码
+                    </div>
+                </div> 
+                </a>
+            </li>
+			
+           
+        </ul>
+<div class="def-p com-btnbox mb10 mt20">
+                <a href="{:U('User/login_out')}" class="btn btn-4" id="logout">退出登录</a>
+            </div>
+    </div>
+</section>
+
+<include file="Public:footer"/>

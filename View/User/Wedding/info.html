@@ -1,0 +1,40 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container">
+	<div class="page-header">
+		<h4>微喜帖信息列表</h4>
+		<a href="{:U('Wedding/index')}" class="btn btn-sm"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+	</div>
+	<div class="tabbable-custom">
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" <if condition="$_GET['type'] eq 1">class="active"</if>><a href="{:U('Wedding/info',array('id'=>strip_tags($_GET['id']),'type'=>1))}" aria-controls="home" role="tab">赴宴名单</a></li>
+			<li role="presentation" <if condition="$_GET['type'] eq 2">class="active"</if>><a href="{:U('Wedding/info',array('id'=>strip_tags($_GET['id']),'type'=>2))}" aria-controls="profile" role="tab">收到祝福</a></li>
+		</ul>
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+			<tr>
+				<th>编号</th>
+				<th>姓名</th>
+				<th>电话</th>
+				<th><if condition="$type eq 1">赴宴人数<else/>祝福内容 </if></th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<volist name="wedding" id="wedding">
+		<tr>
+			<td>{$i}</td>
+			<td>{$wedding.name}</td>
+			<td>{$wedding.phone}</td>
+			<td><if condition="$type eq 1">{$wedding.num}<else/>{$wedding.info} </if></td>
+			<td class="norightborder">
+				<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Wedding/infodel',array('id'=>$wedding['id']))}');">删除</a>
+			</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+</div>		 
+</block>

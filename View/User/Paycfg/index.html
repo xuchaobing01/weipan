@@ -1,0 +1,115 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="/Public/Admin/me/css/bootstrap-me.css" />
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>支付接口配置</h4>
+	</div>
+	<div role="tabpanel" class="tabbable tabbable-custom">
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#" aria-controls="home">微信支付</a></li>
+			<!-- <li role="presentation"><a href="{:U('alipay_cfg')}" aria-controls="profile">支付宝支付</a></li> -->
+		</ul>
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<form class="form form-horizontal" id="editForm" method="post" action="__SELF__">
+				<input type="hidden" name="id" value="{$set.id}" />
+				<div class="form-group">
+					<label class="control-label col-xs-2">MCHID</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" name="mchid" value="{$set.config.mchid}" />
+						<span class="help-block">请填写微信支付商户号</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">AppId</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" name="appid" value="{$set.config.appid}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">KEY</label>
+					<div class="col-md-6">
+						<div class="input-group">
+							<input type="text" class="form-control" name="key" value="{$set.config.key}" />
+							<span class="input-group-btn">
+								<button class="btn btn-default" id="genKey" type="button">随机生成</button>
+							</span>
+						</div>
+						
+						<span class="help-block">微信支付安全密钥，32位字符串</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">AppSecret</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" name="appsecret" value="{$set.config.appsecret}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">&nbsp;</label>
+					<div class="col-md-6">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="status" value="1" <if condition="$set['config']['status'] eq 1">checked</if>>启用
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-4 col-xs-offset-2">
+						<button class="btn btn-success" type="submit">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="editModal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">支付配置</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</block>
+<block name="js">
+<script>
+$('#editForm').ajaxForm({
+	success:function(data){
+		if(data.status==1){
+			new PNotify({
+				text: data.info,
+				type: 'success'
+			});
+		}
+		else{
+			new PNotify({
+				text: data.info,
+				type: 'error'
+			});
+		}
+	},
+	dataType:'json'
+});
+$(function(){
+	$('#genKey').click(function(){
+		$.getJSON('/User/paycfg/genkey.html',function(resp){
+			$('input[name="key"]').val(resp.key);
+		})
+	});
+})
+</script>
+</block>

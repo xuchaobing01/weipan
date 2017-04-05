@@ -1,0 +1,43 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>"{$thisForm['name']}"表单产品项管理 </h4>
+		<a href="{:U('Selfform/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<a style="margin:10px 0;" class="btn btn-success" href="{:U('Selfform/productedit',array('token'=>$token,'formid'=>$thisForm['id']))}" title="添加">
+		<span class="glyphicon glyphicon-plus"></span>添加
+	</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+			<th width="90">名称</th>
+			<th width="90">简介</th>
+			<th width="90">状态</th>
+			<th width="90">排序</th>
+			<th width="200">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="products" id="item"> 
+		<tr>
+			<td>{$item.name}</td>
+			<td>{$item.desc}</td>
+			<td>{$item.status}</td>
+			<td>{$item.sortid}</td>
+			<td>
+				<a class="btn btn-xs btn-default" href="{:U('Selfform/productedit',array('formid'=>$thisForm['id'],'id'=>$item['id']))}">修改</a>
+				<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Selfform/delproduct',array('id'=>$item['id']))}');">删除</a>
+			</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

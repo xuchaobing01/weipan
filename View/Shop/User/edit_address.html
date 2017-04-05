@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>编辑收货地址</title>
+<include file="Public:headtop" />
+<link href="/Public/Shop/css/shop.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" type="text/javascript" src="/Public/Shop/js/jquery.validate.js"></script>
+<script type="text/javascript" language="javascript" src='/Public/Shop/js/dizhi2.js'></script>
+<script type="text/javascript" language="javascript" src='/Public/Shop/js/diqu2.js'></script>
+<body class="ui-app">
+<div class="ui-caption">&nbsp;</div>
+<form method="post" action="{:U('User/edit_address',['id'=>$_GET['id'],'token'=>$token])}" id="address_form">
+<ul class="ui-form-list">
+	<li class="ui-item">
+		<div class="ui-item-inner">
+			<div class="ui-item-title label">收货人</div>
+			<div class="ui-item-input">
+				<input type="text" name="consignee"  placeholder="请输入收货人姓名" value="{$info.consignee}" />
+			</div>
+        </div>
+	</li>
+	<li class="ui-item">
+		<div class="ui-item-inner">
+			<div class="ui-item-title label">电话</div>
+			<div class="ui-item-input">
+				<input type="tel" name="phone_mob" placeholder="请输入联系电话" value="{$info.mobile}" />
+			</div>
+        </div>
+	</li>
+	<li class="ui-item">
+		<div class="ui-item-inner">
+			<div class="ui-item-title label">&nbsp;</div>
+			<div class="ui-item-input">
+				<select name="sheng" id="s1"></select>
+			</div>
+        </div>
+	</li>
+	<li class="ui-item">
+		<div class="ui-item-inner">
+			<div class="ui-item-title label">&nbsp;</div>
+			<div class="ui-item-input">
+				<select name="shi" id="s2"></select>
+			</div>
+        </div>
+	</li>
+	<li class="ui-item">
+		<div class="ui-item-inner">
+			<div class="ui-item-title label">&nbsp;</div>
+			<div class="ui-item-input">
+				<select name="qu" id="s3"></select>
+			</div>
+        </div>
+	</li>
+</ul>
+<button type="submit" class="ui-button ui-block ui-success">确定</button>
+<script type="text/javascript">
+	new PCAS("sheng","shi","qu","{$info.sheng}","{$info.shi}","{$info.qu}");
+</script>
+</form>
+<include file="Public:footer" />
+<script type="text/javascript" src="/Public/Common/js/jquery.form.js"></script>
+<script type="text/javascript">
+	$('#address_form').ajaxForm({
+		beforeSubmit:function(data){
+			if(data[0]['value']==''){
+				H5.message('姓名不能为空！','warning');
+				return false;
+			}
+			if(!H5.validate(data[1]['value'],'MOBILE_NUMBER')){
+				H5.message('请输入正确的手机号！','warning');
+				return false;
+			}
+			if(data[2]['value']==''){
+				H5.message('请选择省份！','warning');
+				return false;
+			}
+			if(data[3]['value']==''){
+				H5.message('请选择城市！','warning');
+				return false;
+			}
+			if(data[4]['value']==''){
+				H5.message('请选择区域！','warning');
+				return false;
+			}
+		},
+		success:function(res){
+			if(res.errcode==0) {
+				H5.message(res.errmsg);
+				location.href = "{:U('User/address?token='.$token)}";
+			}
+			else H5.message(res.errmsg,'error');
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<extend name="Public:innerbase"/> 
+<block name="css">
+<style type="text/css">
+	.wm-row{
+		margin: 20px 0;
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+    <script>
+        function drop_confirm(msg, url){
+            if(confirm(msg)){
+                window.location = url;
+            }
+        }
+    </script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>留言管理</h3>
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:void(0)">用户留言</a></li>
+		<li><a href="{:U('Reply/config')}">留言板配置</a></li>
+	</ul>
+	<div class="wm-row">
+		<!--<button type="button" class="btn btn-sm btn-primary">审核</button>
+		<div class="btn-group">
+			<button type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown">
+			删除 <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">删除选中</a></li>
+				<li><a href="#">删除所有</a></li>
+			</ul>
+		</div>-->
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th class="select"><input type="checkbox" value="反选" name="button" id="selected"  style="color:#94D38A;"></th>
+		<th>昵称</th>
+		<th>留言内容</th>
+		<th>留言回复</th>
+		<th>留言时间</th>
+		<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="res" id="item"> 	
+		<tr >
+		<td id="playlist"><input type="checkbox" name="items" value="{$item.id}"  class="checkitem" /></td>
+		<td>{$item.name}</td>
+		<td>
+			<a href="###" onclick='spark.alert({"content":"<?php echo $item['message'];?>",title:"留言内容"});'>查看留言 <if condition="$item['checked'] neq 1"> <small class="text-warning">(未审核)</small></if>
+			</a>
+		</td>
+		<td>
+			<a href="{:U('User/Reply/reply',array('msgid'=>$item['id'],'token'=>$token))}">查看回复<font color="#04AA00">(共<font color="red">{$item.count}</font>条回复/<font style="color:red">{$item.chkcount}</font>条新回复)</font>
+			</a>
+		</td>
+		<td>{$item.time|date="Y-m-d H:i:s",###}</td> 
+
+		<td>
+			<if condition="$item['checked'] neq 1">
+			<a class="btn btn-xs btn-info" href="{:U('User/Reply/checkOne',array('chk_value'=>$item['id'],'token'=>$token))}">
+				审核
+			</a>
+			</if>
+			<a class="btn btn-xs btn-danger" href="javascript:drop_confirm('您确定要删除吗?', '{:U('User/Reply/deled',array('chk_value'=>$item['id'],'token'=>$token))}');">删除</a>
+		</td>
+		</tr>
+
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

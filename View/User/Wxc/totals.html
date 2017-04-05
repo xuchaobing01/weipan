@@ -1,0 +1,55 @@
+<extend name="Public:innerbase"/>
+<block name="js">
+
+</block>
+<block name="content">
+<div class="container-fluid">
+    <div class="page-header">
+        <h4 class="left">    
+          投票数据统计
+          (<if condition="$vote['cknums'] eq 1"> 单选<else/>多选</if>投票，<span class="number">共有{$vote.count}人参与投票</span>)
+        </h4>   
+        <a class="btn btn-sm btn-default" href="{:U('Vote/index')}"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+      </div>
+      <div class="msgWrap" style="border:1px solid #e6e6e6;margin-top:10px;">
+        <div id="chartdiv1" align="center"></div>
+		 <script src="/Public/Common/fushionCharts/JSClass/FusionCharts.js" type="text/javascript"></script>
+         <script type="text/javascript">
+          var chart = new FusionCharts("/Public/Common/fushionCharts/Charts/Pie3D.swf", "ChartId", "500", "400", "0", "1");
+          //chart.setTransparent("false");
+          chart.setDataXML('{$xml}');
+          //chart.setDataURL("data.html");
+          chart.render("chartdiv1");
+          </script>
+      </div>
+      <div class="cLineB">
+        <h4 class="left">    
+          投票记录
+        </h4>        
+        <div class="clr"></div>
+      </div>
+
+        <table class="table wm-table-bordered table-striped">
+          <thead>   
+          <tr>
+            <th width="200">投票人</th>
+            <th width="200">选票</th>
+            <th width="100">时间</th>
+            <th width="100">操作</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <volist name="record" id="item"> 
+            <tr>
+              <td>{$item.wxname}</td>
+              <td>{$item.itemname}</td>
+              <td>{$item.touch_time|date="Y-m-d H:i:s",###}</td>
+              <td><a href="{:U('Vote/del_record',array('id'=>$item['id']))}" onclick="javascript:return confirm('您确定要删除吗?')">删除</a></td>
+            </tr>
+          </volist>
+          </tbody>
+          </table>
+          {$page}
+        </div>
+</block>

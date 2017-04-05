@@ -1,0 +1,42 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+	<div class="container-fluid">	
+		<div style="margin:10px 0;">
+		<a href="{:U('Bargain/index')}"  title="返回" class="btn btn-error">返回</a>
+			<a href="{:U('Bargain/addshop',array('pid'=>$pid))}"  title="添加商品" class="btn btn-success">添加商品</a>
+		</div>
+		<table class="table table-striped wm-table-bordered">
+			<thead>
+				<tr>
+					<th>商品名称</th>
+					<th>商品图片</th>	
+					<th>展示图片</th>				
+					<th>总价</th>
+					<th>最低价</th>
+					<th>需砍价次数</th>			
+					<th>最高限制</th>
+					<th>已砍价人数</th>
+					<th class="norightborder">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist id="list" name="list">
+				<tr>
+					<td>{$list.shop_title}</td>
+					<td><img src="{$list.shop_img}" width="100px" height="100px"></td>
+					<td><img src="{$list.view_img}" width="100px" height="100px"></td>
+					<td>{$list.total}</td>
+					<td>{$list.lowprice}</td>
+					<td>{$list.num}</td>
+					<td>{$list.tlimit}</td>
+					<td>{$list.bnum}</td>
+					<td class="norightborder">
+						<a href="{:U('Bargain/editshop',array('id'=>$list['id'],'pid'=>$pid))}" title="编辑">编辑</a> |
+						<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Bargain/delshop',array('id'=>$list['id']))}');">删除</a> 
+					</td>
+				</tr>
+				</volist>
+			</tbody>
+        </table>
+	</div>
+</block>

@@ -1,0 +1,38 @@
+<volist name="plates" id="plate">
+<div class="module_special">
+<h2 class="common_title">
+	<span class="ico2">{$plate.title}</span>
+</h2>
+<div class="wrap">
+	<div class="wrap_child">
+		<div class="major">
+			<ul class="list">
+			<volist name="plate.items" id="item">
+			<li>
+				<if condition="$item['is_rush'] eq 1">
+				<a href="{:U('Shop/Item/rush',array('id'=>$item['item_id'],'token'=>$token))}">
+				<else/>
+				<a href="{:U('Shop/Item/index',array('id'=>$item['item_id'],'token'=>$token))}">
+				</if>
+				<div class="item-wrapper">
+					<div class="pic">
+						<img class="lazy" data-original="{:$item['img']}">
+					</div>
+					<div class="good_content">
+						<h3>{$item.title}</h3>
+						<notempty name="item.buy_limit">
+						<div class="tag-label tag-limit">限量抢购</div>
+						</notempty>
+						<p><strong class="price">¥{$item.oprice}</strong></p>
+						<div class="origin-price">市场价&nbsp;&nbsp;<small class="old_price">¥{$item.price}</small></div>
+					</div>
+				</div>
+				</a>
+			</li>
+			</volist>
+			</ul>
+		</div>
+	</div>
+</div>
+</div>
+</volist>

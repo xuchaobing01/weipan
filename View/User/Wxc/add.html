@@ -1,0 +1,109 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<!--link rel="stylesheet" href="{:STATICS}/vote/style.css" /-->
+<block name="js">
+<include file="Public:upload" />
+<script src="{:STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{:STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{:RES}/js/date/WdatePicker.js" type="text/javascript"></script>
+<script src="{:STATICS}/vote/common.js" type="text/javascript"></script>
+<script type="text/javascript">
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('#info', {
+	resizeType : 1,
+	allowPreviewEmoticons : false,
+	allowImageUpload : true,
+	uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+	items : [
+	'source','undo','plainpaste','wordpaste','clearhtml','quickformat','selectall','fullscreen','fontname', 'fontsize','subscript','superscript','indent','outdent','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr']
+	});
+});
+
+$(function(){
+	function check(el){
+		if($(el).is(':checked')){
+			$('#signEndTime').show();
+		}
+		else $('#signEndTime').hide();
+	}
+	check($('#onlineSign'));
+	$('#onlineSign').change(function(){
+		check(this);
+	});
+
+	function check1(el){
+		if($(el).is(':checked')){
+			$('#telphone').show();
+		}
+		else $('#telphone').hide();
+	}
+	check1($('#ontelphone'));
+	$('#ontelphone').change(function(){
+		check1(this);
+	});
+})
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+<div class="page-header">
+	<a class="btn btn-sm btn-default" href="{:U('Wxc/index')}"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+</div>
+<!-- <code><?php echo C('WAP_DOMAIN').'/wap/votex/index?token='.session('token').'&id='.$vo['id'];?></code> -->
+<div style="margin-top:10px;">
+	<form class="form-horizontal" method="post" action="">
+		<if condition="$vo['id'] neq ''">
+		  <input type="hidden" name="id" value="{$vo['id']}">
+		</if>
+		<div class="form-group">
+			<label class="control-label col-xs-2">活动标题</label>
+			<div class="col-md-4">
+				<input type="text" name="title" value="{$vo.title}" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2">关注二维码</label>
+			<div class="col-md-4">
+				<input type="hidden" name="picurl" value="{$vo.banner}" class="form-control" id="img" style="display:inline-block;width:250px;" />
+				<img id="imgHolder" style="width:216px;" class="img" src="{$vo.banner}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		
+	
+		
+		<div class="form-group">
+			<label class="control-label col-xs-2">投票时间：</label>
+			<div class="col-md-6">
+				<input style="display:inline-block;width:120px;" type="input" class="form-control" id="statdate" value="<if condition="$vo['start_time'] neq ''">{$vo.start_time|date="Y-m-d",###}</if>" data-toggle="datetime-picker" name="statdate">
+				到
+				<input style="display:inline-block;width:120px;" type="input" class="form-control" id="enddate" value="<if condition="$vo['end_time'] neq ''">{$vo.end_time|date="Y-m-d",###}</if>" name="enddate" data-toggle="datetime-picker">
+			</div>
+		</div>
+		
+		
+		
+
+
+
+		<div class="form-group">
+			<div class="col-md-4 col-xs-offset-2">
+				<button type="submit" name="button" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+</block>

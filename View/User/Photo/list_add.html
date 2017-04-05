@@ -1,0 +1,87 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>相册图片管理</h3>
+		<a href="{:U('Photo/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<div class="alert alert-info">
+		<strong>此相册地址：<a target="_blank" href="{:C('wap_domain')}/index.php?m=Wap&c=Photo&a=plist&token={$Think.session.token}&id={$Think.get.id}" class="green">{:C('wap_domain')}/index.php?m=Wap&c=Photo&a=plist&token={$Think.session.token}&id={$Think.get.id}</a></strong>
+	</div>
+	<table class="table wm-table-bordered">
+		<form action="" method="post">
+			<input type="hidden"  name="pid" value="{$Think.get.id}"  />
+			<thead>
+				<tr>
+					<th style=" width:160px;">名称</th>                   
+					<th style=" width:80px;">显示顺序</th>
+					<th>图片外链地址</th>
+					<th>图片说明（可不填）</th>
+					<th style=" width:80px;">显示</th>
+					<th style=" width:100px;" class="">操作</th>
+				</tr>
+			</thead>
+			<tr>
+				<td><input type="text" name="title" value=""  class="form-control"/></td>
+				<td><input type="text" name="sort" value="0"  class="form-control" style="width:50px;" /></td>
+				<td>
+					<div class="cateimg"></div>
+					<input type="hidden" name="picurl" id="picurl" value=""  />
+					<img id="picurlHolder" data-src="$holder.js/144x80/text:720*400" width="144px" height="80px" />
+					<a href="javascript:void(0)" onclick="selectAsset('picurl',720,400)" class="a_upload">上传</a>
+					<a href="javascript:void(0)" onclick="previewImg('picurl')">预览</a>
+				</td>
+				<td><input class="form-control" type="text"  style="width:250px;"  name="info" value=""  /></td>
+				<td><input class="checkbox" type="checkbox" name="status" value="1"  checked /></td>
+				<td class="norightborder">
+					<button type="submit" id="vtype" class="btn btn-xs btn-primary">添加</button>　
+				</td>
+			</tr> 
+		</form>
+	</table>
+	<hr/>
+	<h4>图片列表</h4>
+	<hr/>
+	<table class="table wm-table-bordered">
+		<thead>
+			<tr>
+				<th style=" width:160px;">名称</th>
+				<th style=" width:80px;">显示顺序</th>
+				<th>图片外链地址</th>
+				<th>图片说明</th>
+				<th style=" width:80px;">显示</th>
+				<th style=" width:100px;" class="norightborder">操作</th>
+			</tr>
+		</thead> 
+		<volist name="photo" id="photo">
+		<form method="post" action="{:U('Photo/list_edit',array('token'=>session('token')))}">
+		<input type="hidden"   name="id" value="{$photo.id}"  />
+		<tr>
+			<td><input type="text" name="title" value="{$photo.title}"  class="form-control" /></td>
+			<td><input type="text" name="sort" value="{$photo.sort}"  class="form-control" style="width:50px;" /></td>
+			<td>
+				<img id="picurl{$i}Holder" src="{$photo.picurl}" width="144px" height="80px" />
+				<input type="hidden" name="picurl" id="picurl{$i}" value="{$photo.picurl}"  />
+				<a href="javascript:void(0)" onclick="selectAsset('picurl{$i}',720,400)" class="a_upload">上传</a>
+				<a href="javascript:void(0)" onclick="previewImg('picurl{$i}')">预览</a>
+			</td>
+			<td><input class="form-control" type="text"  style="width:250px;"  name="info" value="{$photo.info}"  /></td>
+			<td>
+				<input class="checkbox" type="checkbox" name="status" value="1"  <if condition="$photo['status'] eq 1">checked</if> >
+			</td>
+			<td class="norightborder">
+				<button type="submit" name="edit" class="btn btn-xs btn-default">修改</button>
+				<a class="btn btn-xs btn-danger" href="{:U('Photo/list_del',array('id'=>$photo['id']))}">删除</a>
+			</td>
+		</tr>
+		</form>
+		</volist>
+	</table>
+</div>
+</block>

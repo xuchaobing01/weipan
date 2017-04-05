@@ -1,0 +1,92 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/upload.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid"> 
+<div class="page-header wm-page-header">
+	<h3>全景图像</h3>
+</div>
+<ul class="nav nav-tabs wm-tabs">
+  <li class="active"><a href="#home" data-toggle="tab">全景管理</a></li>
+  <li><a href="#reply" data-toggle="tab">回复配置</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content wm-tab-content">
+	<div class="tab-pane active" id="home">
+		<p><a href="{:U('Panorama/add',array('token'=>$token))}" title="" class="btn btn-success">添加全景</a></p>
+		<table class="table wm-table-bordered" border="0" cellspacing="0" cellpadding="0" width="100%">
+		<thead>
+			<tr>
+			<th>名称</th>
+			<th>关键词</th>
+			<th>外链代码</th>
+			<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="o"> 
+		<tr>
+		<td>{$o.name}</td>
+		<td>{$o.keyword}</td>
+		<td>全景 {$o.id}</td>
+		<td>
+			<a class="btn btn-xs btn-primary" href="{:U('Panorama/set',array('id'=>$o['id']))}">编辑</a>
+			<a class="btn btn-xs btn-danger" href="{:U('Panorama/delete',array('id'=>$o['id']))}">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+		</table>
+	</div>
+	<div class="tab-pane" id="reply">
+		<form class="form-horizontal" method="post" action="">
+			<input type="hidden" name="id" value="{$set.id}" />
+			<div class="form-group">
+				<label class="col-sm-2 control-label wm-control-label" >回复关键字</label>
+				<div class="col-md-4">
+					<input type="text" name="keyword" value="{$keyword.keyword|default='全景'}" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label wm-control-label" >回复标题</label>
+				<div class="col-md-4">
+					<input type="text" name="title" value="{$set.title}" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="picurl" class="col-sm-2 control-label wm-control-label">回复图片</label>
+				<div class="col-sm-6" >
+					<input type="hidden" name="picurl" id="picurl" value="{$set.picurl|default=rtrim(C('wap_domain'),'/').RES.'/images/panorama/360view.jpg'}" class="form-control" />
+					<img id="picurlHolder" style="width:216px;height:120px;" class="img-rounded" <if condition="($set eq null) OR($set['picurl'] eq '')">src="{:RES}/images/panorama/360view.jpg"</if> src="{$set.picurl}"/>
+					<div class="btn-group" style="vertical-align:bottom;">
+						<span class="btn btn-xs btn-primary" onclick="selectAsset('picurl',720,400)">
+							<span class="glyphicon glyphicon-cloud-upload"></span>选择
+						</span>
+						<span class="btn btn-primary btn-xs" onclick="previewImg('picurl')">
+							<span class="glyphicon glyphicon-picture"></span>预览
+						</span>
+						&nbsp;&nbsp;建议尺寸:720*400
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label wm-control-label" >内容介绍</label>
+				<div class="col-md-4">
+					<textarea style="height:75px" name="info" id="info" class="form-control">{$set.info}</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-4 col-sm-offset-2">
+					<button type="submit" class="btn btn-success">保存</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+</block>

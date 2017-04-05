@@ -1,0 +1,52 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style type="text/css">
+	img{
+		background-color:#ace;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="tabbable-custom">
+	  <!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#" aria-controls="home" role="tab">单图文回复</a></li>
+			<li role="presentation"><a href="{:U('multi_img')}" aria-controls="profile" role="tab">多图文回复</a></li>
+		</ul>
+	</div>
+	<div class="page-header wm-page-header">
+		<a class="btn btn-success" href="{:U('Img/edit')}">
+		<span class="glyphicon glyphicon-picture"></span>&nbsp;新增图文回复</a>
+	</div>
+	<table class="table wm-table-bordered table-stripped">
+		<THEAD>
+			<TR>
+				<TH>关键词</TH>
+				<TH>回答</TH>
+				<TH>匹配类型</TH>
+				<TH>浏览次数</TH>
+				<TH>修改时间</TH>
+				<TH>操作</TH>
+			</TR>
+        </THEAD>
+		<tbody>
+			<volist name="info" id="vo">
+				<tr>
+				<td>{$vo.keyword}</td>
+                <td width="120px;" style="min-width:120px;max-width:200px;"><div class="wrap-text">{$vo.text}</div></td>
+				<td><eq name="vo.type" value="1">完全匹配<else/>模糊匹配</eq></td>
+                <td>{$vo.click}</td>
+                <td>{$vo['updatetime']|date='Y-m-d',###}</td>   
+				<td class="norightborder">
+					<a class="btn btn-xs btn-primary" href="{:U('Img/edit',array('id'=>$vo['id']))}" title="编辑图文自定义回复">编辑</a>
+					<a class="btn btn-xs btn-danger" href="{:U('Img/del',array('id'=>$vo['id']))}">删除</a></td>
+                </tr>
+			</volist>
+		</tbody>
+	</table>
+	<div style="">
+		<div class="pages">{$page}</div>
+	</div>
+</div>
+</block>

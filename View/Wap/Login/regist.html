@@ -1,0 +1,345 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>注册</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="wap-font-scale" content="no">
+<link href="{:RES}/jinrong/Mobile/Public/css/common.css" rel="stylesheet" type="text/css">
+	<style>
+	html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, hr, button, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    margin: 0;
+    padding: 0;
+	font-size: 11.7188px;
+}
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-appearance: none;
+    outline: none;
+    font-family: "helvetica neue LT", Arial, "Heiti SC", "Droid Sans Fallback";
+}
+body, input, label, select, option, textarea, button, fieldset, legend {
+    font-family: tahoma,arial,\5FAE\8F6F\96C5\9ED1,SimSun,STSong,sans-serif;
+}
+input[type="button"], button, input {
+    -webkit-appearance: none;
+    border: none;
+    outline: medium;
+}
+	.formDiv {
+    margin: 0 auto;
+    width: 94%;
+    background: #fff;
+    border: 1px solid #e3e3e3;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+.bprderInp {
+    margin-left: 5%;
+    width: 95%;
+    height: auto;
+    border-bottom: 1px solid #e3e3e3;
+    padding: 1.5rem 0 1.4rem;
+}
+.bprderInp>input {
+    width: 100%;
+    color: #999999;
+    font-size: 1.4rem;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+.bprderInp:last-child {
+    border-bottom: none;
+}
+.posRel {
+    position: relative;
+}
+.codeImg {
+    z-index: 1;
+    position: absolute;
+    right: 5%;
+    top: 1rem;
+    width: 25%;
+    height: 2.6rem;
+}
+.topspeed>img {
+    width: 100%;
+    height: auto;
+}
+.topspeed {
+    margin: 0 auto;
+    padding: 10px 0;
+    width: 90%;
+    height: auto;
+}
+.banner {
+    width: 100%;
+    height: auto;
+}
+.regError, .codeError {
+    margin: 0 auto;
+    width: 90%;
+    height: 25px;
+    line-height: 25px;
+    font-size: 12px;
+    color: #f28879;
+    visibility: hidden;
+}
+.submitBtn {
+    margin-left: 5%;
+    width: 90%;
+    height: 4.6rem;
+    line-height: 4.6rem;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    text-align: center;
+    color: #fff;
+    background: #c5c5c5;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+.pText {
+    margin: 10px auto 0;
+    width: 90%;
+    font-size: 1.2rem;
+    color: #797979;
+    letter-spacing: 1px;
+}
+.downLoad {
+    color: #f04447;
+    border-bottom: 1px solid #f04447;
+    padding-bottom: 1px;
+}
+.shadeDiv {
+    z-index: 99;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+}
+.regCode, .regTel {
+    z-index: 990;
+    position: fixed;
+    top: 35%;
+    left: 10%;
+    width: 80%;
+    height: auto;
+}
+.promptDiv, .codeDiv {
+    z-index: 999;
+    display: none;
+    position: relative;
+    padding: 20px 0;
+    width: 100%;
+    height: auto;
+    background: #fff;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+.closeBtn, .close_02Btn {
+    z-index: 9999;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 1.8rem;
+    height: 1.8rem;
+}
+.phoneText {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #777777;
+    line-height: 2rem;
+}
+.codeMessage {
+    margin: 10px auto 0;
+    width: 90%;
+    height: auto;
+}
+.shortCode {
+    float: left;
+    padding: 1.1rem 0 1.2rem 3%;
+    width: 52%;
+    height: auto;
+    font-size: 1.2rem;
+    color: #999999;
+    border: 1px solid #999999;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+.secsText {
+    float: left;
+    margin-left: 5%;
+    width: 38%;
+    height: 3.7rem;
+    line-height: 3.7rem;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    text-align: center;
+    color: #fff;
+    background: rgb(240, 68, 71);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+.achieveFree {
+    display: none;
+    float: left;
+    margin-left: 5%;
+    width: 38%;
+    height: 3.7rem;
+    line-height: 3.7rem;
+    text-align: center;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: #fff;
+    background: #33ccf0;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+.regError, .codeError {
+    margin: 0 auto;
+    width: 90%;
+    height: 25px;
+    line-height: 25px;
+    font-size: 12px;
+    color: #f28879;
+    visibility: hidden;
+}
+.confirmBtn {
+    margin-left: 5%;
+    width: 90%;
+    height: 3.6rem;
+    line-height: 3.6rem;
+    text-align: center;
+    font-size: 1.3rem;
+    color: #fff;
+    background: #c5c5c5;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+</style>
+</head>
+<body class="page-mobile ">
+    <img src="{:RES}/jinrong/Mobile/Public/images/banner.jpg" alt="banner图" class="banner">
+
+    <div class="topspeed">
+
+        <img src="{:RES}/jinrong/Mobile/Public/images/banner1.png" alt="">
+
+    </div>
+
+    <div class="formDiv">
+
+        <div class="bprderInp">
+
+            <input  id="username" type="tel"  placeholder="请输入您的手机号" maxlength="11" class="phoneInp">
+
+        </div>
+
+        <div class="bprderInp">
+
+            <input id="password" type="password" placeholder="请输入6-16位交易密码" maxlength="16" class="passwordInp">
+
+        </div>
+
+            <div class="bprderInp" style="{$show}">
+
+                <input id="inviteCode" name="inviteCode" type="text" placeholder="请输入邀请码" maxlength="16" class="phoneInp">
+
+            </div>
+
+        <!--<div class="bprderInp posRel">
+
+            <input type="text" placeholder="请输入图形验证码" maxlength="4"  class="codeImgInp" id="verify_code"> 
+		   <input id="token" name="token" type="hidden" value="" />
+		<input id="proxy_id" name="proxy_id" type="hidden" value="" />
+		<input id="openid" name="openid" type="hidden" value="" />
+		<input id="act" name="act" type="hidden" value="" />
+            <img src="{:U('Seccode/verify',array())}" alt="图形验证码" class="codeImg" id="verify">
+
+        </div>-->
+
+    </div>
+
+    <p class="regError"></p>
+
+    <button class="submitBtn" id="btn_1">立刻注册</button>
+
+    <p class="pText">
+
+        已注册？请<span class="downLoad">登录</span>
+
+    </p>
+   <!--  遮罩层 -->
+
+    <div class="shadeDiv">
+        <!-- 发送短信验证码的弹层 -->
+
+        <div class="regCode">
+
+            <div class="codeDiv">
+
+                <img src="{:RES}/jinrong/Mobile/Public/images/closeBtn.png" alt="" class="close_02Btn">
+
+                <p class="phoneText">
+
+                    验证码，已发送至<span class="phoneNumber">185****0013</span>
+
+                </p>
+
+                <div class="codeMessage clearfix">
+
+                    <input type="tel"  id="SMSCode"  placeholder="输入短信验证码" class="shortCode">
+
+                    <button class="secsText">
+
+                        <span class="secsNum" id="wait">60</span>
+
+                    </button>
+
+                    <p class="achieveFree" id="send">重新发送</p>
+
+                </div>
+
+                <p class="codeError"></p>
+
+                <button class="confirmBtn">确定</button>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+<script type='text/javascript'>var ROOT = "";</script>
+<script src="{:RES}/jinrong/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="{:RES}/jinrong/Mobile/Public/js/common.js"></script>
+<script type="text/javascript" src="{:RES}/jinrong/Mobile/Public/js/regist.js"></script>
+<div class="loading-wrapper" style="display: none;">
+<div class="loading-area">
+<div id="floatingBarsG1" class="floatingBarsG"></div>
+<p id="msg">登录中...</p> 
+</div>
+<div class="mask" style="opacity: 0.3;"></div>
+</div>
+	</body>
+</html>

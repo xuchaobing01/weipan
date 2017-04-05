@@ -1,0 +1,41 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script>
+
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4> <span style="color: #dd0000;">{$food.name}</span> 库存设置</h4>
+		<a href="{:U('Canyin/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" method="post">
+		<input type="hidden" name="id" value="{$_GET['id']}" />
+        <volist name="stock" id="vo">
+            <div class="form-group">
+                <label class="col-sm-2">{$vo.name}</label>
+                <div class="col-md-3">
+                    <input type="hidden" name="cids[]" value="{$vo.company_id}">
+                    <input type="text" name="stocks[]" value="{$vo.stock}" class="form-control" />
+                </div>
+            </div>
+        </volist>
+
+		<div class="form-group">
+			<div class="col-md-5 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

@@ -1,0 +1,148 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+.tab-content{
+	padding: 20px 10px 0;
+}
+.award-img{
+	width:80px;height:80px;
+}
+.btn-upload input[type="file"]{
+	position: absolute;
+	opacity: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	margin:0;
+	padding:0;
+	cursor: pointer;
+}
+.home-img-wrapper{position:relative;display: inline-block;margin-right:10px;}
+.img-remove{position:absolute;right:0;top:0;width:30px;height:30px;color:rgb(155, 155, 155);cursor:pointer;background:url(/Public/Common/images/triangle-close.png) center no-repeat}
+.img-remove:hover{color:red;}
+</style>
+</block>
+<block name="content">
+<div class="page-topbar">
+	<ol class="breadcrumb">
+	  <li><a href="/User/Index/home.html">控制台</a></li>
+	  <li class="active">首页配置</li>
+	</ol>
+	<div class="right-button">
+		<a href="#" data-toggle="preview-qrcode" data-src="{:ajax_qrcode_link(wurl('Wap/Index/index?token='.$_SESSION['token']))}"><i class="fa fa-qrcode fa-2x"></i></a>
+	</div>
+</div>
+<div class="container-fluid">
+	<form id="editForm" method="post" class="form-horizontal wx-form" role="form" action="">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">关键词</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" name="keyword" value="{$keyword.keyword|default='主页'}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">回复标题</label>
+			<div class="col-sm-4">
+				<input type="text" name="title" value="{$home.title}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">回复图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" name="picurl" id="picurl" value="{$home.picurl}" class="form-control" />
+				<img id="picurlHolder" style="width:216px;height:120px;" class="img-rounded" <if condition="$home['picurl'] eq ''">data-src="$holder.js/216x120/gray/text:720*400"</if> src="{$home.picurl}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('picurl',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('picurl')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+					
+				</div>
+				<span class="help-block">建议尺寸:720*400</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">回复内容</label>
+			<div class="col-sm-6">
+				<textarea  style="height:140px;" name="info" id="info" class="form-control">{$home.info}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">微官网背景图片</label>
+			<div class="col-sm-6" >
+				<div id="homeImgs">
+				<volist name="home.homeImg" id="bg">
+				<div class="home-img-wrapper">
+					<input type="hidden" name="homeImg[]" value="{$bg}" />
+					<img id="homeurlHolder" style="height:180px;" src="{$bg}"/>
+					<span class="img-remove">&nbsp;</span>
+				</div>
+				</volist>
+				</div>
+				<span class="btn btn-primary btn-sm btn-upload" style="margin-top:10px;" data-toggle="upload-reward-img">上传图片
+					<input type="file" name="file" class="upload-file" />
+				</span>
+
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">外部链接</label>
+			<div class="col-sm-4">
+				<input type="text" name="apiurl" value="{$home.apiurl}" class="form-control" />
+				<span class="help-block">引用第三方网站的链接</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-2">
+				<button id="saveSetting" type="submit" class="btn btn-primary" >保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/upload.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<script type="text/javascript" src="/Public/Common/js/jquery.ajaxfileupload.js"></script>
+<script type="text/javascript">
+	function sprintf(){
+		var arg = arguments,
+			str = arg[0] || '',
+			i, n;
+		for (i = 1, n = arg.length; i < n; i++) {
+			str = str.replace(/%s/, arg[i]);
+		}
+		return str;
+	}
+	var TPL = '<div class="home-img-wrapper"><img style="height:180px;" src="%s" class="home-img" /><input type="hidden" name="homeImg[]" value="%s" /><span class="img-remove">&nbsp;</span></div>';
+</script>
+<script type="text/javascript">
+	$("[data-toggle='upload-reward-img']>.upload-file").AjaxFileUpload({
+		action: "/User/Qiniu/upload.html",
+		onComplete: function(filename, resp) {
+			if(resp.error !=0){
+				alert(resp.message);
+			}
+			else{
+				var wrapper = $(sprintf(TPL,resp.url,resp.url));
+				wrapper.appendTo('#homeImgs');
+				wrapper.find('.img-remove').click(function(){
+					$(this).parent().remove();
+				});
+			}
+		}
+	});
+	
+	$(function(){
+		$('.img-remove').click(function(){
+			$(this).parent().remove();
+		});
+	})
+</script>
+</block>

@@ -1,0 +1,106 @@
+<extend name="Public::innerbase"/>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>[{$role.name}]访问授权</h4>
+		<a href="{:U('System/role')}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回</a>
+	</div>
+	<form method="post">
+	<volist name="menus" id="root">
+	<div class="panel panel-default menu_group">
+		<div class="panel-heading">
+			<label><input name="rule[]" type="checkbox" <if condition="$rules[$root['id']] eq true">checked</if> value="{$root.id}" />{$root.title}</label>
+		</div>
+		<div class="panel-body">
+			<?php $group = '';?>
+			<volist name="root.child" id="menu">
+			<if condition="$group neq $menu['group']">
+				<?php $group=$menu['group'];?>
+				<div class="group_title">
+				<label><input class="menu_item_group" type="checkbox" value="{$group}" />{$group}</label>
+				</div>
+			</if>
+			<div data-group="{$group}" class="menu_item">
+				<label><input class="menu" name="rule[]" <if condition="$rules[$menu['id']] eq true">checked</if> type="checkbox" value="{$menu.id}" />{$menu.title}</label>
+				<notempty name="menu.actions" id="action">
+				<div class="menu_item_actions">
+				<volist name="menu.actions" id="action">
+					<label><input class="menu" name="rule[]" <?php if($rules[$action['id']]) echo 'checked';?> type="checkbox" value="{$action.id}" />{$action.title}</label>
+				</volist>
+				</div>
+				</notempty>
+			</div>
+			</volist>
+		</div>
+	</div>
+	</volist>
+	<button type="submit" class="btn btn-success">保存</button>
+	</form>
+</div>
+</block>
+<block name="css">
+<style>
+	.menu_group input{
+		margin-right: 6px;
+	}
+	.menu_group label{
+		cursor: pointer;
+	}
+	.menu_item{
+		margin: 5px 0;
+	}
+	
+	.menu_item_actions{
+		padding-left: 20px;
+	}
+	.menu_item_actions label{
+		margin-right: 10px;
+	}
+	.group_title{
+		margin-top: 10px;
+		padding: 6px 5px;
+		background: rgb(235, 235, 235);
+		border-left: 3px solid rgb(145, 145, 145);
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript">
+	$(function(){
+		$('.panel-heading input').click(function(){
+			var sub_inputs = $(this).parents('.panel').find('.panel-body input');
+			if($(this).is(':checked')){
+				sub_inputs.attr('checked',true);
+			}
+			else{
+				sub_inputs.attr('checked',false);
+			}
+		});
+		
+		$('.menu_item_group').click(function(){
+			var group = $(this).val();
+			var sub_inputs = $('.menu_item[data-group="'+group+'"]').find('input');
+			if($(this).is(':checked')){
+				sub_inputs.attr('checked',true);
+				$(this).parents('.panel').find('.panel-heading input').attr('checked',true);
+			}
+			else{
+				sub_inputs.attr('checked',false);
+			}
+		});
+		
+		$('.menu').click(function(){
+			var group = $(this).parents('.menu_item').attr('data-group');
+			if($(this).is(':checked')){
+				$(this).parents('.panel').find('.panel-heading input').attr('checked',true);
+				$('.menu_item_group[value="'+group+'"]').attr('checked',true);
+			}
+		});
+		
+		$('.menu_item_group').each(function(i,el){
+			var group = $(el).val();
+			if($('.menu_item[data-group="'+group+'"] input:checked').length>0) $(el).attr('checked',true);
+		});
+	})
+</script>
+</block>

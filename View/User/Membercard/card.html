@@ -1,0 +1,48 @@
+<extend name="Public:innerbase" />
+<block name="css">
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript" src="{:RES}/js/cart/jscolor.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+<script type="text/javascript" src="{:STATICS}/spark/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h3>会员卡管理</h3>
+	</div>
+	<a class="btn btn-success" href="{:U('card_edit')}"><span class="glyphicon glyphicon-plus"></span>&nbsp;添加会员卡</a>
+	<hr/>
+	<table class="table table-striped wm-table-bordered">
+		<thead>
+			<th>会员卡名称</th>
+			<th>会员卡级别</th>
+			<th>会员数量</th>
+			<th>空闲卡数量</th>
+			<th>操作</th>
+		</thead>
+		<tbody>
+			<volist name="cards" id="card">
+			<tr>
+				<td>{$card.cardname}</td>
+				<td>{$card.type_name}</td>
+				<td>{$card.member_num}</td>
+				<td>{$card.free_card_num}</td>
+				<td>
+					<a class="btn btn-xs btn-default" href="{:U('card_edit?id='.$card['id'])}">设计</a>
+					<a class="btn btn-xs btn-default" href="{:U('create?cid='.$card['id'])}">开卡</a>
+					<a class="btn btn-xs btn-default" href="{:U('exchange?cid='.$card['id'])}">积分设置</a>
+					<!--<a class="btn btn-xs btn-default" href="{:U('news?cid='.$card['id'])}">会员通知</a>-->
+					<a class="btn btn-xs btn-default" href="{:U('privilege?cid='.$card['id'])}">VIP特权</a>
+					<a class="btn btn-xs btn-default" href="{:U('coupon?cid='.$card['id'])}">优惠券</a>
+					<a class="btn btn-xs btn-default" href="{:U('integral?cid='.$card['id'])}">礼品券</a>
+					<a class="btn btn-xs btn-danger" onclick="spark.confirm_jump('删除后领取该卡的会员也将被删除，确定继续吗？','{:U('card_del?id='.$card['id'])}')">删除</a>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+</block>

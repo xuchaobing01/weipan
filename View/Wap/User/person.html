@@ -1,0 +1,96 @@
+
+<!doctype html>
+<html lang="zh">
+<head><script type="text/javascript" src="//af.alicdn.com/waf/3725663d54606dd679c38de025a3e7bd.js"></script>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>提现</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="wap-font-scale" content="no">
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/style.css">
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/common.css"> 
+	<link rel="stylesheet" href="{:RES}/jinrong/Mobile/Public/css/ucenter.css"> 
+</head>
+<body class="page-mobile ">
+    <div class="wrapper identity-wrapper">
+    
+    <!-- 认证了身份证，未上传身份证照片 S -->
+    <div id="noID">
+        <div class="identity-box unrecognized ">
+            <div class="identity-icon"></div>
+            <div class="identity-info">
+			<h2>您还没有实名认证</h2>
+                <p>填写身份信息完成认证</p>
+			            </div>
+        </div>
+        <ul class="com-columns span5 mb10">
+		<li class="comc-item" id="up_no">
+                <a href="{:U('User/bank_info')}" class="com-formbox">
+                    <span class="formbox-hd">身份信息</span>
+                    <span class="formbox-bd"></span>
+                    <span  class="formbox-sideicon"><i class="iconfont icon-right"></i></span>
+                    <span class="formbox-sidetxt">未上传</span>
+                </a>
+            </li>
+			 
+            <li class="comc-item" id="up_yes">
+                <div class="com-formbox">
+                    <span class="formbox-hd">手机号</span>
+                    <span class="formbox-bd"><span class="formbox-txt txtr"><?php echo substr($user['phone'],0,3)."****".substr($user['phone'],-4);?></span></span>
+                </div>
+            </li>
+            <li class="comc-item" id="up_yes"> 
+                <div class="com-formbox">
+                    <span class="formbox-hd">昵称</span>
+                    <span class="formbox-bd"><span class="formbox-txt txtr">{$user['wechat_name']}</span></span>
+                </div>
+            </li>
+            <li class="comc-item" id="up_yes"> 
+                <div class="com-formbox">
+                    <span class="formbox-hd">性别</span>
+                    <span class="formbox-bd"><span class="formbox-txt txtr">男 </span></span>
+                </div>
+            </li>
+            <li class="comc-item" id="up_yes"> 
+                <div class="com-formbox">
+                    <span class="formbox-hd">地区</span>
+                    <span class="formbox-bd"><span class="formbox-txt txtr"> </span></span>
+                </div>
+            </li>
+        </ul>
+
+
+        <div class="def-p fz12 fcgray3 pt10 pb10">请填写您的真实信息，否则无法为您的投资承保。后续仅支持提现至实名认证信息办理的微信帐号或银行卡内</div>
+    </div>
+    <!-- 认证了身份证，未上传身份证照片 E -->
+    </div>
+<div class="diy-dialog hide" id="msg_tips">              
+<div class="dia-in">                
+<div class="dia-hd"><h2>提示</h2></div>
+                <div class="dia-bd"><p id="msg_a"></p></div>
+				<div class="dia-btm"><a href="javascript:void(0);" id="isok"><span>我知道了</span></a>
+				</div>
+				</div>       
+				</div>
+<div class="loading-wrapper" style="display: none;">
+<div class="loading-area">
+<div id="floatingBarsG1" class="floatingBarsG"></div>
+<p id="msg">登录中...</p> 
+</div>
+<div class="mask" style="opacity: 0.3;"></div>
+</div>
+<script src="{:RES}/jinrong/Mobile/Public/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="{:RES}/jinrong/Mobile/Public/js/common.js"></script>
+
+
+<include file="Public:footer"/>
+
+</body>
+</html>
+
+
+
+

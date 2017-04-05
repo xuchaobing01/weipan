@@ -1,0 +1,38 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+<div class="page-header">
+	<h4 class="left">红包领取记录</h4>
+	<a href="javascript:history.go(-1);" class="btn btn-default btn-sm">返回</a>
+</div>
+<div class="msgWrap">
+	<table class="table table-bordered">
+	<thead>
+		<tr>   
+			<th width="50">商户单号</th>
+			<th width="50">红包面值</th>
+			<th width="80">获取时间</th>
+			<th width="50">是否领取</th>
+		</tr>
+	</thead>
+	<tbody>
+	<volist name="list" id="list">
+	<tr>
+		<td>{$list.mch_billno}</td>
+		<td>{$list.packet_value}</td>
+		<td>{$list.time|date='Y-m-d H:i',###}</td>
+		<td>
+			<if condition="$list.status eq '1'">
+			已领取
+			<elseif  condition="$list.status eq '0'"/>
+			未领取
+			</if>
+		</td>
+	</tr>
+	</volist>
+	</tbody>
+	</table>
+</div>
+<div class="pages">{$page}</div>
+</div>
+</block>

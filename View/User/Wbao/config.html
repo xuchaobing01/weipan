@@ -1,0 +1,85 @@
+<extend name="Public:innerbase" />
+<block name="css"></block>
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>留言管理</h3>
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs">
+		<li><a href="{:U('User/Reply/index')}">用户留言</a></li>
+		<li class="active"><a href="javascript:void(0)">留言板配置</a></li>
+	</ul>
+    <div style="margin-top:10px;">
+		<form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$set.id}" />
+			<div class="form-group">
+				<label class="col-sm-2 control-label">关键词</label>
+				<div class="col-md-5">
+					<input type="text" class="form-control" name="keyword" value="{$keyword.keyword|default='留言'}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">回复标题</label>
+				<div class="col-md-5">
+					<input type="text" name="title" value="{$set.title}" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">回复介绍</label>
+				<div class="col-md-5">
+					<textarea  name="info" id="info" class="form-control">{$set.info}</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">回复图片</label>
+				<div class="col-md-5">
+					<input type="hidden" name="picurl" value="{$set.picurl}" id="picurl" class="form-control" />
+					<img id="picurlHolder" style="width:216px;height:120px;" class="img-rounded" <?php if($set["picurl"] == '')echo 'data-src="$holder.js/216x120/gray/text:720*400"';?> src="{$set.picurl}"/>
+					<div class="btn-group" style="vertical-align:bottom;">
+						<span class="btn btn-xs btn-primary" onclick="selectAsset('picurl',720,400)">
+							<span class="glyphicon glyphicon-cloud-upload"></span>选择
+						</span>
+						<span class="btn btn-primary btn-xs" onclick="previewImg('picurl')">
+							<span class="glyphicon glyphicon-picture"></span>预览
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">页面顶部图片</label>
+				<div class="col-md-5">
+					<input type="hidden" name="banner_url" value="{$set.banner_url}" id="banner_url" class="form-control" />
+					<img id="banner_urlHolder" style="width:192px;height:60px;" class="img" <?php if($set["banner_url"] == '')echo 'data-src="$holder.js/192x60/gray/text:640*320"';?> src="{$set.banner_url}"/>
+					<div class="btn-group" style="vertical-align:bottom;">
+						<span class="btn btn-xs btn-primary" onclick="selectAsset('banner_url',640,200)">
+							<span class="glyphicon glyphicon-cloud-upload"></span>选择
+						</span>
+						<span class="btn btn-primary btn-xs" onclick="previewImg('banner_url')">
+							<span class="glyphicon glyphicon-picture"></span>预览
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-5 col-sm-offset-2">
+					<label>
+						<input type="checkbox" name="needcheck" value="1" <if condition="$set.needcheck eq 1">checked</if> /> 需要审核
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-5 col-sm-offset-2">
+					<input type="hidden" name="infotype" value="message" />
+					<input type="hidden" name="token" value="{$token}" />
+					<button type="submit" name="button" class="btn btn-success">保存</button>
+				</div>
+			</div>
+	</form>
+  </div> 
+</div>
+</block>

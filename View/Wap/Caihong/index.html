@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+	<title>快速充值中心</title>
+	<link href="/Core/Library/Vendor/chpay/images/css.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/Core/Library/Vendor/chpay/images/jquery18.js"></script>
+	<script type="text/javascript">
+        function getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+            return currentdate;
+        }
+	</script>
+
+</head>
+<body>
+<div class="wap">
+	<form method="post" id="pay" action="/wap/Caihong/pay" target="_blank">
+		<div class="box">
+			<input name="out_trade_no" type="hidden" class="text text2" id="out_trade_no" value="{$out_trade_no}">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="cn">
+				<tbody>
+				<tr>
+					<td align="center" class="w1">选择银行：</td>
+					<td>
+						<label><input name="IntoBank" type="radio" value="992">
+							<img src="/Core/Library/Vendor/chpay/images/zfb.png" title="支付宝" alt="支付宝" border="0" style="border:1px solid #CCCCCC;" /></label>
+						<label><input name="IntoBank" type="radio" value="1004" checked="checked">
+							<img src="/Core/Library/Vendor/chpay/images/wx.png" title="微信" alt="微信" border="0" style="border:1px solid #CCCCCC;" /></label>
+					</td>
+				</tr>
+				</tbody></table>
+			<input type="submit" class="btn" value="确认支付" onclick="return btnOK_zf_onclick();">
+			<p class="w3">温馨提示：为了避免掉单情况的发生，请您在支付完成后，稍等"支付成功"页面跳转出来, 再关闭页面，谢谢！</p>
+		</div>
+	</form>
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+        var time = getNowFormatDate();
+        $('#P_Time').val(time);
+    })
+    function btnOK_zf_onclick(){
+        $("#pay").submit();
+        return true;
+    }
+</script>
+</body></html>

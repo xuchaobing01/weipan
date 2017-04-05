@@ -1,0 +1,36 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>题目列表</h4>
+		<code style="display:block;margin:5px 0;"><?php echo C('WAP_DOMAIN').U('Wap/Diaoyan/start',['token'=>session('token'),'id'=>$id])?></code>
+		<a class="btn btn-sm btn-default" href="{:U('Diaoyan/index')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<a href="{:U('addTimu',array('pid'=>$id))}" class="btn btn-success" style="margin:10px 0;">添加题目</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="200">调研题目</th>
+		<th width="200">题目数量</th>
+		<th width="50">显示顺序</th>
+		<th width="200">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="data" id="item"> 
+			<tr>
+			<td>{$item.title}</td>
+			<td>{$item.max}</td>
+			<td>{$item.sort}</td>
+			<td>
+				<a class="btn btn-xs btn-default" href="{:U('Diaoyan/setTimu',array('id'=>$item['tid'],'pid'=>$item['pid']))}">修改</a>
+				<a class="btn btn-xs btn-danger" href="{:U('Diaoyan/delTimu',array('id'=>$item['tid'],'pid'=>$item['pid']))}">删除</a>
+			</td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+</div>
+</block>

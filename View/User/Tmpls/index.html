@@ -1,0 +1,430 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style type="text/css">
+	ul{
+		list-style:none;
+		overflow:hidden;
+		margin:0;
+		padding:0;
+	}
+	.cateradio li,.cateradio2 li,.cateradio3 li{
+		float:left;
+		width: 170px;
+		height: 383px;
+		margin: 0 20px 20px 0;
+		text-align: center;
+		background: url('{:RES}/images/img/radio_iphone0.png') no-repeat center top;
+	}
+	.cateradio li:hover,.cateradio2 li:hover,.cateradio3 li:hover,.cateradio li.active,.cateradio2 li.active,.cateradio3 li.active{
+		background: url('{:RES}/images/img/radio_iphone.png') no-repeat center top;
+	}
+	radio{
+		display:inline-block;
+		vertical-align: bottom;
+	}
+	.tab-content{
+		padding-top: 20px;
+		overflow: hidden;
+	}
+	label{
+		cursor:pointer;
+	}
+	.phone-render{
+		background: url('/Public/User/images/iphone-screen.png') no-repeat top left;
+		padding-top: 70px;
+	}
+</style>
+</block>
+<block name="js">
+<script src="{:RES}/js/cart/jscolor.js" type="text/javascript"></script>
+<script type="text/javascript">
+	function selectTag(showContent,selfObj){
+		// 操作标签
+		var tag = document.getElementById("tags").getElementsByTagName("li");
+		var taglength = tag.length;
+		for(i=0; i<taglength; i++){
+			tag[i].className = "";
+		}
+		selfObj.parentNode.className = "selectTag";
+		// 操作内容
+		for(i=0; j=document.getElementById("tagContent"+i); i++){
+			j.style.display = "none";
+		}
+		document.getElementById(showContent).style.display = "block";
+	}
+</script>
+<script type="text/javascript">
+	$(".radio0").click(function(){
+		$(".cateradio li").each(function(){
+			$(this).removeClass("active");
+		});
+		$(this).parents("li").addClass("active");
+		var myurl='/index.php?m=User&c=Tmpls&a=add&style='+$(this).val()+'&r='+Math.random(); 
+		$.ajax({url:myurl,async:false});
+		$("#myiframe").attr("src",$("#myiframe").attr("src")+'&r='+Math.random());
+	});
+	
+	$(".radio2").click(function(){
+		$(".cateradio2 li").each(function(){
+			$(this).removeClass("active");
+		});
+		$(this).parents("li").addClass("active");
+
+		var myurl ='/index.php?m=User&c=Tmpls&a=lists&style='+$(this).val()+'&r='+Math.random(); 
+		$.ajax({url:myurl,async:false});
+	});
+	$(".radio3").click(function(){
+		$(".cateradio3 li").each(function(){
+			$(this).removeClass("active");
+		});
+		$(this).parents("li").addClass("active");
+
+		var myurl='/index.php?m=User&c=Tmpls&a=content&style='+$(this).val()+'&r='+Math.random(); 
+		$.ajax({url:myurl,async:false});
+
+	});
+	$(".radio4").click(function(){
+		var myurl='/index.php?m=User&c=Tmpls&a=background&style='+$(this).val()+'&r='+Math.random(); 
+		$.ajax({url:myurl,async:false});
+		$("#myiframe").attr("src",$("#myiframe").attr("src")+'&r='+Math.random());
+	});
+	
+	$('#themeColor').blur(function(){
+		var color = $(this).val();
+		var url='/index.php?m=User&c=Tmpls&a=color&v='+escape(color)+'&r='+Math.random(); 
+		$.ajax({url:url,async:false});
+		$("#myiframe").attr("src",$("#myiframe").attr("src")+'&r='+Math.random());
+	});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>微网站模板设置</h4>
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="#home" data-toggle="tab">主页模板</a></li>
+		<li><a href="#category" data-toggle="tab">分类页模板</a></li>
+		<li><a href="#article" data-toggle="tab">文章页模板</a></li>
+		<li><a href="#style" data-toggle="tab">颜色风格&预览</a></li>
+	</ul>
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div class="tab-pane active" id="home">
+			<div class="col-md-12">
+				<ul class="cateradio">
+					<li <eq name="info.tpltypeid" value="203">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate203.png" />
+							<input class="radio0" type="radio" name="optype" value="203" <eq name="info.tpltypeid" value="203">checked</eq> /> 模板203
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="202">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate202.png" />
+							<input class="radio0" type="radio" name="optype" value="202" <eq name="info.tpltypeid" value="202">checked</eq> /> 模板202
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="201">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate200.png" />
+							<input class="radio0" type="radio" name="optype" value="201" <eq name="info.tpltypeid" value="201">checked</eq> /> 模板201
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="200">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate200.png" />
+							<input class="radio0" type="radio" name="optype" value="200" <eq name="info.tpltypeid" value="200">checked</eq> /> 模板200
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="168">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate168.png" />
+							<input class="radio0" type="radio" name="optype" value="168" <eq name="info.tpltypeid" value="168">checked</eq> /> 模板168
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="167">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate167.png" />
+							<input class="radio0" type="radio" name="optype" value="167" <eq name="info.tpltypeid" value="167">checked</eq> /> 模板167
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="166">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate166.png" />
+							<input class="radio0" type="radio" name="optype" value="166" <eq name="info.tpltypeid" value="166">checked</eq> /> 模板166
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="163">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate163.png" />
+							<input class="radio0" type="radio" name="optype" value="163" <eq name="info.tpltypeid" value="163">checked</eq> /> 模板163
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="162">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate162.png">
+							<input class="radio0" type="radio" name="optype" value="162" <eq name="info.tpltypeid" value="162">checked</eq> /> 模板162
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="161">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate161.png">
+							<input class="radio0" type="radio" name="optype" value="161" <eq name="info.tpltypeid" value="161">checked</eq> /> 模板161
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="160">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate160.png">
+							<input class="radio0" type="radio" name="optype" value="160" <eq name="info.tpltypeid" value="160">checked</eq> /> 模板160
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="158">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate158.png">
+							<input class="radio0" type="radio" name="optype" value="158" <eq name="info.tpltypeid" value="158">checked</eq> /> 模板158
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="157">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate157.png">
+							<input class="radio0" type="radio" name="optype" value="157" <eq name="info.tpltypeid" value="157">checked</eq> /> 模板157
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="154">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate154.png">
+							<input class="radio0" type="radio" name="optype" value="154" <eq name="info.tpltypeid" value="154">checked</eq> /> 模板154
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="153">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate153.png">
+							<input class="radio0" type="radio" name="optype" value="153" <eq name="info.tpltypeid" value="153">checked</eq> /> 模板153
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="152">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate152.png">
+							<input class="radio0" type="radio" name="optype" value="152" <eq name="info.tpltypeid" value="152">checked</eq> /> 模板152
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="151">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate151.png">
+							<input class="radio0" type="radio" name="optype" value="151" <eq name="info.tpltypeid" value="151">checked</eq> /> 模板151
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="25">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate125.png">
+							<input class="radio0" type="radio" name="optype" value="25" <eq name="info.tpltypeid" value="25">checked</eq> /> 模板25
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="26">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate126.png">
+							<input class="radio0" type="radio" name="optype" value="26" <eq name="info.tpltypeid" value="26">checked</eq> /> 模板26
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="27">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate127.png">
+							<input class="radio0" type="radio" name="optype" value="27" <eq name="info.tpltypeid" value="27">checked</eq> /> 模板27
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="15">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate115.png">
+							<input class="radio0" type="radio" name="optype" value="15" <eq name="info.tpltypeid" value="15">checked</eq> /> 模板15
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="14">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate114.png">
+							<input class="radio0" type="radio" name="optype" value="14" <eq name="info.tpltypeid" value="14">checked</eq> /> 模板14
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="13">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate113.png">
+							<input class="radio0" type="radio" name="optype" value="13" <eq name="info.tpltypeid" value="13">checked</eq> /> 模板13
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="12">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate112.png">
+							<input class="radio0" type="radio" name="optype" value="12" <eq name="info.tpltypeid" value="12">checked</eq> /> 模板12
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="11">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate111.png">
+							<input class="radio0" type="radio" name="optype" value="11" <eq name="info.tpltypeid" value="11">checked</eq> /> 模板11
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="10">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate110.png">
+							<input class="radio0" type="radio" name="optype" value="10" <eq name="info.tpltypeid" value="10">checked</eq> /> 模板10 
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="9">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate109.png">
+							<input class="radio0" type="radio" name="optype" value="9" <eq name="info.tpltypeid" value="9">checked</eq> /> 模板9 
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="8">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate108.png">
+							<input class="radio0" type="radio" name="optype" value="8" <eq name="info.tpltypeid" value="8">checked</eq> /> 模板8
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="7">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate107.png">
+							<input class="radio0" type="radio" name="optype" value="7" <eq name="info.tpltypeid" value="7">checked</eq> /> 模板7 
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="6">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate106.png">
+							<input class="radio0" type="radio" name="optype" value="6" <eq name="info.tpltypeid" value="6">checked</eq> /> 模板6 
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="5">class="active"</eq>><label>
+							<img src="{:RES}/images/cate9.png">
+							<input class="radio0" type="radio" name="optype" value="5" <eq name="info.tpltypeid" value="5">checked</eq> /> 模板5 
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="4">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate4.png">
+							<input class="radio0" type="radio" name="optype" value="4" <eq name="info.tpltypeid" value="4">checked</eq> /> 模板4 
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="3">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate3.png">
+							<input class="radio0" type="radio" name="optype" value="3" <eq name="info.tpltypeid" value="3">checked</eq> /> 模板3 
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="2">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate2.png">
+							<input class="radio0" type="radio" name="optype" value="2" <eq name="info.tpltypeid" value="2">checked</eq> /> 模板2 
+						</label>
+					</li>
+					<li <eq name="info.tpltypeid" value="1">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/cate1.png">
+							<input class="radio0" type="radio" name="optype" value="1" <eq name="info.tpltypeid" value="1">checked</eq> /> 模板1 
+						</label>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="tab-pane" id="category">
+			<div class="col-md-12">
+				 <ul class="cateradio2">
+					<li <eq name="info.tpllistid" value="1">class="active"</eq>>
+						<label>
+							<img src="{:RES}/images/list1.png" />
+							<input class="radio2" type="radio" name="optype2" value="1" <eq name="info.tpllistid" value="1">checked</eq> /> 缩略图文列表
+						</label>
+					</li>
+					<li <eq name="info.tpllistid" value="2">class="active"</eq> >
+						<label>
+							<img src="{:RES}/images/list4.png" />
+							<input class="radio2" type="radio" name="optype2" value="2" <eq name="info.tpllistid" value="2">checked</eq> /> 精简列表(省流量)
+						</label>
+					</li>
+					<li <eq name="info.tpllistid" value="3">class="active"</eq> >
+						<label>
+							<img src="{:RES}/images/list8.png" />
+							<input class="radio2" type="radio" name="optype2" value="3" <eq name="info.tpllistid" value="3">checked</eq> /> 缩略图文列表(简洁)
+						</label>
+					</li>
+					<li <eq name="info.tpllistid" value="4">class="active"</eq> >
+						<label>
+							<img src="{:RES}/images/list3.png" />
+							<input class="radio2" type="radio" name="optype2" value="4" <eq name="info.tpllistid" value="4">checked</eq> /> 图文模式
+						</label>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="tab-pane" id="article">
+			<div class="col-md-12">
+				<ul class="cateradio3">
+					<li <eq name="info.tplcontentid" value="1">class="active"</eq> >
+					<label>
+						<img src="{:RES}/images/news1.png" />
+						<input class="radio3" type="radio" name="optype3" value="1" <eq name="info.tplcontentid" value="1">checked</eq>/>模板1(有头像) 
+					</label>
+					</li>
+					<li <eq name="info.tplcontentid" value="2">class="active"</eq> >
+					<label>
+						<img src="{:RES}/images/news3.png" />
+						<input class="radio3" type="radio" name="optype3" value="2" <eq name="info.tplcontentid" value="2">checked</eq>/>模板2(无头像)
+					</label>
+					</li>
+					<li <eq name="info.tplcontentid" value="3">class="active"</eq> >
+					<label>
+						<img src="{:RES}/images/news3.png" />
+						<input class="radio3" type="radio" name="optype3" value="3" <eq name="info.tplcontentid" value="3">checked</eq>/>模板3(带分享按钮)
+					</label>
+					</li>
+					<li <eq name="info.tplcontentid" value="4">class="active"</eq> >
+					<label>
+						<img src="{:RES}/images/news3.png" />
+						<input class="radio3" type="radio" name="optype3" value="4" <eq name="info.tplcontentid" value="4">checked</eq>/>模板4(无标题和时间)
+					</label>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="tab-pane" id="style">
+			<div class="col-md-12">
+				<div class="cateradio4">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tbody>
+							<tr>
+								<td style="padding-right:20px;" rowspan="2" valign="top">
+									<div class="phone-render">
+										<iframe src="/index.php?m=Wap&c=Index&a=index&token={$info.token}" id="myiframe" width="360" height="420" frameborder="0" style="overflow-x:hidden;"></iframe>
+									</div>
+								</td>
+								<td valign="top">
+									<h3>请选择你喜欢的颜色风格，实时预览 </h3>
+									<h4>
+									<span class="label label-warning">提示：手机上才能获得最佳浏览效果，并且仅部分模板支持更换颜色风格
+									</span>
+									</h4>
+									<ul>
+										<li><label><input class="radio4" type="radio" name="optype4" value="0" <eq name="info.color_id" value="0">checked="checked"</eq>> 默认风格</label></li>
+										<li><label><input class="radio4" type="radio" name="optype4" value="1" <eq name="info.color_id" value="1">checked="checked"</eq>> 黑色风格</label></li>
+										<li><label><input class="radio4" type="radio" name="optype4" value="2" <eq name="info.color_id" value="2">checked="checked"</eq>> 蓝色风格</label></li>
+										<li><label><input class="radio4" type="radio" name="optype4" value="3" <eq name="info.color_id" value="3">checked="checked"</eq>> 木纹风格</label></li>
+										<li><label><input class="radio4" type="radio" name="optype4" value="4" <eq name="info.color_id" value="4">checked="checked"</eq>> 橙色风格</label></li>
+										<li><label><input class="radio4" type="radio" name="optype4" value="5" <eq name="info.color_id" value="5">checked="checked"</eq>> 紫色风格</label></li>
+										<li><label><input class="radio4" type="radio" name="optype4" value="6" <eq name="info.color_id" value="6">checked="checked"</eq>> 绿色风格</label></li>
+									</ul>
+									<hr/>
+									<p>
+									<label>自定义颜色</label>
+									<input type="text" name="plugmenucolor" id="themeColor" value="{$set.theme_color}" class="form-control color" style="width: 100px;display: inline-block; background-image: none; background-color:{$set.theme_color}; color: rgb(255, 255, 255);" />
+									</p>
+								</td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</block>

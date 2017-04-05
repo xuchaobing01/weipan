@@ -1,0 +1,34 @@
+<extend name="index_tpl" />
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:RES}/css/index/tpl_8_{$tpl.color_id}.css"  />
+<style type="text/css">
+	body {
+		background: url({$homeInfo['homeurl']}) no-repeat scroll 0 bottom #530337;/*修改图片路径*/
+		background-size: 100% 100%;
+	}
+	body .catemenu li {
+		border-top: 1px solid rgba(0, 0, 0, 0.17);
+	}
+	body .catemenu a {
+		border-right: 1px solid rgba(0, 0, 0, 0.17);color: #FFFFFF;
+	}
+	body .catemenu {
+		background-color: rgba(255, 255, 255, 0.14);
+	}
+	.copyright {
+		color: rgba(255, 255, 255, 0.48);
+	}
+</style>
+</block>
+<block name="cate_menu">
+	<div class="catemenu">
+		<ul> 
+			<volist name="info" id="vo">
+			<li>
+				<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">{$vo.name}</a>
+			</li>
+			</volist>
+			<div class="clr"></div>
+		</ul>
+	</div>
+</block>

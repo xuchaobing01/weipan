@@ -1,0 +1,35 @@
+.body{
+    max-width:640px;
+    margin:auto;
+    min-height:100%;
+    /*background-color:#f4f4f4;*/
+    position:relative;
+    /*background:#0f0e0c;*/
+    background-color:rgba(0, 0, 0, 0.5);
+}
+
+.list_font {
+	
+}
+
+.list_font li{
+   
+	float: left;
+	width: 50%;
+   /*background-color:rgba(0, 0, 0, 0.5);*/
+}
+.list_font li a{
+	display: block;
+	margin: 0 10px;
+    color:#fff;
+	background-color:#2f2f2f;
+	text-align:center;
+	text-decoration:none;
+}
+
+.link_tel{
+    background-color:#2f2f2f;
+}
+.copyright{
+    color:#ccc;
+}

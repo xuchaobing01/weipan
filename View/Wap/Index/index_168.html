@@ -1,0 +1,26 @@
+<extend name="index_tpl" />
+<block name="css">
+<link href="{:RES}/css/index/tpl_168.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+</style>
+</block>
+<block name="cate_menu">
+<ul  class="mainmenu">
+	<volist name="info" id="vo" key="i">
+		<li class="li<?php echo ($i-1)%4; ?>">
+			<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>">
+				<div class="menubtn">
+					<div class="menumesg">
+						<div class="menutitle">{$vo.name}</div>
+						<div class="menuico"></div>
+					</div>
+					<div class="menuimg">
+						<img src="{$vo.img}" />
+						<div class="menutext">{$vo.info}</div>
+					</div>
+				</div>
+			</a>
+		</li>
+	</volist>
+</ul>
+</block>

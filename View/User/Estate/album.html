@@ -1,0 +1,43 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4 class="left">楼盘相册管理</h4>
+	</div>
+	<div class="alert alert-info">
+		<span class="bold">使用方法：</span>
+		系统默认为至少添加3个相册,注意不要重复添加同一个相册
+	</div>
+	<a style="margin:10px 0;" href="{:U('Estate/album_add')}" class="btn btn-success">
+		添加相册
+	</a>
+	<table class="table wm-table-bordered">
+        <thead>
+			<tr>
+				<th>相册名称</th>
+				<th>描述</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<if condition="$album eq ''">
+			<tr>
+				<td colspan="5" style="text-align:center; height:30px;"><strong>尚未添加楼盘相册.</strong></td>
+			</tr>
+			<else/>
+			<volist name="album" id="list">
+			<tr>
+			<td>{$list['title']}</td>
+			<td>{$list['info']}</td> 
+			<td>
+			<a class="btn btn-xs btn-default" href="{:U('Estate/album_add',array('poid'=>$list['id']))}" class="btn">编辑</a>
+			<a class="btn btn-xs btn-danger"  href="{:U('Estate/album_del',array('id'=>$list['id']))}" onclick="return(confirm('确定要删除吗？'))" class="btn">删除</a></a>
+			</td>
+			</tr>
+			</volist>
+			</if>
+		</tbody>
+    </table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

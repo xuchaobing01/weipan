@@ -1,0 +1,261 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<style>
+	.upload-button{
+		position: relative;
+	}
+	.upload{
+		position: absolute;
+		top: 0px;
+		opacity: 0;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		cursor:pointer;
+		width: 100%;
+	}
+	.img-wrapper img{
+		max-width: 120px;
+	}
+	.apply-img{
+		max-width: 120px;
+	}
+	.apply-list li{
+		margin: 10px 0;
+	}
+</style>
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript">
+function setlatlng(){
+	//设置经纬度和地址
+	art.dialog.data('longitude', $('#longitude').val());
+	art.dialog.data('latitude', $('#latitude').val());
+	art.dialog.data('address', $('#address').val());
+	
+	art.dialog.open("{:U('Map/setLatLng',array('token'=>$token,'id'=>$id))}",{lock:false,title:'设置经纬度',width:600,height:400,yesText:'关闭',background: '#000',opacity: 0.87});
+}
+$("#setLatLng").click(function(){
+	setlatlng();
+});
+$("#uploadBtn").AjaxFileUpload({
+	action: "/User/Qiniu/Upload.html",
+	onSubmit: function(filename) {
+		$('#indicator').show();
+		$('#uploadIcon').hide();
+		return true;
+	},
+	onComplete: function(filename, response) {
+		console.log(response);
+		$('#indicator').hide();
+		$('#uploadIcon').show();
+		if(response.error == 0){
+			$('#src').val(response.url);
+		}
+		else{
+			alert(response.message);
+		}
+	},
+	onError: function(ret){
+		console.log(ret);
+	}
+});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>
+		新建微喜帖<br/>
+		<code><?php echo C('WAP_DOMAIN').U('Wap/Wedding/index',['token'=>session('token'),'id'=>$wedding['id']]);?></code>
+		</h4><a href="{:U('Wedding/index')}" class="btn btn-sm"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+		
+	</div>
+	<form action="" method="post" class="form-horizontal">
+	<input type="hidden" name="id" value="{$wedding.id}" />
+	<div class="form-group">
+		<label for="title" class="control-label col-sm-2">喜帖标题：</label>
+		<div class="col-md-4">
+			<input type="text" name="title" id="title" maxlength="10" class="form-control" value="{$wedding.title}" data-rule-required="true"><span class="text-danger">*</span><span class="help-inline">喜帖标题限制在十个字以内</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="keyword" class="control-label col-sm-2">触发关键词：</label>
+		<div class="col-md-4">
+			<input type="text" name="keyword" id="keyword" class="form-control" data-rule-required="true" value="{$wedding.keyword}"><span class="text-danger">*</span><span class="help-inline">只能设置一个关键字</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="coverurl" class="control-label col-sm-2">喜帖封面：</label>
+		<div class="col-md-4">
+			<img class="thumb_img" id="suicai1Holder" src="<if condition="$wedding['coverurl'] neq false">{$wedding.coverurl}<else />http://bcs.duapp.com/baeimgs/Tnh1ROgm93.png</if>" style="max-height: 100px;">
+			<input id="suicai1" type="hidden" name="coverurl" value="<if condition="$wedding['coverurl'] neq false">{$wedding.coverurl}<else />http://bcs.duapp.com/baeimgs/Tnh1ROgm93.png</if>">
+			<span class="help-block">
+				<a href="javascript:void(0)" data-toggle="upload-image" data-target="suicai1" class="btn btn-primary btn-xs">上传</a>
+			</span>
+			<span class="help-block"><span class="text-danger">*</span>封面默认大小720*400</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="openpic" class="control-label col-sm-2">开场动画：</label>
+		<div class="col-md-4">
+			<img class="thumb_img" id="suicaipic2Holder" src="<if condition="$wedding['openpic'] neq false">{$wedding.openpic}<else />http://bcs.duapp.com/baeimgs/jNuxaj1cAj.jpg</if>" style="width: 180px; height: 180px;">
+			<input id="suicaipic2" type="hidden" name="openpic" value="<if condition="$wedding['openpic'] neq false">{$wedding.openpic}<else />http://bcs.duapp.com/baeimgs/jNuxaj1cAj.jpg</if>">
+			<span class="help-block">
+				<a href="javascript:void(0)" data-toggle="upload-image" data-target="suicaipic2" class="btn btn-xs btn-primary">上传</a>
+			</span>
+			<span class="help-inline"> 上传400*400左右的新郎新娘合影图,用于喜帖打开时的动画中,图片大小不超过300K </span>
+			<span class="red">不想要开场动画图片地址留空即可!</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="picurl" class="control-label col-sm-2">缩略图：</label>
+		<div class="col-md-4">
+			<img class="thumb_img" id="suicai3Holder" src="<if condition="$wedding['openpic'] neq false">{$wedding.openpic}<else />http://bcs.duapp.com/baeimgs/2cDQtFbl75.jpg</if>" style="width: 40px; height: 40px;" />
+			<input id="suicai3" type="hidden" name="picurl"  value="<if condition="$wedding['openpic'] neq false">{$wedding.openpic}<else />http://bcs.duapp.com/baeimgs/2cDQtFbl75.jpg</if>">
+			<span class="help-block">
+				<a href="javascript:void(0)" data-toggle="upload-image" data-target="suicai3" class="btn btn-xs btn-primary">上传</a>
+			</span>
+			<span class="help-block"><span class="text-danger">*</span>默认40x40,显示在喜帖主页</span>
+		</div>
+	</div>
+		<div class="form-group">
+		<label for="picurl" class="control-label col-sm-2">相册选择：</label>
+		<div class="col-md-4">
+			<select name="pid" class="form-control">
+				<option value="">请选择相册名称</option>
+				<volist id="photo" name="photo">
+				<option value="{$photo.id}" <if condition="$photo['id'] eq $wedding['pid']" >selected="selected"</if>>{$photo.title}</option>
+				</volist>
+			</select>
+			<span class="help-block">
+				<span class="text-danger">*</span>
+				<a href="{:U('Photo/add')}">创建相册</a>  如果没有请创建
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="address" class="control-label col-sm-2">新郎名字：</label>
+		<div class="col-md-4">
+			<input type="text" name="man" id="man" class="form-control" value="{$wedding.man}" data-rule-required="true">
+			<span class="text-danger">*</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="woman" class="control-label col-sm-2">新娘名字：</label>
+		<div class="col-md-4">
+			<input type="text" name="woman" id="woman" class="form-control" value="{$wedding.woman}" data-rule-required="true">
+			<span class="text-danger">*</span>
+		</div> 
+	</div>
+	<div class="form-group">
+		<label for="typename" class="control-label col-sm-2"></label>
+		<div class="col-md-4">
+			<label class="radio inline">
+				<input type="radio" name="who_first" checked="checked" value="1"><span class="help-inline">新郎名字在前</span>
+			</label>
+			<label class="radio inline">
+				<input type="radio" name="who_first" value="2"><span class="help-inline">新娘名字在前</span>
+			</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="tel" class="control-label col-sm-2">联系电话：</label>
+		<div class="col-md-4">
+			<input type="text" name="phone" id="phone" class="form-control" value="{$wedding.phone}" data-rule-required="true" data-rule-phone="true"><span class="text-danger">*</span><span class="help-inline">如0551-63474223 </span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="time" class="control-label col-sm-2">婚宴日期：</label>
+		<div class="col-md-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				<input type="input" class="form-control" data-toggle="datetime-picker" data-minview="0" data-format="yyyy-mm-dd HH:ii" value="<if condition="$wedding['time'] neq false">{$wedding.time|date='Y-m-d H:i',###}</if>" name="time">
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="place" class="control-label col-sm-2">宴席地址：</label>
+		<div class="col-md-4"> 
+			<div class="input-prepend">
+				<input type="text" name="place" class="form-control" value="{$wedding.place}" onchange="loadmap()" id="suggestId" data-rule-required="true"/>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-2">经纬度</label>
+		<div class="col-md-2">
+			<div class="input-group">
+				<span class="input-group-addon">经度</span>
+				<input id="longitude" name="lng" type="text" class="form-control" placeholder="" value="{$wedding.lng}" >
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div class="input-group">
+				<span class="input-group-addon">纬度</span>
+				<input id="latitude" name="lat" type="text" class="form-control" placeholder="" value="{$wedding.lat}">
+			</div>
+		</div>
+		<div class="col-md-2" style="padding-top:6px;">
+			<span id="setLatLng" class="btn btn-xs btn-primary">在地图上标注</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="video" class="control-label col-sm-2">喜帖视频：</label>
+		<div class="col-md-4"> 
+			<input type="text" name="video" id="video" class="form-control" value="{$wedding.video}"><p>支持优酷视频地址如;http://v.youku.com/v_show/id_XNjI4ODk5NDQ4.html <br> 腾讯fash视频地址：如http://static.video.qq.com/TPout.swf?vid=v0119s27wd5&amp;auto=0 <br> 也支持mp4和ogg 格式地址 http://www.w3school.com.cn/example/html5/mov_bbb.mp4 </p>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-2" for="mp3url">背景音乐</label>
+		<div class="col-md-4">
+			<audio id="plmp3" src="" preload="none"></audio>
+			<div class="input-group">
+				<input class="form-control" name="mp3url" value="{$wedding.mp3url}" id="src" onchange="document.getElementById('plmp3').src=this.value">
+				<span class="input-group-btn upload-button">
+					<button class="btn btn-default" type="button"><i id="uploadIcon" class="glyphicon glyphicon-cloud-upload"></i>&nbsp;<i class="fa fa-spin fa-spinner" style="display:none;" id="indicator"></i></button>
+					<input class="upload" type="file" id="uploadBtn" name="file" id="img" />
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="tel" class="control-label col-sm-2">密码：</label>
+		<div class="col-md-4">
+			<input type="text" name="passowrd" id="passowrd" class="form-control" value="{$wedding.passowrd}" data-rule-required="true"><span class="text-danger">*</span><span class="help-inline">设置微信上查看来宾名单的验证密码</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="tel" class="control-label col-sm-2">想要给朋友说的话：</label>
+		<div class="col-md-4">
+			<textarea rows="5" name="word" id="word" class="form-control" data-rule-required="true" data-rule-maxlength="200" style="height:60px"><if condition="$wedding['word'] neq false">{$wedding.word}<else/>亲爱的朋友，我要结婚了，希望能在我的婚礼上得到你的祝福，并祝愿你也幸福.</if></textarea>
+			<span class="text-danger">*</span><span class="help-inline">喜帖文字限制在200字以内</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="qr_code" class="control-label col-sm-2">二维码图片地址：</label>
+		<div class="col-md-4">
+			<input id="suicai6" type="hidden" name="qr_code" class="form-control" value="{$wedding.qr_code}">
+			<img class="thumb_img" id="suicai6Holder" src="<if condition="$wedding['qr_code'] neq false">{$wedding.qr_code}"  </if> style="width: 180px; height: 180px;">
+			<span class="help-inline">
+				<a href="javascript:void(0)" data-toggle="upload-image" data-target="suicai6">上传</a>
+			</span>
+			<span class="help-inline">
+			<span class="text-danger">*</span>默认100x100,显示在喜帖底部</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="copr" class="control-label col-sm-2">底部版权：</label>
+		<div class="col-md-4">
+		<textarea name="copyrite" id="copyrite" class="form-control" rows="5" style="height:60px">{$wedding.copyrite}</textarea>
+		</div>
+	</div>
+   <div class="form-group">
+		<div class="col-md-4 col-xs-offset-2">
+			<button id="bsubmit" type="submit" data-loading-text="提交中..." class="btn btn-success">保存</button>
+		</div>
+	</div>
+</form>
+</div> 
+</block>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>{$tpl.wxname}</title>
+<base href="." />
+<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" type="text/css" href="{:RES}/css/125/pigcms-ui-1-1.css" media="all">
+<link href="{:RES}/css/allcss/cate{$tpl.tpltypeid}_{$tpl.color_id}.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{:RES}/css/125/maivl.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/swipe.js"></script>
+<script type="text/javascript" src="{:STATICS}/js/zepto.min.js"></script>
+</head>
+<body onselectstart="return true;" ondragstart="return false;">
+
+<link rel="stylesheet" type="text/css" href="{:RES}/css/125/font-awesome.css" media="all">
+<div class="weimob-page" style="display:block; ">
+<!--
+    幻灯片管理
+    -->
+    <div style="-webkit-transform:translate3d(0,0,0);">
+        <div id="banner_box" class="box_swipe" style="visibility: visible;margin-top:-17px;">
+            <ul style="list-style: none; width: {$num*433}px; transition: 500ms; -webkit-transition: 500ms; -webkit-transform: translate3d(-433px, 0, 0);">
+            <volist name="flash" id="so">
+				<li style="width: 433px; display: table-cell; vertical-align: top;">
+					<a href="{$so.url}">
+						<img src="{$so.img}" style="width:100%;">
+					</a>
+				</li>
+			</volist>
+            </ul>
+            <ol>
+                <volist name="flash" id="so">
+                <li <if condition="$i eq 1">class="on"</if>></li>
+                </volist>
+            </ol>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            new Swipe(document.getElementById('banner_box'), {
+                speed:500,
+                auto:3000,
+                callback: function(){
+                    var lis = $(this.element).next("ol").children();
+                    lis.removeClass("on").eq(this.index).addClass("on");
+                }
+            });
+        });
+    </script>
+	<header>
+        <div class="snower">
+            <script type="text/javascript"></script>
+        </div>
+    </header>             <!--
+        用户分类管理
+        -->
+        <div class="weimob-content">
+            <div class="weimob-list">
+                <volist name="info" id="vo">
+					<a href="<if condition="$vo['url'] eq ''">{:U('Wap/Index/lists',array('classid'=>$vo['id'],'token'=>$vo['token']))}<else/>{$vo.url|htmlspecialchars_decode}</if>" class="weimob-list-item">
+						<div class="weimob-list-item-bg">
+						<div>
+							<img src="{$vo.img}" alt="{$vo.name}" style="width:100%;">
+						</div>
+						<div class="weimob-list-item-box">
+							<div class="weimob-list-item-line">
+								<div class="weimob-list-item-title">{$vo.name}</div>
+							</div>
+						</div>
+					</div>
+                    </a>
+                </volist>
+            </div>
+        </div>                    
+    </div>
+
+<div class="copyright" style="text-align:center;padding:10px 0">
+<if condition="$iscopyright eq 1">
+{$homeInfo.copyright} </br>
+<else/>
+{$siteCopyright}
+</if>
+</div>
+ <include file="menu_style"/>  
+</body>
+</html>

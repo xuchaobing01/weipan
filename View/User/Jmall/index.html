@@ -1,0 +1,37 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>商品管理</h4>
+		<code><?php echo C('WAP_DOMAIN').U('Wap/Jmall/index?wechat_id={wechat_id}',['token'=>session('token')])?></code>
+	</div>
+	<a style="margin:10px 0;" href="{:U('Jmall/add')}" title="添加" class="btn btn-primary">添加商品</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="160">商品名称</th>
+		<th width="60">兑换积分</th>
+		<th width="130">更新时间</th>
+		<th width="200" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="vo"> 
+		<tr>
+		<td>{$vo.name}</td>
+		<td>{$vo.jifen}</td>
+		<td>{$vo.time|date="Y-m-d H:i",###}</td> 
+		<td>
+		<a class="btn btn-xs btn-default" href="{:U('Jmall/set',array('id'=>$vo['id']))}">修改</a>
+		<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Jmall/del',array('id'=>$vo['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>

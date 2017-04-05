@@ -1,0 +1,63 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:STATICS}/js/holder.min.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>商家设置</h4>
+	</div>
+	<form class="form-horizontal" method="post" action="">
+		<div class="form-group">
+			<label for="picurl" class="col-sm-2 control-label">商家LOGO</label>
+			<div class="col-sm-6" >
+				<input type="hidden" name="logo" id="picurl" value="{$info.logo}" class="form-control" />
+				<img id="picurlHolder" style="width:100px;height:100px;" class="img-rounded" <if condition="($info eq null) OR($info['logo'] eq '')">data-src="$holder.js/100x100/text:100*100"</if> src="{$info.logo}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('picurl',100,100)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('picurl')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+					&nbsp;&nbsp;建议尺寸:100*100
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" value="1" <if condition="$info['need_check'] eq 1">checked</if> name="need_check" />&nbsp;领卡需要审核
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">会员卡优惠描述</label>
+			<div class="col-md-4">
+				<input name="description" type="text" class="form-control" id="logo2" value="{$info.description}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >消费确认密码</label>
+			<div class="col-md-4">
+				<input type="input" class="form-control" id="title" value="{$info.password}" name="password" />
+				<span class="help-block text-info">商家用来确认用户代金券，优惠券和礼品券使用的密码</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >商家简介</label>
+			<div class="col-md-4">
+				<textarea class="form-control" id="info" name="info" style="height: 200px; ">{$info.info}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-offset-2">
+				<button type="submit" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

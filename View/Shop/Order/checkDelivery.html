@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+<meta charset="utf-8" />
+<title>会员中心 - 查看订单</title>
+<link type="text/css" rel="stylesheet" href="/Public/Common/bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Shop/css/shop.css">
+<script charset="utf-8" src="/Public/Common/js/jquery-2.1.0.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+    var span = $("#child_nav");
+    span.hover(function(){
+        $("#float_layer:not(:animated)").show();
+    }, function(){
+        $("#float_layer").hide();
+    });
+});
+//]]>
+</script>
+<style type="text/css">
+.list-block{
+	overflow:hidden;
+	padding: 10px 8px;
+}
+.list-block-title{
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 16px;
+	color: inherit;
+	border-left: 2px solid rgb(128, 128, 128);
+	padding-left: 8px;
+}
+.list-block li {
+	overflow:hidden;
+	border-bottom: 1px solid rgb(234, 234, 234);
+	padding:5px 0;
+}
+.list-block li:last-child{
+	border-bottom:0;
+}
+.list-block li dt{
+	min-width: 70px;
+	padding-top: 5px;
+	height: auto;
+}
+.list-block li dd{
+	min-width: 70px;
+	float: left;
+	padding-top: 5px;
+	height: auto;
+}
+.panel{
+	border:0;
+}
+.panel-heading{
+	padding-left: 2px;
+}
+.block-title{
+	border-left: 3px solid rgb(119, 118, 118);
+	padding-left: 8px;
+}
+.media{
+	border-top: 1px solid rgb(209, 209, 209);
+	padding-top: 10px;
+}
+.media-object{
+	max-width:100px;
+}
+</style>
+</head>
+<body>
+<include file="public:head" />
+<div class="container">
+	<div class="panel panel-default" style="margin-top:20px;">
+		<div class="panel-heading">
+			<h4 class="block-title">物流详情({$oid})</h4>
+		</div>
+		<div class="panel">
+			<if condition="$info neq ''">
+			<ul class="list-block">
+				<li>
+                <dt>订单状态</dt>
+                <dd>
+                <switch name="info:order_status" >
+                    <case value="SB"><span class="text-warning">待配送</span></case>
+                    <case value="COB"><span class="text-warning">配送中</span></case>
+                    <case value="TB"><span class="text-warning">配送中转中</span></case>
+                    <case value="DF"><span class="text-warning">完成</span></case>
+                    <default /><span class="text-success">未知</span>
+                </switch>
+                </dd>
+				</li>
+				<if condition="$info:finish_time neq ''">
+				<li>
+					<dt>完成时间</dt>
+					<dd>{$info->finish_time}</dd>
+				</li>
+				</if>
+				<volist name="logs" id="vo">
+				<li>
+                <dt><?php echo $vo->desc; ?></dt>
+                <dd><?php echo $vo->site.'&nbsp'.$vo->operator.'&nbsp;'.$vo->time; ?></dd>
+				</li>
+				</volist>
+            </ul>
+			<else/>
+			<h3 style="margin:10px 0;">暂无物流信息</h3>
+			</if>
+		</div>
+	</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

@@ -1,0 +1,92 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script>
+function showChildCats(value){
+	if(value==0){
+		document.getElementById('catid').disabled=true;
+	}else{
+		$.ajax({
+			url: $('#catUrl').attr("value")+'&parentid='+value,
+			success: function( data ) {
+				document.getElementById('catid').disabled=false;
+				$("#catid").html($("#catid").html()+data);
+			}
+		});
+	}
+}
+
+function toDecimal(x) {  
+	var f = parseFloat(x);  
+	if (isNaN(f)) {  
+		return;  
+	}  
+	f = Math.round(x*10)/10;  
+	return f;  
+}
+
+function calDiscount(){
+	var price=$('#price').attr('value');
+	var oprice=$('#oprice').attr('value');
+	if(oprice!=0&&oprice!=''){
+		var dis=oprice-price;
+		var discount=10-toDecimal((dis/oprice)*10);
+	}else{
+		discount=10;
+	}
+	$('#discount').attr('value',discount);
+}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>商品设置</h4>
+		<a href="{:U('Jmall/index')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form class="form-horizontal" method="post">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="col-sm-2">名称</label>
+			<div class="col-md-4">
+				<input type="text" name="name" value="{$set.name}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">兑换积分</label>
+			<div class="col-md-2">
+				<input type="text" id="jifen" name="jifen" value="{$set.jifen}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">商品图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.img}" id="img" name="img" />
+				<img id="imgHolder" style="width:216px;height:120px;" <if condition="$set['img'] eq ''">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$set.img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">商品详情</label>
+			<div class="col-md-6">
+				<textarea class="form-control" name="intro" id="content" rows="5" style="height:260px">{$set.intro}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-5 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

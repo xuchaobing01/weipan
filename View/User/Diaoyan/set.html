@@ -1,0 +1,110 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{:STATICS}/kindeditor/plugins/code/prettify.css" />
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>调研设置</h4>
+		<a class="btn btn-sm btn-default" href="{:U('Diaoyan/index')}">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" method="post">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="col-xs-2 control-label">关键词</label>
+			<div class="col-md-6">
+				<input type="text" name="keyword" id="keyword" value="{$set.keyword}" class="form-control validate[required]" />
+			</div>
+			<div class="col-md-2">
+				<span class="tip-error">*</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">调研标题</label>
+			<div class="col-md-6">
+				<input type="text" name="title" id="title" value="{$set.title}" class="form-control validate[required]" />
+			</div>
+			<div class="col-md-2">
+				<span class="tip-error">*</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">顶部图片</label>
+			<div class="col-md-6">
+				<input type="hidden" name="pic" value="{$set.pic}" id="pic" class="form-control" />
+				<img id="picHolder" style="width:216px;height:120px;" class="img-rounded" <?php if($set["pic"] == '')echo 'data-src="$holder.js/216x120/gray/text:720*400"';?> src="{$set.pic}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('pic',720,400)">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('pic')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">开始时间</label>
+			<div class="col-xs-2">
+				<input type="input" class="form-control" id="statdate" value="<if condition="$set['stime'] neq ''">{$set.stime}<else/><?php echo date('Y-m-d',mktime(0, 0, 0, date("m")  , date("d"), date("Y")));?></if>" onClick="WdatePicker()" name="stime" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">结束时间</label>
+			<div class="col-xs-2">
+				<input type="input" class="form-control" id="enddate" value="<if condition="$set['etime'] neq ''">{$set.etime}<else/><?php echo date('Y-m-d',mktime(0, 0, 0, date("m")  , date("d")+3, date("Y")));?></if>" name="etime" onClick="WdatePicker()"  />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">开始说明</label>
+			<div class="col-md-6">
+				<textarea class="form-control" name="sinfo" id="content"  rows="5" style="height:220px">{$set.sinfo}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">结束说明</label>
+			<div class="col-md-6">
+				<textarea class="form-control" name="einfo" id="content2"  rows="5" style="height:220px">{$set.einfo}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-6 col-xs-offset-2">
+				<input type="submit" class="btn btn-success" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script src="{:STATICS}/js/holder.min.js"></script>
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#editForm").validationEngine("attach",{ 
+			promptPosition:"centerRight",
+			scroll:true,
+			showOneMessage:true
+		});
+	});
+	KindEditor.ready(function(K) {
+		window.editor = K.create('#content2', {
+		resizeType : 1,
+		allowPreviewEmoticons : false,
+		allowImageUpload : true,
+		uploadJson : '/index.php?m=User&c=Qiniu&a=kindEditorUpload',
+		items : [
+		'source','undo','clearhtml','hr', '|', 'fontname', 'fontsize','forecolor', 'hilitecolor', 'bold','italic', 'underline', 'strikethrough', 'lineheight', 
+		'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		'insertunorderedlist', '|', 'emoticons', 'image','link', 'unlink','baidumap','lineheight','table','anchor','preview','print','template','code','cut']
+		});
+	});
+</script>
+</block>

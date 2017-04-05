@@ -1,0 +1,59 @@
+<extend name="Public:innerbase" />
+<block name="css">
+</block>
+<block name="content">
+<div class="page-topbar">
+	<ol class="breadcrumb">
+	  <li><a href="/User/Index/home.html">控制台</a></li>
+	  <li><a href="/User/mall/plate.html">栏目管理</a></li>
+	  <li class="active">栏目商品管理</li>
+	</ol>
+</div>
+<div class="container-fluid">
+	<a class="btn btn-success" href="javascript:openDialog()">添加商品</a>
+	<hr/>
+	<div class="table-responsive">
+		<table class="table wm-table-bordered table-striped">
+			<thead>
+				<tr>
+				<th>标题</th>
+				<th>图片</th>
+				<th>类型</th>
+				<th width="250">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="items" id="vo">
+				<tr>
+					<if condition="$vo['is_custom'] neq 1">
+					<td>{$vo.title}</td>
+					<td><img src="{$vo.img}" width="50"/></td>
+					<td>商品</td>
+					<else/>
+					<td>{$vo.item_title}</td>
+					<td><img src="{$vo.item_img}" width="50"/></td>
+					<td>自定义</td>
+					</if>
+					<td><if condition="$vo['is_custom'] eq 1"><a class="btn btn-xs btn-default" data-title="编辑" data-toggle="remote-dialog" data-href="{:U('plate_item_edit?id='.$vo['id'].'&plate_id='.$_GET['id'])}">编辑</a>&nbsp;</if><a class="btn btn-xs btn-danger" data-reload="true" data-toggle="ajax-link" data-href="{:U('plate_item_del?plate_id='.$_GET['id'].'&id='.$vo['id'])}">删除</a></td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/js/jquery.form.js"></script>
+<script src="{:STATICS}/pnotify/pnotify.custom.min.js"></script>
+<script>
+	function openDialog (argument) {
+		BootDialog.showFrame("选择商品","{:U('plate_item_edit',['plate_id'=>$_GET['id']])}",400,
+		{
+			size:'size-wide',
+			onhide:function(){
+				location.reload();
+			}
+		});
+	}
+</script>
+</block>

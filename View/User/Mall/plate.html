@@ -1,0 +1,65 @@
+<extend name="Public:innerbase" />
+<block name="css">
+</block>
+<block name="content">
+<div class="page-topbar">
+	<ol class="breadcrumb">
+	  <li><a href="/User/Index/home.html">控制台</a></li>
+	  <li class="active">栏目管理</li>
+	</ol>
+</div>
+<div class="container-fluid">
+	<a class="btn btn-success" href="{:U('plate_edit')}">添加栏目</a>
+	<a class="btn btn-primary" data-toggle="ajax-link" data-href="{:U('plate_update')}">更新栏目</a>
+	<hr/>
+	<div class="table-responsive">
+		<table class="table table-bordered wm-table-bordered table-striped">
+			<thead>
+				<tr>
+				<th>栏目标题</th>
+				<th>显示顺序</th>
+				<th>状态</th>
+				<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<tr>
+					<td>{$vo.title}</td>
+					<td>{$vo.sort}</td>
+					<td><if condition="$vo['status'] eq 1">显示<else/>隐藏</if></td>
+					<td><a class="btn btn-xs btn-default" href="{:U('plate_edit?id='.$vo['id'])}">编辑</a>&nbsp;<a class="btn btn-xs btn-default" href="{:U('plate_item?id='.$vo['id'])}">栏目商品</a>&nbsp;<a class="btn btn-xs btn-danger" href="{:U('plate_del?id='.$vo['id'])}">删除</a></td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/js/jquery.form.js"></script>
+<script src="{:STATICS}/pnotify/pnotify.custom.min.js"></script>
+<script>
+	$('.ajax-form').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+				jump(2000);
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		}
+	});
+	function jump(delay){
+		delay = delay || 3000;
+		setTimeout("location.reload()",delay);
+	}
+</script>
+</block>

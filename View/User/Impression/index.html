@@ -1,0 +1,49 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>印象管理</h3>
+		<code><?php echo rtrim(C('wap_domain'),'/').U('Wap/Impression/index',['token'=>session('token'),'wechat_id'=>'{wechat_id}']);?></code>
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs">
+		<li  class="active"><a href="javascript:void(0)">粉丝印象</a></li>
+		<li><a href="{:U('User/Impression/config')}">回复配置</a></li>
+	</ul>
+	
+	<a href="{:U('Impression/add')}" class="btn btn-success" style="margin-top:16px;">添加印象</a>
+	<hr/>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr> 
+			<th>印象标题</th>
+			<th>印象数</th>
+			<th>是否显示</th>
+			<th>显示顺序</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		<if condition="$impress eq ''">
+		<tr>
+		<td colspan="5" style="text-align:center; height:30px;"><strong>请先至少添加5项印象.</strong></td>
+		</tr>
+		<else/>
+		<volist name="impress" id="list">
+		<tr>
+		<td>{$list['title']}</td>
+		<td>{$list['comment']}</td>
+		<td><if condition="$list['is_show'] eq 1">显示<else/>不显示</if></td>
+		<td>{$list['sort']}</td>
+		<td style="text-align:center; ">
+			<a href="{:U('edit',array('id'=>$list['id']))}" class="btn btn-xs btn-default">编辑</a>
+			<a href="{:U('del',array('id'=>$list['id']))}" class="btn btn-xs btn-danger">删除</a></a>
+		</td>
+		</tr>
+		</volist>
+		</if>
+		</tbody>
+	</table>
+    <div class="pages">{$page}</div>
+</div>
+</block>

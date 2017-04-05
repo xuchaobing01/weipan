@@ -1,0 +1,479 @@
+﻿<extend name="Public:base" />
+<block name="title">
+<title> {:C('site_title')}|{:C('site_name')}</title>
+</block>
+<block name="css">
+<style type="text/css">
+    td{
+        max-width: 500px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+</style>
+</block>
+<block name="nav">
+	<ul class="nav navbar-nav">
+		<li class="active"><a href="#">公众号管理</a></li>
+		<li><a href="{:U('User/Index/index')}">平台管理</a></li>
+		<!--<li><a href="http://www.weimarket.cn/introduction.html" target="_blank">功能介绍</a></li>
+		<li><a href="http://www.weimarket.cn/help.html" target="_blank">使用说明</a></li>-->
+	</ul>
+</block>
+<block name="content">
+	<div class="west-pane">
+    <ul class="nav nav-stacked wx-sidenav" style="max-width: 300px;">
+      <li class="">
+        <a href="javascript:void(0)">
+			<span>我的公众号</span>
+			<span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+        </a>
+        <ul class="nav nav-pills nav-stacked wx-subnav">
+			<li class="">
+				<a href="javascript:void(0)" src="{:U('Wxaccount/index')}">账号信息</a>
+			</li>
+			<if condition="($_SESSION['sub_id'] eq 0)">
+			<li class="">
+				<a href="javascript:void(0)" src="{:U('Function/home')}">功能管理</a>
+			</li>
+			<li class="" style="display:none;">
+				<a href="javascript:void(0)" src="{:U('Wxaccount/auth')}">授权设置</a>
+			</li>
+			<li class="">
+				<a href="javascript:void(0)" src="{:U('Requerydata/index')}">运营统计</a>
+			</li>
+			</if>
+        </ul>
+		</li>
+		<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'editor')">
+		<li>
+			<a href="javascript:void(0)">
+			  <span>回复设置</span>
+			  <span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Other/index')}">默认回复</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Areply/index')}">关注时回复</a>
+				</li>
+				<li class=""><a href="javascript:void(0)" src="{:U('Text/index')}">文本回复</a></li>
+				<li class=""><a href="javascript:void(0)" src="{:U('Img/index')}">图文回复</a></li>
+				<li class=""><a href="javascript:void(0)" src="{:U('Voiceresponse/index')}">语音回复</a></li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Kefu/set')}">智能客服</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Diymen/index')}">自定义菜单</a>
+				</li>
+			</ul>
+		</li>
+		</if>
+		<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'editor')">
+		<li>
+			<a href="javascript:void(0)">
+				<span>微网站</span>
+				<span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Home/set')}">回复配置</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Flash/index')}">首页幻灯片</a>
+				</li>
+                <li class="">
+                    <a href="javascript:void(0)" src="{:U('animation/edit')}">开机动画</a>
+                </li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Classify/index')}">分类管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Article/index')}">文章管理</a>
+				</li>
+                <li class="">
+                    <a href="javascript:void(0)" src="{:U('Picture/index')}">图片管理</a>
+                </li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Homemenu/index')}">导航菜单配置</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Tmpls/index')}">模板配置</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="javascript:void(0)">
+			  <span>微相册</span>
+			  <span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Photo/replySet')}">回复配置</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Photo/index')}">相册管理</a>
+				</li>
+				<if condition="$Think.session.gid gt 1">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Panorama/index')}">全景图像</a>
+				</li>
+				</if>
+			</ul>
+		</li>
+		</if>
+		<if condition="($_SESSION['sub_id'] eq 0)">
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+			  <span>微门店</span>
+			  <span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Company/index')}">门店管理</a>
+				</li>
+			</ul>
+		</li>
+		</if>
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+			  <span>微CRM</span>
+			  <span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Crm/user')}">粉丝管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Crm/qrcode_scene')}">二维码管理</a>
+				</li>
+			</ul>
+		</li>
+		</if>
+		</if>
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+			  <span>行业应用</span>
+			  <span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'kefu')">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Selfform/index')}">微预约</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Reply/index')}">微留言</a>
+				</li>
+				</if>
+				<if condition="($_SESSION['sub_id'] eq 0)">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Host/index')}">微订单</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Impression/index')}">印象墙</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Diaoyan/index')}">微调研</a>
+				</li>
+				</if>
+			</ul>
+		</li>
+		</if>
+		<if condition="($_SESSION['sub_id'] eq 0)">
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+			  <span>微商城</span>
+			  <span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Product/replySet')}">回复配置</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Product/index')}">商品管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Product/cats')}">分类管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Product/orders')}">订单管理</a>
+				</li>
+			</ul>
+		</li>
+		</if>
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+				<span>微餐饮</span>
+				<span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Dining/replySet')}">回复配置</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Dining/orders')}">订单管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Dining/index')}">菜品管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Dining/cats')}">菜品分类管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Dining/tables')}">桌台管理</a>
+				</li>
+                <li class="">
+                    <a href="javascript:void(0)" src="{:U('Dining/sms')}">短信提醒</a>
+                </li>
+			</ul>
+		</li>
+		</if>
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+				<span>微房产</span>
+				<span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Estate/index')}">房产配置</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Estate/son')}">楼盘管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Estate/housetype')}">户型管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Estate/album')}">楼盘相册</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Estate/reservation')}">预约管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Estate/expert')}">专家点评</a>
+				</li>
+			</ul>
+		</li>
+		</if>
+		<if condition="$Think.session.gid gt 1">
+          <li>
+              <a href="javascript:void(0)">
+                  <span>微旅游</span>
+                  <span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+              </a>
+              <ul class="nav nav-pills nav-stacked wx-subnav">
+                  <li class="">
+                      <a href="javascript:void(0)" src="{:U('lvyou/index')}">旅游区简介</a>
+                  </li>
+                  <li class="">
+                      <a href="javascript:void(0)" src="{:U('lvyou/son')}">景区</a>
+                  </li>
+                  <li class="">
+                      <a href="javascript:void(0)" src="{:U('lvyou/housetype')}">景点</a>
+                  </li>
+                  <li class="">
+                      <a href="javascript:void(0)" src="{:U('lvyou/album')}">风景相册</a>
+                  </li>
+                  <li class="">
+                      <a href="javascript:void(0)" src="{:U('Estate/expert')}">专家点评</a>
+                  </li>
+                  <li class="">
+                      <a href="javascript:void(0)" src="{:U('lvyou/reservation',array('thetype'=>'lvyou'))}">预约管理</a>
+                  </li>
+              </ul>
+          </li>
+		</if>
+		</if>
+		<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'editor')">
+		<li>
+			<a href="javascript:void(0)">
+				<span>微活动</span>
+				<span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Lottery/index')}">幸运转盘</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Coupon/index')}">优惠券</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Guajiang/index')}">刮刮卡</a>
+				</li>
+			</ul>
+		</li>
+		</if>
+		
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+			  <span>微会员</span>
+			  <span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'editor')">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Membercard/replySet')}">回复配置</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Membercard/card')}">会员卡管理</a>
+				</li>
+				</if>
+				<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'kefu') OR ($_SESSION['uname'] eq 'editor')">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Member/index')}">会员管理</a>
+				</li>
+				</if>
+				<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'editor')">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Membercard/info')}">会员卡详情</a>
+				</li>
+				</if>
+			</ul>
+		</li>
+		</if>
+		
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+				<span>微商城行业版</span>
+				<span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<if condition="($_SESSION['sub_id'] eq 0)">
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-index-panel.html">商城信息</a>
+				</li>
+				</if>
+				<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'kefu') OR ($_SESSION['uname'] eq 'kefu2')">
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-item_order-index-menuid-296.html">订单管理</a>
+				</li>
+				</if>
+				<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'editor')">
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-item-index-menuid-52.html">商品管理</a>
+				</li>
+				</if>
+				
+				<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'kefu')">
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-item_comment-index-menuid-186.html">商品评论</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('MallService/index')}">售后服务</a>
+				</li>
+				</if>
+				<if condition="($_SESSION['sub_id'] eq 0) OR ($_SESSION['uname'] eq 'editor')">
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-ad-index-menuid-12.html">广告管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-item-add-menuid-249.html">添加商品</a>
+				</li>
+				
+                <li class="">
+                    <a href="javascript:void(0)" src="/mall/index.php/admin-item_cate-index-menuid-56.html">商品分类</a>
+                </li>
+                <li class="">
+                    <a href="javascript:void(0)" src="/mall/index.php/admin-item_color-index-menuid-309.html">商品颜色</a>
+                </li>
+                <li class="">
+                    <a href="javascript:void(0)" src="/mall/index.php/admin-item_size-index-menuid-310.html">商品规格</a>
+                </li>
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-reply-set.html">回复配置</a>
+				</li>
+				</if>
+				<if condition="($_SESSION['sub_id'] eq 0)">
+			
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-brandlist-index-menuid-291.html">品牌管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('mall/set')}">商城设置</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('MallAnalysis/page')}">商城统计</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('paycfg/index')}">支付管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-delivery-index-menuid-297.html">快递管理</a>
+				</li>
+                <li class="">
+                    <a href="javascript:void(0)" src="/mall/index.php/admin-item_order-address-index-menuid-298.html">收货地址管理</a>
+                </li>
+				<li class="">
+					<a href="javascript:void(0)" src="/mall/index.php/admin-address-index-menuid-298.html">发货地址管理</a>
+				</li>
+				
+				</if>
+			</ul>
+		</li>
+		</if>
+		<if condition="($_SESSION['sub_id'] eq 0)">
+		<if condition="$Think.session.gid gt 1">
+		<li>
+			<a href="javascript:void(0)">
+				<span>微教育</span>
+				<span class="glyphicon glyphicon-chevron-down wx-sidenav-icon"></span>
+			</a>
+			<ul class="nav nav-pills nav-stacked wx-subnav">
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Edu/school')}">校区管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Edu/teach')}">名师管理</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0)" src="{:U('Edu/stu')}">明星学员</a>
+				</li>
+			</ul>
+		</li>
+		</if>
+		</if>
+    </ul>
+	</div>
+	<div id="wp" class="wp center-pane">
+		<iframe frameBorder="0" id="contentFrame" class="contentFrame" src="{:U('Wxaccount/index')}" ></iframe>
+	</div>
+</block>
+<block name="js">
+<script type="text/javascript">
+	$(".wx-sidenav>li>a").click(function(e){
+		if($(this).parent().hasClass("active")){
+			$(this).children('.glyphicon').removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down")
+			.end().siblings(".nav").hide(500);
+			$(this).parent().removeClass("active");
+		}
+		else{
+			$(".wx-sidenav>li.active").removeClass("active")
+			.find(".glyphicon").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down")
+			.end().find(".nav").hide();
+			$(this).parent().addClass("active");
+			$(this).find(".glyphicon")
+			.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up")
+			.end().siblings(".nav").show(500);
+		}
+	});
+	
+	$(".nav-pills>li>a").click(function(e){
+		if(!$(this).hasClass("active")){
+			$(".wx-subnav a.active").removeClass("active");
+			$(this).addClass("active");
+			$("#wp>iframe").attr("src",$(this).attr("src"));
+		}
+		else{
+			$("#wp>iframe")[0].contentWindow.location.reload();
+		}
+	});
+</script>
+</block>

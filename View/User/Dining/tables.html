@@ -1,0 +1,31 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>桌台管理</h4>
+	</div>
+	<a style="margin:10px 0;" href="{:U('Dining/tableAdd')}" title="添加桌台" class="btn btn-primary">添加桌台</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="160">名称</th>
+		<th>简介</th>
+		<th width="160">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="tables" id="o"> 
+		<tr>
+		<td>{$o.name}</td>
+		<td>{$o.intro}</td>
+		<td>
+			<a class="btn btn-xs btn-default" href="{:U('Dining/tableSet',array('id'=>$o['id']))}">修改</a>
+			<a class="btn btn-xs btn-danger" href="{:U('Dining/tableDel',array('id'=>$o['id']))}">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

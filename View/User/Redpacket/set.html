@@ -1,0 +1,159 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css" />
+</block>
+<block name="js">
+<include file="Public:upload" />
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script>
+$(function(){
+	$("#editForm").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+	$('#editForm').ajaxForm({
+		beforeSubmit:function(){
+			var type = $('input[name="packet_type"]').val();
+			if(type==1){
+				
+			}
+			//return true;
+		},
+		success:function(resp){
+			if(resp.status == 1){
+				notify(resp.info);
+				location.href = resp.url;
+			}
+		}
+	});
+});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>{$title}&nbsp;</h4>
+		<if condition="$set['id']"><code><?php echo rtrim(C('wap_domain'),'/').U('Wap/redpacket/index',['id'=>$set['id'],'token'=>session('token')]);?></code><br/></if>
+		<a class="btn btn-sm btn-default" href="{:U('Redpacket/index')}">
+			<span class="fa fa-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" role="form" action="" method="post">
+		<input type="hidden" name="id" value="{$set.id}"/>
+		<div class="form-group">
+			<label for="title" class="col-sm-2 control-label">活动名称：</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control validate[required]" id="title" name="title" value="{$set.title}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">二维码</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.imgs}" id="imgs" name="imgs" />
+				<img id="imgsHolder" style="width:150px;height:150px;" <if condition="!$set['imgs']">data-src="$holder.js/150x150/gray/text:250*250"</if> src="{$set.imgs}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('imgs')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('imgs')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">活动详情</label>
+			<div class="col-sm-4">
+				<textarea class="form-control validate[required]" rows="4" name="detail">{$set['detail']|default='活动详情！'}</textarea>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="info" class="col-sm-2 control-label">活动规则</label>
+			<div class="col-sm-4">
+				<textarea class="form-control" id="info" rows="4" name="info">{$set['info']}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="desc" class="col-sm-2 control-label">红包祝福语</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control validate[required]" rows="4" name="desc"  value="{$set['desc']|default='恭喜您！'}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">活动开始时间</label>
+			<div class="col-sm-2">
+				<input type="text" data-toggle="datetime-picker" class="form-control validate[required]" name="start_time" value="{$set.start_time|default=date('Y-m-d')}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">活动结束时间</label>
+			<div class="col-sm-2">
+				<input type="text" data-toggle="datetime-picker" class="form-control validate[required]" name="end_time" value="{$set.end_time|default=date('Y-m-d',time()+86400*7)}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">红包类型</label>
+			<div class="col-sm-4">
+				<label class="radio-inline">
+					<input type="radio" name="packet_type" <?php if($set==null or $set['packet_type'] == 1)echo 'checked'; ?> value="1" /> 普通红包
+				</label>
+				<label class="radio-inline">
+					<input type="radio" <?php if($set['packet_type'] == 2)echo 'checked'; ?> name="packet_type" value="2" /> 手气红包
+				</label>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-2 control-label">红包面额</label>
+			<div class="col-sm-2">
+				<input type="text" class="form-control validate[required,custom[number]]" name="item_unit" value="{$set.item_unit|default=1.00}" />
+				<span class="help-block">普通红包的面值</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">面额上限</label>
+			<div class="col-sm-2">
+				<input type="text" class="form-control validate[required,custom[number]]" name="item_max" value="{$set.item_max|default=1.00}" />
+				<span class="help-block">单个红包可被抽取的最大值</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sort" class="col-sm-2 control-label">红包总数</label>
+			<div class="col-sm-2">
+				<input type="text" class="form-control validate[required,custom[integer]]" name="item_num" value="{$set.item_num|default=100}" />
+				<span class="help-block">充许发放的红包数量</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">活动资金</label>
+			<div class="col-sm-2">
+				<input type="text" class="form-control validate[required,custom[number]]" name="item_sum" value="{$set.item_sum|default=100}" />
+				<span class="help-block">红包资金总额</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="img" class="col-sm-2 control-label">分享图片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.share_img}" id="share_img" name="share_img" />
+				<img id="share_imgHolder" style="width:300px;height:150px;" <if condition="!$set['share_img']">data-src="$holder.js/300x150/gray/text:600*300"</if> src="{$set.share_img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('share_img')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('share_img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

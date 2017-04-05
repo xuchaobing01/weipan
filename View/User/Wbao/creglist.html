@@ -1,0 +1,75 @@
+<extend name="Public:innerbase"/> 
+<block name="css">
+<style type="text/css">
+	.wm-row{
+		margin: 20px 0;
+	}
+</style>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+    <script>
+        function drop_confirm(msg, url){
+            if(confirm(msg)){
+                window.location = url;
+            }
+        }
+    </script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+	<a class="btn btn-sm btn-default" href="{:U('Wbao/index')}"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+	</div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs">
+
+		<li><a href="{:U('Wbao/breglist')}">商家注册信息</a></li>
+		<li class="active"><a href="javascript:void(0)">狗仔注册信息</a></li>
+		<li><a href="{:U('Wbao/user')}">会员兑换码</a></li>
+	</ul>
+	<div class="wm-row">
+		<div class="btn-group">
+		<code><?php echo C('WAP_DOMAIN').'/wap/wbao/Customer?token='.session('token');?></code><br />
+			<form class="form-inline" method="get" action="{:U('reglist')}" id="form1">	
+                <input type="text" class="form-control" placeholder="手机号码/姓名" value="{$_GET['find']}" name="find">
+				<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i>&nbsp;查找</button>
+			</form>
+		</div>
+	</div>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th class="select"><input type="checkbox" value="反选" name="button" id="selected"  style="color:#94D38A;"></th>
+		<th>姓名</th>
+		<th>联系方式</th>
+		<th>支付宝/银行卡</th>
+		<th>提交时间</th>
+		<th>微信号</th>
+		<th>审核信息</th>
+		<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="res" id="item"> 	
+		<tr >
+		<td id="playlist"><input type="checkbox" name="items" value="{$item.id}"  class="checkitem" /></td>
+		<td>{$item.name}</td>
+		<td>{$item.telphone}</td>
+		<td>{$item.card}</td>
+		<td>{$item.createtime|date="Y-m-d H:i:s",###}</td> 
+		<td>{$item.wechat_name}</td>
+		<td><if condition="$item.status eq 1"><span style="color:green">审核通过</span> <elseif condition="$item.status eq 2" /><span style="color:red;">未通过</span> <else />未审核</if></td>
+		<td>
+			<a class="btn btn-xs btn-info" href="{:U('User/Wbao/cedit',array('id'=>$item['id'],'token'=>$token))}">
+				查看详情-审核
+		</a>	
+			</td>
+		</tr>
+
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

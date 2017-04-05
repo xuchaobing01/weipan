@@ -1,0 +1,43 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>语音回复管理</h4>
+		<a class="btn btn-success" href="{:U('Voiceresponse/edit')}">
+		<span class="glyphicon glyphicon-music"></span>&nbsp;新增语音回复</a>
+	</div>
+	<table class="table wm-table-bordered table-stripped">
+		<THEAD>
+			<TR>
+				<TH>关键词</TH>
+				<TH>标题</TH>
+				<TH>试听</TH>
+				<TH>浏览次数</TH>
+				<TH>修改时间</TH>
+				<TH>操作</TH>
+			</TR>
+        </THEAD>
+		<tbody>
+			<volist name="info" id="vo">
+				<tr>
+				<td>{$vo.keyword}</td>
+                <td>{$vo.title}</td>
+				<td>
+					<div class="audiojs  error playing" classname="audiojs" id="audiojs_wrapper0">
+					<audio src="{$vo.musicurl}" preload="auto"></audio>
+					<div class="play-pause">
+						<em class="played">00:00</em>/<strong class="duration">00:00</strong>
+					</div>
+					<div class="error-message">Error loading</div>
+					</div>
+				</td>
+                <td>{$vo.click}</td>
+                <td>{$vo['updatetime']|date='Y-m-d',###}</td>
+				<td>
+				<a class="btn btn-xs btn-primary" href="{:U('Voiceresponse/edit',array('id'=>$vo['id']))}" title="编辑图文自定义回复">编辑</a>
+				<a class="btn btn-xs btn-danger" href="javascript:drop_confirm('您确定要删除吗?', \'{:U('Voiceresponse/del',array('id'=>$vo['id']))}\');">删除</a>
+			</volist>
+		</tbody>
+	</table>
+</div>
+</block>

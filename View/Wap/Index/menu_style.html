@@ -1,0 +1,25 @@
+<include file="$menuStyle"/>
+<script type="text/javascript">
+function displayit(n){
+	$('.menu_font').not('#menu_list'+n).hide();
+	if($('#menu_list'+n)){
+		$('#menu_list'+n).toggle();
+	}
+}
+
+function closeall(){
+	var count = document.getElementById("top_menu").getElementsByTagName("ul").length;
+	for(i=0;i<count;i++){
+		document.getElementById("top_menu").getElementsByTagName("ul").item(i).style.display='none';
+	}
+	document.getElementById("plug-wrap").style.display='none';
+}
+</script>
+<style type="text/css">
+.top_menu label{
+	display:inline;
+}
+.plug-menu:focus{
+	outline:0 none !important;
+}
+</style>

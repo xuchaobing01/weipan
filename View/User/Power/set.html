@@ -1,0 +1,36 @@
+<extend name="Public:innerbase"/>
+<block name="content">
+	<div class="container-fluid">
+		<div style="margin:10px 0;">
+			<a href="{:U('Power/addactivity')}"  title="添加活动" class="btn btn-success">添加活动</a>
+		</div>
+		<table class="table table-striped wm-table-bordered">
+			<thead>
+				<tr>
+					<th>标题</th>
+					<th class="time">开始时间</th>
+					<th class="time">结束时间</th>
+					<th>助力人数</th>				
+					<th class="norightborder">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist id="list" name="list">
+				<tr>
+					<td>{$list.title}</td>
+					<td>{$list.starttime|date='Y-m-d H:i',###}</td>
+					<td>{$list.endtime|date='Y-m-d H:i',###}</td>
+					<td>{$list.score}</td>
+
+					<td class="norightborder">
+						<a href="{:U('Power/message',array('id'=>$list['id']))}" title="投票结果">爱心留言</a> |
+						<a href="{:U('Power/tongji',array('id'=>$list['id']))}" title="编辑">数据统计</a> |		
+						<a href="{:U('Power/edit',array('id'=>$list['id']))}" title="编辑">编辑</a> |
+						<a href="javascript:spark.confirm_jump('您确定要删除吗?删除会把投票结果也一起删除！', '{:U('Power/activitydel',array('id'=>$list['id']))}');">删除</a> 
+					</td>
+				</tr>
+				</volist>
+			</tbody>
+        </table>
+	</div>
+</block>

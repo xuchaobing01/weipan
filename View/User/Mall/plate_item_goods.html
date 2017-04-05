@@ -1,0 +1,70 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/pnotify/pnotify.custom.min.css" />
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>栏目商品管理</h4>
+	</div>
+	<a class="btn btn-primary" href="javascript:openDialog()">添加商品</a>
+	<hr/>
+	<div class="table-responsive">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+				<th>商品标题</th>
+				<th>显示顺序</th>
+				<th>状态</th>
+				<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<tr>
+					<td>{$vo.title}</td>
+					<td>{$vo.sort}</td>
+					<td><if condition="$vo['is_show'] eq 1">显示<else/>隐藏</if></td>
+					<td><a class="btn btn-xs btn-default" href="{:U('plate_edit?id='.$vo['id'])}">编辑</a>&nbsp;<a class="btn btn-xs btn-default" href="{:U('plate_item?id='.$vo['id'])}">栏目商品</a>&nbsp;<a class="btn btn-xs btn-danger" href="{:U('plate_del?id='.$vo['id'])}">删除</a></td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/js/jquery.form.js"></script>
+<script src="{:STATICS}/pnotify/pnotify.custom.min.js"></script>
+<script>
+	function openDialog (argument) {
+		BootDialog.showFrame("选择商品","{:U('plate_item_edit',['plate_id'=>$_GET['id']])}",380);
+	}
+	$('.ajax-form').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+				jump(2000);
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		}
+	});
+	function jump(delay){
+		delay = delay || 3000;
+		setTimeout("location.reload()",delay);
+	}
+</script>
+</block>

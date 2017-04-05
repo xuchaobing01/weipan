@@ -1,0 +1,62 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/pnotify/pnotify.custom.min.css" />
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<a class="btn btn-sm btn-default" href="{:U('coupon',['cid'=>$_GET['cid']])}"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回</a>
+		<h4>优惠券SN码管理</h4>
+	</div>
+	<table class="table table-bordered table-striped table-hover">
+		<thead>
+			<td>序号</td>
+			<td>SN码</td>
+			<td>状态</td>
+		</thead>
+		<tbody>
+			<volist name="list" id="vo">
+			<tr>
+				<td>{$i}</td>
+				<td>{$vo.sncode}</td>
+				<td>
+				<switch name="vo['status']">
+					<case value="0">未领取</case>
+					<case value="1">已领取</case>
+					<case value="2">已使用</case>
+				</switch>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/js/jquery.form.js"></script>
+<script src="{:STATICS}/pnotify/pnotify.custom.min.js"></script>
+<script>
+	$('.ajax-form').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		}
+	});
+</script>
+</block>

@@ -1,0 +1,102 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+<script type="text/javascript" src="{:RES}/js/date/WdatePicker.js"></script>
+<include file="Public:upload" />
+<script type="text/javascript">
+$(function(){
+	$("#check_box").click(function(){
+		var checkItems=$('.cbitem');
+		if ($(this).is(':checked')==false) {
+			$('.cbitem').each(function(i,e){
+				$(e).attr('checked',false);
+			});
+		}else{
+			$('.cbitem').each(function(i,e){
+				$(e).attr('checked',true);
+			});
+		}
+	});
+});
+</script>
+<script type="text/javascript">
+function showIntroDetail(url){
+	art.dialog.open(url,{lock:false,title:'订单详情',width:700,height:420,yesText:'关闭',background: '#000',opacity: 0.87});
+}
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>订单管理</h4>
+		<div class="alert alert-info">
+			<a href="{:U('Dining/orders',array('handled'=>0))}">未处理订单<span style="color:#f00">{$unhandledCount}</span>个</a>
+		</div>
+	</div>
+	<form class="form-inline" role="form">
+		<div class="form-group">
+			<button type="button" onclick="$('#info').submit()" title="" class="btn btn-primary">处理订单</button>
+		</div>
+		<div class="form-group">
+			<select name="handled" class="form-control">
+				<option value="2" <if condition="$_GET['handled'] eq 2">selected</if>>全部订单</option>
+				<option value="0" <if condition="isset($_GET['handled']) and $_GET['handled'] eq 0">selected</if>>未处理订单</option>
+				<option value="1" <if condition="$_GET['handled'] eq 1">selected</if>>已经处理订单</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<input type="input" class="form-control" name="keyword" value="{:$_GET['keyword']}" placeholder="姓名、电话">
+		</div>
+		<div class="form-group">
+			<input type="input" class="form-control" name="date" value="{:$_GET['date']}" onclick="WdatePicker();" placeholder="下单时间">
+		</div>
+		<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+	</form>
+	<hr/>
+	<table class="table wm-table-bordered">
+		<form id="info" method="post">
+		<thead>
+		<tr>
+		<th width="60"><input type="checkbox" id="check_box" /></th>
+		<th width="70">姓名</th>
+		<th width="80">电话</th>
+		<th class="60">数量</th>
+		<th width="100">总价（元）</th>
+		<th>类型</th>
+		<th class="160">付款状态/发货状态</th>
+		<th class="60">状态</th>
+		<th width="160">下单时间</th>
+		<th width="150" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="orders" id="o"> 
+		<tr>
+		<td><input type="checkbox" value="{$o.id}" class="cbitem checkbox" name="id[]" /></td>
+		<td>
+		{$o.linkman}
+		</td>
+		<td>{$o.cellphone}</td>
+		<td>{$o.total}</td>
+		<td>{$o.price}</td>
+		<td>
+		<span style="color:#f60">[<if condition="$o.dining_type eq 1">点餐<elseif condition="$o.dining_type eq 2" />外卖<elseif condition="$o.dining_type eq 3" />预定<else />未选择</if>]</span>
+		</td>
+		<td>
+		<if condition="$o.is_paid eq 1"><span style="color:green">已付款</span><else/><span style="color:red">未付款</span></if> / <if condition="$o.is_sent eq 1"><span style="color:green">已发货</span><else/><span style="color:red">未发货</span></if>
+		</td>
+		<td><if condition="$o.is_handled eq 1"><span style="color:green">已处理</span><else/><span style="color:red">未处理</span></if>
+		</td>
+		<td>{$o.create_time|date="Y-m-d H:i:s",###}</td> 
+		<td>
+			<a href="###" onclick="showIntroDetail('{:U('Dining/orderInfo',array('id'=>$o['id']))}')">详细</a>
+			<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Dining/deleteOrder',array('id'=>$o['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+		</form>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

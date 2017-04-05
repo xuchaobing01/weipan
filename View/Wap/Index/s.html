@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+
+<title>景区地图</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=30,user-scalable=yes"/>
+<style>
+	body{
+		background: white;
+	}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <img src="/Public/Wap/images/chaxixiaozhen/chaxi.jpg" />
+</div>
+</body>
+<script type="text/javascript" src="/Public/Common/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+	wx.config({
+		debug: false,
+		appId:'<?php  echo $shareConfig['appid']?>', // 必填，公众号的唯一标识
+		timestamp:<?php  echo $shareConfig['timestamp']?>, // 必填，生成签名的时间戳
+		nonceStr: '<?php  echo $shareConfig['noncestr']?>', // 必填，生成签名的随机串
+		signature: '<?php  echo $shareConfig['signature']?>',// 必填，签名
+		jsApiList: [ 'checkJsApi',
+			'onMenuShareTimeline',
+			'onMenuShareAppMessage',
+			'onMenuShareQQ',
+			'onMenuShareWeibo',
+			'hideMenuItems',
+			'showMenuItems',
+			'hideAllNonBaseMenuItem',
+			'showAllNonBaseMenuItem','previewImage']
+	});
+	var wxData = {
+		/*"imgUrl":"http://weimarket.qiniudn.com/754%2FMTQzMDMxMzEyNjAuNDI5OTU3MDA%3D?imageView2/2/w/320/h/320",*/
+        "imgUrl":"/Public/",
+		"link": document.URL,
+		"desc":"茶溪小镇景区地图导航",
+		"title":"景区地图"
+	};
+	wx.ready(function(){
+		//分享到朋友圈
+		wx.onMenuShareTimeline({
+			title: wxData.title, // 分享标题
+			link: wxData.link, // 分享链接
+			imgUrl: wxData.imgUrl, // 分享图标
+			success: function () {
+				alert('分享成功！');
+			},
+			cancel: function () { 
+				// 用户取消分享后执行的回调函数
+			}
+		});
+		//分享给朋友
+		wx.onMenuShareAppMessage({
+			title: wxData.title, // 分享标题
+			desc: wxData.desc, // 分享描述
+			link: wxData.link, // 分享链接
+			imgUrl: wxData.imgUrl, // 分享图标
+			type: '', // 分享类型,music、video或link，不填默认为link
+			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+			success: function () { 
+				alert('分享成功！');
+			},
+			cancel: function () { 
+				// 用户取消分享后执行的回调函数
+			}
+		});
+		wx.onMenuShareQQ({
+			title: wxData.title, // 分享标题
+			desc: wxData.desc, // 分享描述
+			link: wxData.link, // 分享链接
+			imgUrl: wxData.imgUrl, // 分享图标
+			success: function () { 
+			   alert('分享成功！');
+			},
+			cancel: function () { 
+			   // 用户取消分享后执行的回调函数
+			}
+		});
+		$('img').click(function(){
+			wx.previewImage({
+				current: 'http://weimarket.qiniudn.com/754/MTQzMDM3Mjc1NjAuMTIwMzIzMDA=?imageView2/2/w/960/h/640', // 当前显示的图片链接
+				urls: ['http://weimarket.qiniudn.com/754/MTQzMDM3Mjc1NjAuMTIwMzIzMDA=?imageView2/2/w/2800/h/1920'] // 需要预览的图片链接列表
+			});
+		});
+	});
+	wx.error(function(res){
+		
+	});
+</script>
+</html>

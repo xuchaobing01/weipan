@@ -1,0 +1,42 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<!-- Nav tabs -->
+	<div class="page-header">
+		<a href="{:U('card')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:void(0)">VIP特权</a></li>
+		<li><a href="{:U('Membercard/coupon',['cid'=>$_GET['cid']])}">优惠券</a></li>
+		<li><a href="{:U('Membercard/integral',['cid'=>$_GET['cid']])}">礼品券</a></li>
+	</ul>
+	<div class="page-header wm-page-header">
+		<a class="btn btn-primary" href="{:U('Membercard/privilege_add',['cid'=>$_GET['cid']])}">发布VIP特权</a>
+	</div>
+	 <table class="table wm-table-bordered">
+		  <thead>
+			<tr>
+				<th>特权名称</th>
+				<th>开始时间</th>
+				<th>结束时间</th>
+				<th>操作</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<volist name="data_vip" id="data_vip">           
+			<tr>
+				<td><div class="answer_text">{$data_vip.title}</div></td>
+				<td><if condition="$data_vip['type'] eq 1">无时间限制<else/>{$data_vip.startdate|date='Y-m-d',###}</if></td>
+				<td><if condition="$data_vip['type'] eq 1">无时间限制<else/>{$data_vip.enddate|date='Y-m-d',###}</if></td>
+				<td class="norightborder">
+					<a class="btn btn-xs btn-default" href="{:U('Membercard/privilege_edit',array('id'=>$data_vip['id'],'cid'=>$_GET['cid']))}">编辑</a>
+					<a class="btn btn-xs btn-danger" href="{:U('Membercard/privilege_del',array('id'=>$data_vip['id'],'cid'=>$_GET['cid']))}">删除</a>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+</block>

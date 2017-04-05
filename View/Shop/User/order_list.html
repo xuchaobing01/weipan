@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>订单列表</title>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/flat-ui/css/flat-ui.css" />
+<link type="text/css" rel="stylesheet" href="/Public/Shop/css/default.css">
+<style>
+	body{
+		background-color: rgb(238, 238, 238);
+	}
+	h4,h5{
+		font-size: 18px;
+	}
+	.order-item .media-object{
+		max-width: 100px;
+	}
+	.order-item .media-heading{
+		font-size: 16px;
+	}
+	.order{
+		background-color:white;
+		color: rgb(105, 105, 105);
+		padding:5px 15px;
+		border-top: 1px solid rgb(221, 221, 221);
+		/*border-bottom: 1px solid rgb(221, 221, 221);*/
+	}
+	.order-top{
+		padding-bottom: 5px;
+		border-bottom: 1px solid rgb(221, 221, 221);
+	}
+	.order-bottom{
+		padding-top: 5px;
+		text-align:right;
+		border-top: 1px solid rgb(221, 221, 221);
+	}
+	.order-action{
+		padding-top: 5px;
+		text-align:right;
+		border-top: 1px solid rgb(221, 221, 221);
+	}
+	.order .media-list{
+		margin: 10px 0;
+	}
+	.time-ticker{
+		font-size: 10px;
+	}
+	.media-list .media:not(:last-child){
+		border-bottom: 1px solid rgb(221, 221, 221);
+	}
+</style>
+</head>
+<body>
+<div style="padding-top: 20px;">
+	<notempty name="item_orders">
+    <volist name='item_orders' id='vo' >
+	<ul class="order-list">
+		<li class="order">
+			<div class="order-top">订单号:  <a href="{:U('Order/checkOrder',array('orderId'=>$vo['orderId'],'status'=>$status,'token'=>$token))}">{$vo.orderId}</a></div>
+			<ul class="media-list">
+				<volist name="vo.items" id="item">
+				<li class="media order-item">
+					<a class="pull-left" href="{:U('Item/index',array('id'=>$item['itemId'],'token'=>$token))}">
+					  <img class="media-object" src="{$item.img}" alt="">
+					</a>
+					<div class="media-body">
+						<h5 class="media-heading">{$item.title}</h5>
+						<if condition="$vo['status'] eq 4">
+						<if condition="$vo['has_comment'] eq 0">
+							<a class="pull-right" href="{:U('Order/comment',['token'=>$token,'order_id'=>$vo['orderId'],'item_id'=>$item['itemId']])}">去评价</a>
+						<else/>
+							<a class="pull-right" href="{:U('Order/comment',['token'=>$token,'order_id'=>$vo['orderId'],'item_id'=>$item['itemId']])}">查看评价</a>
+						</if>
+						</if>
+						<notempty name="item.spec"><p>规格：{$item.spec}</p></notempty>
+						<p>¥{$item.oprice}&nbsp;x&nbsp;{$item.quantity}</p>
+					</div>
+				</li>
+				</volist>
+			</ul>
+			<div class="order-bottom">
+				<div>总价: ¥<b>{$vo.order_sumPrice}</b>&nbsp;&nbsp;运费: ¥<b>{$vo.freeprice}</b></div>
+			</div>
+			<div class="order-action">
+				<if condition="$vo.status eq 1">
+				<a href="{:U('Order/pay',array('orderId'=>$vo['orderId'],'token'=>$token))}" id="order118_action_pay" class="btn btn-xs btn-danger">付款</a>
+				<a href="{:U('Order/cancelOrder',array('orderId'=>$vo['orderId'],'token'=>$token))}" class="btn btn-xs btn-default">取消订单</a>
+				<elseif condition="$vo.status eq 2" />
+				<a class="btn btn-xs btn-default" href="{:U('Order/checkOrder',array('orderId'=>$vo['orderId'],'status'=>$status,'token'=>$token))}">查看订单</a>
+				<elseif condition="$vo.status eq 3" />
+				<?php $ellipse = time() - $vo['fahuo_time'];$timer=7*24*3600 - $ellipse; ?>
+				<a href="{:U('Order/confirmOrder',array('orderId'=>$vo['orderId'],'status'=>$status,'token'=>$token))}" class="btn btn-xs btn-warning time-ticker" data-time="{$timer}" data-text="确认收货">确认收货</a>
+				<if condition="$vo['has_apply'] eq true">
+				<a class="btn btn-xs btn-default" href="{:U('Order/back',array('orderId'=>$vo['orderId'],'status'=>$status,'token'=>$token))}">查看申请</a>
+				<elseif condition="$ellipse lt 32*3600"/>
+				<a class="btn btn-xs btn-default" href="{:U('Order/back',array('orderId'=>$vo['orderId'],'status'=>$status,'token'=>$token))}">申请退换货</a>
+				</if>
+				<a class="btn btn-xs btn-default" href="{:U('Order/checkDelivery?name='.$vo['userfree'].'&oid='.$vo['freecode'].'&token='.$token)}">查看物流</a>
+				<elseif condition="$vo.status eq 4" />
+				<a class="btn btn-xs btn-default" href="{:U('Order/checkOrder',array('orderId'=>$vo['orderId'],'status'=>$status,'token'=>$token))}">查看订单</a>
+				</if>
+			</div>
+		</li>
+	</ul>
+	</volist>
+	</notempty>
+    <div class="wrap_line margin1" style="display:none;">
+		<div class="public_index">
+			<div class="information_index">
+				<div class="awoke">
+					您目前还没有已生成的订单<br>去<a href="/mall/index.php?token=".{$token}>商城首页</a>，挑选喜爱的商品，体验购物乐趣吧。
+				</div>
+			</div>
+
+		</div>
+		<div class="wrap_bottom"></div>
+	</div>
+    <div class="clear"></div>
+</div>
+<include file="public:footer" />
+<script>
+	function tick(item){
+		var intDiff = item.time;
+		var day=0,
+	        hour=0,
+	        minute=0,
+	        second=0;//时间默认值        
+	    if(intDiff > 0){
+	        day = Math.floor(intDiff / (60 * 60 * 24));
+	        hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+	        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+	        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+	    }
+	    if (minute <= 9) minute = '0' + minute;
+	    if (second <= 9) second = '0' + second;
+		var s = day+"天 "+hour+':'+minute+':'+second+' 确认收货';
+	    $(item.el).html(s);
+		item.time--;
+	}
+	var els = [];
+	$(function(){
+		$('.time-ticker').each(function(i,el){
+			var timer = parseInt($(el).attr('data-time'));
+			if(timer>0) els.push({el:el,time:timer,text:$(el).attr('data-text')});
+		});
+		
+		if(els.length>0){
+			window._interval = window.setInterval(function(){
+		    	for(var i=0;i<els.length;i++){
+					tick(els[i]);
+				}
+		    }, 1000);
+		}
+	});
+</script>
+</body>
+</html>

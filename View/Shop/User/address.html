@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>收货地址</title>
+<include file="Public:headtop" />
+<link type="text/css" rel="stylesheet" href="/Public/Shop/css/default.css">
+<script charset="utf-8" type="text/javascript" src="/Public/Shop/js/dialog.js" id="dialog_js"></script>
+<script charset="utf-8" type="text/javascript" src="/Public/Shop/js/jquery.validate.js" ></script>
+<script charset="utf-8" type="text/javascript" src="/Public/Shop/js/mlselection.js" ></script>
+</head>
+<body>
+<div id="content">
+    <div class="wrap">
+        <ul class="address_list">
+        <volist name='address_list' id='vo' >
+            <li>
+                <p>{$vo.consignee}({$vo.mobile})</p>
+                <p>{$vo.sheng}&nbsp;{$vo.shi}&nbsp;{$vo.qu}&nbsp;{$vo.address}</p>
+                <p class="new_line"><br /></p>
+                <p class="address_action">
+                    <span class="edit">
+					<a href="{:U('User/edit_address',array('id'=>$vo['id'],'token'=>$token))}"><i class="fa fa-edit"></i>&nbsp;编辑</a>
+					</span>
+                    <span>
+					<a href="{:U('User/address',array('id'=>$vo['id'],'type'=>'del','token'=>$token))}" class="delete float_none"><i class="fa fa-trash"></i>&nbsp;删除</a>
+					</span>
+                </p>
+            </li>
+          </volist>
+        </ul>
+		<a class="ui-button ui-success ui-block" href="{:U('User/addaddress',['token'=>$token])}">新增地址</a>
+    </div>
+</div>
+<include file="Public:footer" />
+</body>
+</html>

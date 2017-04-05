@@ -1,0 +1,37 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>桌台设置</h4>
+		<a href="{:U('Dining/tables')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form class="form-horizontal" method="post">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="col-sm-2">名称</label>
+			<div class="col-md-4">
+				<input type="text" name="name" value="{$set.name}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">介绍</label>
+			<div class="col-md-4">
+				<input type="text" name="intro" value="{$set.intro}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">顺序</label>
+			<div class="col-md-4">
+				<input type="text" name="taxis" value="{$set.taxis|default=1}" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-4 col-sm-">
+				<button class="btn btn-primary" type="submit">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>

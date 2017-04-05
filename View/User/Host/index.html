@@ -1,0 +1,41 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4 class="left">微订单管理</h4>
+	</div>
+	<a style="margin:10px 0;" class="btn btn-success" href="{:U('Host/add')}" title="添加">
+		<span class="glyphicon glyphicon-plus"></span>添加商家
+	</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th>商家名称</th>
+		<th>关键词</th>
+		<th>电话</th>
+		<th>创建时间</th>
+		<th>外链代码</th>
+		<th style="width:300px;">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="hostlist"> 
+		<tr>
+		<td>{$hostlist.title}</td>
+		<td>{$hostlist.keyword}</td>
+		<td>{$hostlist.tel}</td>
+		<td>{$hostlist.creattime|date="Y-m-d H:i:s",###}</td> 
+		<td>商家订单 {$hostlist.id}</td>
+		<td>
+			<a class="btn btn-xs btn-default" href="{:U('Host/admin',array('id'=>$hostlist['id']))}">订单管理</a>
+			<a class="btn btn-xs btn-default" href="{:U('Host/set',array('id'=>$hostlist['id']))}">商家设置</a>
+			<a class="btn btn-xs btn-default" href="{:U('Host/lists',array('id'=>$hostlist['id']))}">订单设置</a>
+			<a class="btn btn-xs btn-danger" href="{:U('Host/index_del',array('id'=>$hostlist['id']))}">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

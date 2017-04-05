@@ -1,0 +1,72 @@
+<extend name="Public:innerbase" />
+<block name="js">
+<script type="text/javascript" src="{:RES}/js/spark.util.js"></script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<div class="page-title">
+		<h4>订单管理</h4>
+		</div>
+	</div>
+	<div role="tabpanel" class="tabbable-custom">
+	  <!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation"><a href="{:U('orders')}">产品订单</a></li>
+			<li role="presentation" class="active"><a href="#">导师预约</a></li>
+		</ul>
+		<div style="padding-top: 20px;">
+		<table class="table wm-table-bordered">
+			<thead>
+			<tr>
+			<th width="70">姓名</th>
+			<th width="80">电话</th>
+			<th>导师</th>
+			<th class="60">数量</th>
+			<th width="100">总价</th>
+			<th>预约时段</th>
+			<th>预约雪场</th>
+			<th>备注</th>
+			<th class="160">付款状态</th>
+			<th class="60">状态</th>
+			<th width="160">下单时间</th>
+			<th width="100" class="norightborder">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<volist name="orders" id="o"> 
+			<tr>
+			<td>{$o.username}</td>
+			<td>{$o.mobile}</td>
+			<td>{$o.item_name}</td>
+			<td>{$o.quantity}</td>
+			<td><span class="text-danger">{$o.order_price}</span></td>
+			<td><span class="text-default">{$o.period}</span></td>
+			<td><span class="text-default">{$o.fields}</span></td>
+			<td><span class="text-default">{$o.remark}</span></td>
+			<td>
+			<if condition="$o.status eq 2"><span style="color:green">已付款</span><else/><span style="color:red">未付款</span></if>
+			</td>
+			<td><if condition="$o.is_handled eq 1"><span style="color:green">已处理</span><else/><span style="color:red">未处理</span></if></td>
+			<td>{$o.order_time|date="Y-m-d H:i:s",###}</td> 
+			<td>
+			<if condition="$o.is_handled eq 0">
+			<a href="{:U('order_handle',array('id'=>$o['id']))}">处理</a>
+			</if>
+			<a href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('order_delete',array('id'=>$o['id']))}');">删除</a>
+			</td>
+			</tr>
+			</volist>
+			</tbody>
+		</table>
+		<div class="pages">{$page}</div>
+	  </div>
+	</div>
+	</div>
+</div>
+</block>
+<block name="css">
+<style>
+table{font-size:13px;}
+</style>
+</block>

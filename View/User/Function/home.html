@@ -1,0 +1,115 @@
+<extend name="Public:innerbase"/>
+<block name="css">
+<link rel="stylesheet" type="text/css" href="{:STATICS}/bootstrap/css/bootstrap-switch.min.css" />
+<style>
+	.fun-label{
+		padding-right: 10px;
+		margin-top: 4px;
+		font-size: 16px;
+		font-weight: bold;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header"><h4>请勾选你要开启的功能</h4></div>
+	<table class="table wm-table-bordered">
+		<thead>
+			<tr>
+				<th>服务名称</th>
+				<th>回复关键词</th>
+				<th>状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>天气查询</td>
+				<td>天气+城市名，如：天气 北京</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>语音朗读</td>
+				<td>朗读＋关键词，如：朗读 微信营销平台</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>快递查询</td>
+				<td>快递＋快递公司名＋快递号　如：快递 顺丰 117215889174</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>语音翻译</td>
+				<td>翻译＋关键词，如：翻译 你好</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>火车查询</td>
+				<td>火车＋出发地＋目的地　如：火车 上海 南京</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>公交查询</td>
+				<td>公交＋城市＋公交路线　如：公交 上海 774</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>身份证查询</td>
+				<td>身份证＋号码　　如：身份证342423198803015568</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>手机归属地查询</td>
+				<td>手机＋手机号码　如：手机13917778912</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>音乐点播</td>
+				<td>音乐＋音乐名  如：音乐 爱你一万年</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>附近信息查询</td>
+				<td>附近周边信息查询(LBS)</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>百度百科</td>
+				<td>百科＋关键词　例：百科 北京</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+			<tr>
+				<td>股票查询</td>
+				<td>输入“股票000001”关键词</td>
+				<td><input type="checkbox" value="tianqi" name="fun-checkbox" checked></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/bootstrap/js/bootstrap-switch.min.js"></script>
+<script type="text/javascript">
+$("#funclist input:checkbox").change(function(){
+	changeapp(this,'{$Think.session.token}',$(this).val());
+});
+$("[name='fun-checkbox']").bootstrapSwitch({onText:"开",offText:"关"});
+function changeapp(obj,token,id){
+	if(obj.checked==true){
+		var myurl='/index.php?m=User&c=Tokenopen&a=add&token='+token+'&id='+id+'&r='+Math.random(); 
+		$.getJSON(myurl,function(resp){
+			 if(resp.data==1){
+				alert('该功能已经成功添加');
+			}
+		});
+	}
+	else{
+		var myurl='/index.php?m=User&c=Tokenopen&a=del&token='+token+'&id='+id+'&r='+Math.random(); 
+		$.getJSON(myurl,function(resp){
+			if(resp.data==1){
+				alert('已经取消该功能');
+			}
+		});
+	}
+}
+</script>
+</block>

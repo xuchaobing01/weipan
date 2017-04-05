@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>订单评论</title>
+<link type="text/css" rel="stylesheet" href="/Public/Shop/css/shop.css" />
+<link href="/Public/Common/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="/Public/Common/font-awesome/css/font-awesome.min.css" />
+<script charset="utf-8" src="/Public/Common/js/jquery-2.1.0.min.js" type="text/javascript"></script>
+<style>
+.media-object{
+	max-width:100px;
+}
+.media-list .media:not(:last-child){
+	border-bottom: 1px solid rgb(238, 238, 238);
+}
+</style>
+</head>
+<body>
+<include file="public:head" />
+<div class="container" style="padding-top:20px;">
+	<if condition="$item eq 0">
+		<div class="alert alert-danger">
+			<i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;该商品不存在或已经下架！
+		</div>
+	<else/>
+	<div class="media">
+		<a class="pull-left" href="{:U('Item/index',['id'=>$item['id'],'token'=>$token])}">
+			<img class="media-object" src="{$item.img}" alt="...">
+		</a>
+		<div class="media-body">
+			<a href="{:U('Item/index',['id'=>$item['id'],'token'=>$token])}">
+				<h4 class="media-heading">{$item.title}</h4>
+			</a>
+			<p>共<b class="text-warning">{$total_count}</b>条评论</p>
+		</div>
+	</div>
+	<hr/>
+	<ul class="media-list">
+		<volist name="comments" id="vo">
+		<li class="media">
+			<div class="media-body">
+				<h4 class="media-heading">{$vo.info}</h4>
+				<a href="{:U('Order/checkOrder',['orderId'=>$vo['order_id'],'token'=>$token])}" class="pull-right">订单号{$vo.order_id}</a>
+				<p><small>{$vo.add_time|date='Y/m/d h:i:s',###}</small></p>
+			</div>
+		</li>
+		</volist>
+	</ul>
+	<if condition="!$deny_comment">
+	<form class="ajax-form form" action="{:U('Order/comment',['token'=>$token])}" method="post">
+		<input type="hidden" value="{$_GET['item_id']}" name="item_id" />
+		<input type="hidden" value="{$_GET['order_id']}" name="order_id" />
+		<div class="form-group">
+			<textarea class="form-control" id="comment" rows="3" name="content" placeholder="喜欢就夸夸我吧!"></textarea>
+		</div>
+		<div class="form-group">
+			<button id="submit" type="submit" data-loading-text="正在提交..." class="btn btn-success btn-block">提交</button>
+		</div>
+	</form>
+	</if>
+	</if>
+</div>
+<include file="public:footer_new" />
+<script src="/Public/Common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/Public/Common/js/jquery.form.js"></script>
+<script>
+	$('.ajax-form').ajaxForm({
+		beforeSubmit:function(){
+			var txt = $('#comment').val();
+			if(txt==''){
+				alert('评论不能为空！');
+				return false;
+			}
+			if(txt.length <5){
+				alert('评论至少要5个字哦！');
+				return false;
+			}
+			$('#submit').button('loading');
+		},
+		success:function(data){
+			data = JSON.parse(data);
+			if(data.status==0){
+				alert(data.message);
+				location.reload();
+			}
+		},
+		error:function(data){
+			alert('评论失败！');
+			$('#submit').button('reset');
+		}
+	});
+</script>
+</body>
+</html>

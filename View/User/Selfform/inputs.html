@@ -1,0 +1,38 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h3>{$thisForm['name']} 表单输入项管理</h3>
+		<a href="{:U('Selfform/index')}" class="btn btn-sm btn-default">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<a style="margin:10px 0;" href="{:U('Selfform/inputAdd',array('formid'=>$thisForm['id']))}" class="btn btn-success">
+		<span class="glyphicon glyphicon-plus"></span>&nbsp;添加
+	</a>
+	<table class="table wm-table-bordered">
+		<thead>
+		<tr>
+		<th width="90">显示名称</th>
+		<th width="90">字段名称</th>
+		<th width="90">输入类型</th>
+		<th width="200" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="item"> 
+		<tr>
+		<td>{$item.displayname}</td>
+		<td>{$item.fieldname}</td>
+		<td>{$item.inputtype}</td>
+		<td>
+		<a class="btn btn-xs btn-default" href="{:U('Selfform/inputset',array('id'=>$item['id'],'token'=>$token))}">修改</a>
+		<a class="btn btn-xs btn-danger" href="{:U('Selfform/inputDelete',array('id'=>$item['id'],'token'=>$token))}">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="pages">{$page}</div>
+</div>
+</block>

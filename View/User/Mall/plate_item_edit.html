@@ -1,0 +1,100 @@
+<extend name="Public:innerbase" />
+<block name="content">
+	<form method="post" action="" class="ajax-form">
+		<input type="submit" class="btn btn-primary" value="确定" />
+		<hr/>
+		<div class="form-group">
+			<label class="checkbox-inline">
+				<empty name="set">
+				<input type="checkbox" id="customCheck" name="custom" value="1" />自定义	
+				<else/>
+				<input type="hidden" name="custom" value="1" />
+				</empty>
+			</label>
+		</div>
+		<div id="customPanel"  <empty name="set">style="display:none;"</empty>>
+		<div class="form-group">
+			<label class="control-label">标题</label>
+			<input class="form-control" type="text" name="title" value="{$set.item_title}" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">副标题</label>
+			<input class="form-control" type="text" name="subtitle" value="{$set.item_subtitle}" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">链接</label>
+			<input class="form-control" type="text" name="link"  value="{$set.item_link}"/>
+		</div>
+		<div class="form-group">
+			<label class="control-label">图片</label>
+			<div id="imgWrapper" style="width:120px;">
+				<notempty name="set">
+				<input type="hidden" name="img" value="{$set.item_img}"/>
+				<img class="img-responsive" src="{$set.item_img}" />
+				</notempty>
+			</div>
+			<span class="btn btn-primary btn-sm btn-upload" id="addImage">上传图片
+				<input type="file" name="file" class="upload-file" />
+			</span>
+		</div>
+		</div>
+		<empty name="set">
+		<div id="goodsPanel">
+			<table  class="table wm-table-bordered table-striped">
+				<thead>
+					<tr>
+					<th width="50">选择</th>
+					<th>商品名称</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="items" id="vo">
+					<tr>
+						<td><input type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+						<td>{$vo.title}</td>
+					</tr>
+					</volist>
+				</tbody>
+			</table>
+			<div>{$page}</div>
+		</div>
+		</empty>
+	</form>
+</block>
+<block name="js">
+<script>
+$('.ajax-form').ajaxForm({
+	success:function(data){
+		if(data.errcode==0){
+			notify(data.errmsg);
+			spark.redirect(location.href,1000);
+		}
+		else{
+			notify(data.info,'error');
+		}
+	}
+});
+$("#addImage>.upload-file").AjaxFileUpload({
+	action: "{:U('Qiniu/upload')}",
+	onComplete: function(filename, resp) {
+		if(resp.error !=0){
+			notify(resp.message,'error');
+		}
+		else{
+			$('#imgWrapper').empty().append('<input type="hidden" name="img" value="'+resp.url+'"/><img class="img-responsive" src="'+resp.url+'" />');
+		}
+	}
+});
+
+$('#customCheck').change(function(){
+	if($(this).is(':checked')){
+		$('#customPanel').show();
+		$('#goodsPanel').hide();
+	}
+	else {
+		$('#customPanel').hide();
+		$('#goodsPanel').show();
+	}
+});
+</script>
+</block>

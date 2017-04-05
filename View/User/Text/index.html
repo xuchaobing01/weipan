@@ -1,0 +1,39 @@
+<extend name="Public:innerbase" />
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>文本回复管理</h4>
+		<a class="btn btn-success" href="{:U('Text/edit')}">
+		<span class="glyphicon glyphicon-plus"></span>&nbsp;新增文本回复</a>
+	</div>
+	<table class="table wm-table-bordered table-stripped">
+		<THEAD>
+			<TR>
+				<TH>关键词</TH>
+				<TH>回答</TH>
+				<TH>匹配类型</TH>
+				<TH>浏览次数</TH>
+				<TH>修改时间</TH>
+				<TH>操作</TH>
+			</TR>
+        </THEAD>
+		<tbody>
+			<volist name="info" id="vo">
+				<tr>
+                <td>{$vo.keyword}</td>
+                <td width="120px;" style="min-width:120px;max-width:200px;"><div class="wrap-text">{$vo.text|htmlspecialchars}</div></td>
+                <td><eq name="vo.type" value="1">完全匹配<else/>模糊匹配</eq></td>
+                <td>{$vo.click}</td>
+                <td><php>echo date('Y-m-d',$vo['updatetime']);</php></td>
+                <td class="norightborder">
+				<a class="btn btn-xs btn-primary" href="{:U('Text/edit',array('id'=>$vo['id']))}" title="编辑文本">编辑</a>
+				<a class="btn btn-xs btn-danger" href="{:U('Text/del',array('id'=>$vo['id']))}">删除</a></td>
+                </tr>
+			</volist>
+		</tbody>
+	</table>
+	<div style="">
+		<div class="pages">{$page}</div>
+	</div>
+</div>
+</block>

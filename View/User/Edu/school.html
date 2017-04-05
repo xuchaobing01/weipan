@@ -1,0 +1,46 @@
+<extend name="Public:innerbase" />
+<block name="css"></block> 
+<block name="js">
+<script src="{:STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{:STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script src="{:STATICS}/spark/spark.util.js"></script>
+<script type="text/javascript">
+
+</script>
+</block> 
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>校区管理</h4>
+		<code><?php echo C('WAP_DOMAIN').U('Wap/Edu/index',['token'=>session('token'),'wechat_id'=>'{wechat_id}']);?></code>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="{:U('school_edit')}" class="btn btn-primary">新增校区</a>
+	</div>
+	<table class="table wm-table-bordered table-striped table-hover">
+		<thead>
+		<tr>
+		<th width="70">名称</th>
+		<th width="80">电话</th>
+		<th width="160">地址</th>
+		<th width="150" class="norightborder">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr></tr>
+		<volist name="branches" id="c"> 
+		<tr>
+		<td>{$c.name}</td>
+		<td>{$c.tel}</td>
+		<td>{$c.address}</td>
+		<td>
+			<a class="btn btn-xs btn-primary" href="{:U('Edu/school_edit',array('id'=>$c['id']))}">编辑</a>
+			<a class="btn btn-xs btn-danger" href="javascript:spark.confirm_jump('您确定要删除吗?', '{:U('Edu/school_delete',array('token'=>$token,'id'=>$c['id']))}');">删除</a>
+		</td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>

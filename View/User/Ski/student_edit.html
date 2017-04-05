@@ -1,0 +1,98 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link rel="stylesheet" href="{:STATICS}/validation/css/validationEngine.jquery.css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+</block>
+<block name="js">
+<include file="Public:upload" />
+<include file="Public:editor" />
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="{:STATICS}/validation/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="{:STATICS}/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+$(function(){
+	$("#editForm").validationEngine("attach",{ 
+		promptPosition:"centerRight",
+		scroll:true,
+		showOneMessage:true
+	});
+	$(".datetime-picker").datetimepicker({format: 'yyyy-mm-dd',language:'zh-CN',minView:2,autoclose:true});
+});
+</script>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header wm-page-header">
+		<h4>学员信息</h4>
+		<a href="{:U('Ski/student')}" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-chevron-left"></span>&nbsp;返回
+		</a>
+	</div>
+	<form id="editForm" class="form-horizontal" method="post">
+		<input type="hidden" name="id" value="{$set.id}" />
+		<div class="form-group">
+			<label class="col-sm-2">名称</label>
+			<div class="col-md-3">
+				<input type="text" name="name" value="{$set.name}" class="form-control validate[required,maxSize[10]]" />
+				<span class="help-block">不要超过10个字符</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">学员等级</label>
+			<div class="col-md-3">
+				<select class="form-control" name="level">
+					<option <eq name="set['level']" value="一级学员">selected</eq> value="一级学员">一级学员</option>
+					<option <eq name="set['level']" value="二级学员">selected</eq> value="二级学员">二级学员</option>
+					<option <eq name="set['level']" value="三级学员">selected</eq> value="三级学员">三级学员</option>
+					<option <eq name="set['level']" value="四级学员">selected</eq> value="四级学员">四级学员</option>
+					<option <eq name="set['level']" value="五级学员">selected</eq> value="五级学员">五级学员</option>
+					<option <eq name="set['level']" value="六级学员">selected</eq> value="六级学员">六级学员</option>
+					<option <eq name="set['level']" value="七级学员">selected</eq> value="七级学员">七级学员</option>
+					<option <eq name="set['level']" value="八级学员">selected</eq> value="八级学员">八级学员</option>
+					<option <eq name="set['level']" value="九级学员">selected</eq> value="九级学员">九级学员</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">领证时间</label>
+			<div class="col-md-3">
+				<input type="text" name="certificate_time" value="{$set.certificate_time|default=time()|date='Y-m-d',###}" class="form-control datetime-picker" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">学员照片</label>
+			<div class="col-sm-6" >
+				<input type="hidden" class="form-control" value="{$set.img}" id="img" name="img" />
+				<img id="imgHolder" style="width:216px;" class="" <if condition="$set['img'] eq ''">src="{:RES}/images/photo/noneimg.jpg"</if> src="{$set.img}"/>
+				<div class="btn-group" style="vertical-align:bottom;">
+					<span class="btn btn-xs btn-primary" onclick="selectAsset('img')">
+						<span class="glyphicon glyphicon-cloud-upload"></span>选择
+					</span>
+					<span class="btn btn-primary btn-xs" onclick="previewImg('img')">
+						<span class="glyphicon glyphicon-picture"></span>预览
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2">身份证号</label>
+			<div class="col-md-3">
+				<input type="text" name="card_number" value="{$set.card_number}" class="form-control"  />
+			</div>
+		</div>
+		<div class="form-group">
+            <label class="col-sm-2">排序</label>
+            <div class="col-md-2">
+                <input type="text" id="sort" name="sort" value="{$set.sort|default=1}" class="form-control validate[required,custom[integer],min[1],max[255]" />
+                <span class="help-block">范围1-255，越大越靠前</span>
+            </div>
+        </div>
+		<div class="form-group">
+			<div class="col-md-5 col-sm-offset-2">
+				<input type="submit" class="btn btn-primary" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+</block>

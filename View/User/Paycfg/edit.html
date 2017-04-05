@@ -1,0 +1,111 @@
+<form class="form form-horizontal" id="editForm" method="post" action="__SELF__">
+	<div class="form-group"  <if condition="$_GET['id'] neq 0">style="display:none;"</if>>
+		<label class="control-label col-xs-2">支付类型</label>
+		<div class="col-md-6">
+			<select name="name" id="payName" class="form-control">
+				<option value="ALIPAY" <if condition="$name eq 'ALIPAY'">selected</if>>支付宝</option>
+				<option value="WXPAY" <if condition="$name eq 'WXPAY'">selected</if>>微信支付</option>
+			</select>
+		</div>
+	</div>
+	<div class="alipay" <if condition="$name eq 'WXPAY'">style="display:none;"</if>>
+	<div class="form-group">
+		<label class="control-label col-xs-2">账号</label>
+		<div class="col-md-6">
+			<input type="text" class="form-control" name="account" value="{$config.account}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-2">PID</label>
+		<div class="col-md-6">
+			<input type="text" class="form-control" name="pid" value="{$config.pid}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-2">KEY</label>
+		<div class="col-md-6">
+			<input type="text" class="form-control" name="key" value="{$config.key}" />
+		</div>
+	</div>
+	</div>
+	<div class="wxpay" <if condition="$name eq 'ALIPAY'">style="display:none;"</if>>
+	<div class="form-group">
+		<label class="control-label col-xs-2">AppId</label>
+		<div class="col-md-6">
+			<input type="text" class="form-control" name="appid" value="{$config.appid}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-2">PaySignKey</label>
+		<div class="col-md-6">
+			<input type="text" class="form-control" name="paysignkey" value="{$config.paysignkey}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-2">AppSecret</label>
+		<div class="col-md-6">
+			<input type="text" class="form-control" name="appsecret" value="{$config.appsecret}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-2">PartnerID</label>
+		<div class="col-md-6">
+			<input type="text" class="form-control" name="partnerid" value="{$config.partnerid}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-2">PartnerKey</label>
+		<div class="col-md-6">
+			<input type="text" class="form-control" name="partnerkey" value="{$config.partnerkey}" />
+		</div>
+	</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-2">&nbsp;</label>
+		<div class="col-md-6">
+			<label class="checkbox-inline">
+				<input type="checkbox" name="status" value="1" <if condition="$status eq 1">checked</if>>启用
+			</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-4 col-xs-offset-2">
+			<button class="btn btn-success" type="submit">保存</button>
+		</div>
+	</div>
+</form>
+<script>
+	function clear_form(){
+		$('#editForm input[name="scene_name"]').val('');
+		$('#editForm input[name="scene_desc"]').val('');
+	}
+	$('#editForm').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+				$('#editModal').modal('toggle')
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		},
+		dataType:'json'
+	});
+	$('#payName').change(function(){
+		var v = $(this).val();
+		if(v == 'WXPAY'){
+			$('.alipay').hide();
+			$('.wxpay').show();
+		}
+		else if(v == 'ALIPAY'){
+			$('.alipay').show();
+			$('.wxpay').hide();
+		}
+	});
+</script>

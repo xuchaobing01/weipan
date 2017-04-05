@@ -1,0 +1,107 @@
+<extend name="Public:innerbase" />
+
+<block name="js">
+
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+
+</block>
+
+<block name="content">
+
+<div class="container-fluid">
+
+	<ul class="nav nav-tabs wm-tabs">
+
+		<li class="active"><a href="javascript:void(0)">提现管理</a></li>
+
+	
+
+	</ul>
+
+	<div class="page-header wm-page-header">
+
+	 	 <form method="get" action="__SELF__" class="form-inline">
+	 	
+	 			
+	 	
+	 			<label>姓名</label>
+	 	
+	 			<input name="wechat_name" type="text" value="{$_GET['wechat_name']}" class="form-control" />
+	 	
+	 			<label>手机号</label>
+	 	
+	 			<input name="phone" type="text" value="{$_GET['phone']}" class="form-control" />
+	 	
+	 			<button class="btn btn-primary" type="submit">
+	 	
+	 				<span class="glyphicon glyphicon-search"></span>
+	 	
+	 				查询
+	 	
+	 			</button>
+	 	
+	 			</form> 
+
+	</div>
+
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+
+		<THEAD>
+		<TR>
+			<TH>ID</TH>
+			<TH>开户人姓名</TH>
+			<TH>身份证号</TH>
+			<TH>开户绑定手机</TH>
+			<TH>开户行</TH>
+			<TH>银行卡</TH>
+			<TH>提现金额</TH>
+			<TH>提现申请时间</TH>
+			<TH>会员姓名</TH>
+			<TH>状态</TH>
+			<TH>操作</TH>
+		</TR>
+		</THEAD>
+
+		<TBODY>
+		<volist id="list" name="list">
+		<TR>
+			<TD>{$list.id}</TD>
+			<TD>{$list.weixin}</TD>
+			<TD>{$list.idcard}</TD>
+			<TD><a href="{:U('Member/detail',array('id'=>$list['userid']))}">{$list.cardphone}</a></TD>
+			<TD>{$list.card}</TD>
+			<TD>{$list.cardnum}</TD>
+			<TD>{$list.price}</TD>
+			<TD>{$list.createtime|date='Y-m-d H:i',###}</TD>
+			<TD>{$list.wechat_name}</TD>
+			<TD>
+				<if condition="$list.status eq 2">
+					<span style="color:red">已审核</span>
+				<elseif condition="$list.status eq 1"/>
+					<span style="color:green">打回</span>
+				<else />
+					未审核
+				</if>
+			</TD>
+			<TD>
+				<if condition="$list.status eq 0">
+					<a class="btn btn-xs btn-danger" onclick="spark.confirm_jump('确认已给该订单打款，是否确定','/User/Member/queren_yongjin/id/{$list.id}.html')">支付宝打款</a>
+					<a class="btn btn-xs btn-danger" onclick="spark.confirm_jump('确认已给该订单打款，是否确定','/User/Member/tixian_yongjin/id/{$list.id}.html')">微信打款</a>
+					<a class="btn btn-xs " onclick="spark.confirm_jump('用户提现金额返回到余额中，是否确定','/User/Member/back_yongjin/id/{$list.id}.html')">返回</a>
+				</if>
+			</TD>
+		</form>
+
+		</TR>
+
+		</volist>
+
+	  </TBODY>
+
+	</TABLE>
+
+	<div>{$page}</div>
+
+</div>
+
+</block>

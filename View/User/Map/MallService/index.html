@@ -1,0 +1,123 @@
+<extend name="Public:innerbase" />
+<block name="css">
+<link type="text/css" rel="stylesheet" href="{:STATICS}/pnotify/pnotify.custom.min.css" />
+<link type="text/css" rel="stylesheet" href="{:STATICS}/daterangepicker/daterangepicker-bs3.css" />
+<style>
+	.table-toolbar{
+		margin:10px 0;
+	}
+</style>
+</block>
+<block name="content">
+<div class="container-fluid">
+	<div class="page-header">
+		<h4>客户申诉处理</h4>
+		<form class="form-inline" method="get">
+			<div class="form-group">
+				<input type="text" name="orderId" value="{$_GET['orderId']}" placeholder="订单号" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<input type="text" name="mobile" value="{$_GET['mobile']}" placeholder="联系方式" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<select name="status" class="form-control">
+					<option value="-1">全部</option>
+					<option <if condition="isset($_GET['status']) && ($_GET['status'] eq 0)">selected</if> value="0">未处理</option>
+					<option <if condition="$_GET['status'] eq 1">selected</if> value="1">已处理</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input style="width: 220px;" type="text" value="{$_GET['daterange']}" id="dateRange" name="daterange" class="form-control" placeholder="申诉时间" />
+			</div>
+			<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i>&nbsp;查找</button>
+		</form>
+	</div>
+	<table class="table  wm-table-bordered table-striped table-hover">
+		<thead>
+			<th>订单号</th>
+			<th>联系人</th>
+			<th>联系方式</th>
+			<th width="80">申诉类型</th>
+			<th>申诉原因</th>
+			<th width="160">申诉时间</th>
+			<th width="160">处理时间</th>
+			<th  width="80">状态</th>
+			<th  width="100">操作</th>
+		</thead>
+		<tbody>
+			<volist name="list" id="vo">
+			<tr>
+				<td>{$vo.orderId}</td>
+				<td>{$vo.linkman}</td>
+				<td>{$vo.mobile}</td>
+				<td>申请<?php echo $vo['type'] == 1?'换货':'退货';?></td>
+				<td>{$vo.message}</td>
+				<td>{$vo.create_time|date='Y/m/d H:i:s',###}</td>
+				<td><if condition="$vo['status'] eq 0">--<else/>{$vo.process_time|date='Y/m/d H:i:s',###}</if></td>
+				<td><?php echo $vo['status'] == 0?'正在处理':'已处理';?></td>
+				<td>
+					<a href="{:U('handle?id='.$vo['id'])}">查看</a>
+					<a href="{:U('delete?id='.$vo['id'])}">删除</a>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div>{$page}</div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="{:STATICS}/js/jquery.form.js"></script>
+<script src="{:STATICS}/pnotify/pnotify.custom.min.js"></script>
+<script src="{:STATICS}/js/moment.min.js"></script>
+<script src="{:STATICS}/daterangepicker/daterangepicker.js"></script>
+<script>
+	var zh_CN = {
+		applyLabel: '确定',
+		cancelLabel: '取消',
+		fromLabel: '从',
+		toLabel: '至',
+		weekLabel: 'W',
+		customRangeLabel: '自定义',
+		daysOfWeek: ['日','一','二','三','四','五','六'],
+		monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+		firstDay: moment.localeData()._week.dow
+	};
+	$('input[name="daterange"]').daterangepicker(
+		{ 
+			format: 'YYYY-MM-DD',
+			startDate: moment().subtract(6, 'days'),
+			endDate: moment(),
+			separator: '~',
+			locale: zh_CN,
+			ranges: {
+			   '今天': [moment(), moment()],
+			   '昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			   '最近7天': [moment().subtract(6, 'days'), moment()],
+			   '最近30天': [moment().subtract(29, 'days'), moment()],
+			   '本月': [moment().startOf('month'), moment().endOf('month')],
+			   '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			},
+		},
+		function(start, end, label) {
+			$('#dateRange').val(start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
+		}
+	);
+	$('.ajax-form').ajaxForm({
+		success:function(data){
+			if(data.status==1){
+				new PNotify({
+					text: data.info,
+					type: 'success'
+				});
+			}
+			else{
+				new PNotify({
+					text: data.info,
+					type: 'error'
+				});
+			}
+		}
+	});
+</script>
+</block>

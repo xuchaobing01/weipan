@@ -1,0 +1,61 @@
+<extend name="Public:innerbase" />
+
+
+
+<block name="js">
+
+
+
+<script src="{:RES}/js/date/WdatePicker.js"></script>
+
+
+
+</block>
+
+<block name="content">
+	
+<div class="container-fluid">
+	<ul class="nav nav-tabs wm-tabs">
+		<li class="active"><a href="javascript:void(0)">券管理</a></li>
+	 	<li><a href="{:U('Member/addcoupon')}">添加券</a></li>
+	</ul>
+
+
+	<TABLE class="table wm-table-bordered table-striped table-hover">
+		<THEAD>
+		<TR>
+			<TH>ID</TH>
+			<TH>名称</TH>
+			<TH>有效期</TH>
+			<TH>使用范围</TH>
+			<TH>操作</TH>
+		</TR>
+		</THEAD>
+
+		<TBODY>
+
+		<volist id="list" name="list">
+		<TR>
+			<TD>{$list.id}</TD>
+			<TD>{$list.name}</TD>
+			<TD>{$list.overdue_time}天</TD>
+			<TD>{$list.use_area}</TD>
+			<TD>
+				<a class="btn btn-xs" href="{:U('Member/addcoupon', ['id'=>$list['id']])}">编辑</a>
+				<a class="btn btn-xs" onclick="javascript:spark.confirm_jump('确定删除此券，是否确定','/User/Member/delad/id/{$list.id}.html')">删除</a>
+			</TD>
+
+		</form>
+
+		</TR>
+
+		</volist>
+
+	  </TBODY>
+
+	</TABLE>
+
+
+</div>
+
+</block>
